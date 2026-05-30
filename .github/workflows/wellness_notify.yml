@@ -1,0 +1,78 @@
+name: 养生计划每日推送
+
+on:
+  schedule:
+    # 所有时间为 UTC，北京时间 = UTC+8
+    - cron: '30 23 * * *'  # 07:30 CST
+    - cron: '45 23 * * *'  # 07:45 CST
+    - cron: '30 0 * * *'   # 08:30 CST
+    - cron: '30 2 * * *'   # 10:30 CST
+    - cron: '0 4 * * *'    # 12:00 CST
+    - cron: '30 4 * * *'   # 12:30 CST
+    - cron: '30 6 * * *'   # 14:30 CST
+    - cron: '30 8 * * *'   # 16:30 CST
+    - cron: '30 10 * * *'  # 18:30 CST
+    - cron: '30 11 * * *'  # 19:30 CST
+    - cron: '0 13 * * *'   # 21:00 CST
+    - cron: '30 14 * * *'  # 22:30 CST
+  workflow_dispatch:        # 允许手动触发（用来测试）
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 发送 Bark 推送
+        env:
+          BARK_KEY: ${{ secrets.BARK_KEY }}
+        run: |
+          python3 - << 'EOF'
+          import os, requests, datetime
+
+          # 北京时间 (UTC+8)
+          now = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
+
+          NOTIFICATIONS = {
+              "07:30": ("☀️ 早安！",        "起床喝一杯温水300ml，放床头就够了"),
+              "07:45": ("🥐 出门买早餐",     "便利店茶叶蛋+三明治，别空腹出门"),
+              "08:30": ("🚇 通勤运动时间",   "提前一站下车！走路去公司，今天的运动完成了💪"),
+              "10:30": ("💧 喝水啦",         "站起来走走，眼睛看远处放松30秒"),
+              "12:00": ("🥗 午餐外卖",       "选有蔬菜的，备注少辣少油，皮肤感谢你"),
+              "12:30": ("🚶 饭后散步",       "楼下溜达10分钟，助消化，不犯困"),
+              "14:30": ("🍵 下午补水",       "喝水或无糖绿茶，抗氧化护肤，别喝奶茶"),
+              "16:30": ("🧍 站起来！",       "肩颈拉伸2分钟，预防久坐酸痛"),
+              "18:30": ("🏃 下班运动时间",   "提前一站下！走路回家，第二段运动完成！"),
+              "19:30": ("🍜 晚餐外卖",       "粥+小菜或蒸菜，清淡一点，今天蔬菜够了吗？"),
+              "21:00": ("✨ 护肤时间",       "洗脸→爽肤水→保湿，3步5分钟，坚持就有效"),
+              "22:30": ("🌙 准备入睡",       "放下手机，23点前睡觉是最好的护肤"),
+          }
+
+          bark_key = os.environ.get("BARK_KEY", "")
+          if not bark_key:
+              print("错误：BARK_KEY 未配置")
+              exit(1)
+
+          # 匹配当前时间（允许 ±3 分钟误差）
+          title, body = None, None
+          cur_min = now.hour * 60 + now.minute
+          for t, (ttl, bdy) in NOTIFICATIONS.items():
+              h, m = map(int, t.split(":"))
+              if abs(cur_min - h * 60 - m) <= 3:
+                  title, body = ttl, bdy
+                  break
+
+          cst = f"{now.hour:02d}:{now.minute:02d}"
+          if not title:
+              print(f"当前时间 {cst} CST 无推送任务")
+              exit(0)
+
+          resp = requests.post("https://api.day.app/push", json={
+              "title":      title,
+              "body":       body,
+              "device_key": bark_key,
+              "group":      "养生计划",
+              "sound":      "birdsong",
+          }, timeout=15)
+
+          print(f"[{cst} CST] 推送成功：{title}  HTTP {resp.status_code}")
+          resp.raise_for_status()
+          EOF
