@@ -13,14 +13,12 @@
     html{background:#0f0020;min-height:100vh}
     body{font-family:-apple-system,'PingFang SC','SF Pro Display',sans-serif;background:#fefcff;color:#18181b;min-height:100vh;padding-bottom:88px;position:relative;overflow-x:hidden}
 
-    /* Desktop: constrain content width, center it */
     .wrap{padding:0 24px;max-width:900px;margin:0 auto}
     .status-card{max-width:900px;margin:-28px auto 0;left:0;right:0}
     @media(max-width:640px){
       .wrap{padding:0 16px;max-width:none}
       .status-card{margin:-28px 16px 0;max-width:none}
     }
-    /* Desktop task groups: 2 columns */
     @media(min-width:768px){
       #task-list{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
       #task-list .sec-lbl-group{grid-column:1/-1}
@@ -33,7 +31,6 @@
       .ring-big{font-size:64px}
     }
 
-    /* ─── HERO ─── */
     .hero{background:linear-gradient(160deg,#1a0533 0%,#4a1060 35%,#8b2fc9 65%,#c44dff 100%);padding:54px 20px 64px;position:relative;overflow:hidden}
     .hero-orbs{position:absolute;inset:0;pointer-events:none}
     .orb{position:absolute;border-radius:50%;filter:blur(40px);opacity:.45}
@@ -44,7 +41,6 @@
     .hpill{background:rgba(255,255,255,0.12);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.2);border-radius:50px;padding:7px 15px;font-size:12px;font-weight:700;color:white;letter-spacing:.3px}
     .hpill-fire{background:linear-gradient(135deg,rgba(251,146,60,.25),rgba(239,68,68,.25));border-color:rgba(251,146,60,.4)}
 
-    /* ring */
     .ring-outer{display:flex;justify-content:center;margin:0 auto 18px;position:relative;z-index:1;width:172px;height:172px}
     .rsvg{position:absolute;top:0;left:0;transform:rotate(-90deg)}
     .r-track{fill:none;stroke:rgba(255,255,255,0.1);stroke-width:12}
@@ -60,16 +56,13 @@
     .xp-prog{height:100%;background:linear-gradient(90deg,#fbbf24,#f43f5e);border-radius:10px;transition:width .8s cubic-bezier(.34,1.56,.64,1)}
     .xp-txt{font-size:11px;color:rgba(255,255,255,.7);font-weight:600;white-space:nowrap}
 
-    /* floating status */
     .status-card{margin:-28px 16px 0;background:white;border-radius:20px;padding:14px 20px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 8px 32px rgba(139,47,201,.18),0 2px 8px rgba(0,0,0,.06);position:relative;z-index:10}
     .status-dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,#8b2fc9,#f43f5e);flex-shrink:0}
     .status-txt{font-size:13px;font-weight:700;color:#4c1d95}
 
-    /* ─── SECTIONS ─── */
     .wrap{padding:0 16px}
     .sec-lbl{font-size:10px;font-weight:800;letter-spacing:2px;color:#a1a1aa;text-transform:uppercase;padding:20px 0 10px}
 
-    /* ─── REC CARD ─── */
     .rec-card{border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(139,47,201,.1);margin-bottom:6px}
     .rec-top{background:linear-gradient(135deg,#2d0066,#6b21a8);padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
     .rec-title{font-size:14px;font-weight:800;color:white}
@@ -81,7 +74,6 @@
     .rec-tag{font-size:10px;font-weight:800;color:#7c3aed;background:#f3f0ff;padding:2px 8px;border-radius:20px;flex-shrink:0;white-space:nowrap;margin-top:2px}
     .rec-content{font-size:13px;color:#3f3f46;line-height:1.5}
 
-    /* ─── TASK ROWS ─── */
     .task-group{background:white;border-radius:20px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.05);margin-bottom:10px}
     .group-header{padding:12px 16px 6px;display:flex;align-items:center;gap:8px}
     .group-icon{font-size:14px}
@@ -112,7 +104,6 @@
     .t-body-inner{font-size:13px;color:#52525b;line-height:1.7;padding:2px 16px 14px 66px}
     .task-row.done + .t-body .t-body-inner{color:#c4b5fd}
 
-    /* icon colors per section */
     .ico-morning{background:#fff7ed}
     .ico-commute{background:#eff6ff}
     .ico-work{background:#f0fdf4}
@@ -120,12 +111,10 @@
     .ico-evening{background:#fff1f2}
     .ico-sleep{background:#eef2ff}
 
-    /* ─── TIP ─── */
     .tip-card{background:linear-gradient(135deg,#fdf4ff,#fce7f3);border-radius:18px;padding:16px;border:1px solid #f0abfc;margin-bottom:6px}
     .tip-head{font-size:13px;font-weight:800;color:#9333ea;margin-bottom:6px}
     .tip-body{font-size:13px;color:#7e22ce;line-height:1.7}
 
-    /* ─── MEAL PAGE ─── */
     .page-hero{background:linear-gradient(160deg,#1a0533,#6b21a8);padding:56px 20px 28px;color:white;text-align:center}
     @media(min-width:768px){.page-hero,.lv-hero{padding:60px 40px 36px}}
     .page-hero h1{font-size:22px;font-weight:800;letter-spacing:-.5px}
@@ -138,7 +127,6 @@
     .itxt{font-size:13px;color:#3f3f46;line-height:1.5}
     .inote{font-size:11px;color:#a1a1aa}
 
-    /* ─── STATS PAGE ─── */
     .lv-hero{background:linear-gradient(160deg,#1a0533,#4a1060,#8b2fc9);padding:56px 24px 28px;text-align:center;color:white;position:relative;overflow:hidden}
     .lv-hero .orb{opacity:.3}
     .lv-orb-icon{font-size:64px;margin-bottom:8px;filter:drop-shadow(0 0 20px rgba(255,255,255,.4))}
@@ -169,7 +157,6 @@
     .week-wrap{padding:0 16px 16px}
     .week-wrap h3{font-size:12px;font-weight:800;letter-spacing:2px;color:#a1a1aa;text-transform:uppercase;padding-bottom:12px}
 
-    /* ─── SETTINGS ─── */
     .scard{background:white;border-radius:18px;padding:16px;margin:8px 16px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
     .scard h3{font-size:13px;font-weight:800;color:#7c3aed;margin-bottom:12px;letter-spacing:.3px}
     .sinput{width:100%;border:2px solid #ede9fe;border-radius:12px;padding:12px 14px;font-size:14px;color:#6d28d9;background:#faf5ff;margin-top:6px;font-family:monospace;outline:none;transition:border-color .2s}
@@ -186,8 +173,8 @@
     .nrow:last-child{border-bottom:none}
 
     /* ─── NAV ─── */
-    .nav-shell{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:100;width:calc(100% - 48px);max-width:600px}
-    @media(max-width:640px){.nav-shell{width:calc(100% - 28px);max-width:402px}}
+    .nav-shell{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:100;width:calc(100% - 48px);max-width:680px}
+    @media(max-width:640px){.nav-shell{width:calc(100% - 28px);max-width:460px}}
     .bnav{background:rgba(15,0,32,.88);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.08);border-radius:50px;display:flex;padding:5px;gap:2px;box-shadow:0 8px 40px rgba(139,47,201,.4),0 2px 8px rgba(0,0,0,.3)}
     .nbtn{flex:1;display:flex;flex-direction:column;align-items:center;padding:9px 4px;font-size:9px;color:rgba(255,255,255,.3);cursor:pointer;border:none;background:none;gap:3px;font-family:inherit;border-radius:40px;transition:all .25s;white-space:nowrap;font-weight:600;letter-spacing:.5px}
     .nbtn.active{color:white;background:rgba(139,47,201,.5)}
@@ -195,22 +182,18 @@
     .nicon{font-size:19px;transition:transform .2s}
     .nbtn.active .nicon{transform:scale(1.1)}
 
-    /* ─── PAGES ─── */
     .page{display:none}
     .page.active{display:block;animation:pgIn .2s ease}
     @keyframes pgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-    /* ─── TOAST ─── */
     .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(15,0,32,.92);backdrop-filter:blur(16px);color:white;padding:11px 24px;border-radius:50px;font-size:13px;font-weight:700;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;z-index:999;box-shadow:0 4px 20px rgba(139,47,201,.4)}
     .toast.show{opacity:1}
 
-    /* ─── FX ─── */
     .particle{position:fixed;pointer-events:none;z-index:9999;animation:pfx .85s ease-out forwards}
     @keyframes pfx{0%{transform:translateY(0) scale(1) rotate(0deg);opacity:1}100%{transform:translateY(-80px) scale(.3) rotate(20deg);opacity:0}}
     .xpop{position:fixed;pointer-events:none;z-index:9999;font-size:14px;font-weight:800;color:#fbbf24;text-shadow:0 2px 6px rgba(0,0,0,.4);animation:xfx 1s ease-out forwards}
     @keyframes xfx{0%{transform:translateY(0);opacity:1}60%{transform:translateY(-45px) scale(1.15);opacity:1}100%{transform:translateY(-85px);opacity:0}}
 
-    /* ─── LEVEL UP ─── */
     .lu-bg{position:fixed;inset:0;background:rgba(10,0,25,.9);display:none;align-items:center;justify-content:center;z-index:9998;backdrop-filter:blur(12px)}
     .lu-bg.show{display:flex}
     .lu-box{background:white;border-radius:28px;padding:40px 36px;text-align:center;box-shadow:0 24px 80px rgba(139,47,201,.5);animation:lubop .5s cubic-bezier(.34,1.56,.64,1);max-width:300px;width:90%}
@@ -219,6 +202,101 @@
     .lu-sub{font-size:13px;color:#a1a1aa;margin:10px 0 4px;font-weight:600}
     .lu-name{font-size:26px;font-weight:800;background:linear-gradient(135deg,#8b2fc9,#f43f5e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:22px}
     .lu-btn{background:linear-gradient(135deg,#7c3aed,#c026d3);color:white;border:none;border-radius:50px;padding:14px 48px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(139,92,246,.4)}
+
+    /* ─── PET SYSTEM ─── */
+    @keyframes petFloat{
+      0%,100%{transform:translateY(0) rotate(-3deg);}
+      50%{transform:translateY(-12px) rotate(3deg);}
+    }
+    @keyframes petHappy{
+      0%{transform:scale(1);}
+      20%{transform:scale(1.4) rotate(-15deg);}
+      40%{transform:scale(1.4) rotate(15deg);}
+      60%{transform:scale(1.2) rotate(-8deg);}
+      80%{transform:scale(1.1) rotate(4deg);}
+      100%{transform:scale(1) rotate(0);}
+    }
+    @keyframes orbitSparkle{
+      0%{transform:rotate(0deg) translateX(50px) rotate(0deg);}
+      100%{transform:rotate(360deg) translateX(50px) rotate(-360deg);}
+    }
+    @keyframes legendGlow{
+      0%,100%{filter:drop-shadow(0 0 8px gold) drop-shadow(0 0 16px rgba(255,200,0,.6));}
+      50%{filter:drop-shadow(0 0 20px gold) drop-shadow(0 0 40px rgba(255,200,0,.8));}
+    }
+    @keyframes heartFloat{
+      0%{transform:translateY(0) scale(1);opacity:1;}
+      100%{transform:translateY(-60px) scale(0.5);opacity:0;}
+    }
+    @keyframes speechIn{
+      0%{transform:translateY(6px) scale(.9);opacity:0;}
+      100%{transform:translateY(0) scale(1);opacity:1;}
+    }
+    @keyframes orbitSparkle2{
+      0%{transform:rotate(120deg) translateX(50px) rotate(-120deg);}
+      100%{transform:rotate(480deg) translateX(50px) rotate(-480deg);}
+    }
+    @keyframes orbitSparkle3{
+      0%{transform:rotate(240deg) translateX(50px) rotate(-240deg);}
+      100%{transform:rotate(600deg) translateX(50px) rotate(-600deg);}
+    }
+
+    .pet-card{border-radius:24px;padding:20px 16px 16px;margin-bottom:6px;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.1)}
+    .pet-card-inner{display:flex;align-items:center;gap:16px;position:relative;z-index:1}
+    .pet-stage-wrap{position:relative;width:100px;height:100px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .pet-emoji{font-size:80px;line-height:1;display:block;animation:petFloat 3s ease-in-out infinite;cursor:pointer;user-select:none;position:relative;z-index:2}
+    .pet-emoji.pet-happy{animation:petHappy .6s ease-out forwards}
+    .pet-legend .pet-emoji{animation:petFloat 3s ease-in-out infinite,legendGlow 2s ease-in-out infinite}
+    .pet-orbit{position:absolute;width:100%;height:100%;top:0;left:0;pointer-events:none}
+    .orbit-dot{position:absolute;top:50%;left:50%;font-size:12px;margin-top:-6px;margin-left:-6px}
+    .orbit-dot:nth-child(1){animation:orbitSparkle 2.5s linear infinite}
+    .orbit-dot:nth-child(2){animation:orbitSparkle2 2.5s linear infinite}
+    .orbit-dot:nth-child(3){animation:orbitSparkle3 2.5s linear infinite}
+    .pet-info{flex:1;min-width:0}
+    .pet-name{font-size:17px;font-weight:800;letter-spacing:-.3px}
+    .pet-stage-title{font-size:11px;font-weight:700;opacity:.7;margin-top:2px;margin-bottom:10px}
+    .pet-xp-label{font-size:10px;font-weight:700;color:#a1a1aa;margin-bottom:4px}
+    .pet-xp-track{height:6px;background:rgba(0,0,0,.08);border-radius:10px;overflow:hidden;margin-bottom:6px}
+    .pet-xp-fill{height:100%;border-radius:10px;transition:width .8s cubic-bezier(.34,1.56,.64,1)}
+    .pet-xp-txt{font-size:10px;font-weight:600;opacity:.6}
+    .pet-affection{font-size:11px;font-weight:700;opacity:.7;margin-top:4px}
+    .pet-change-btn{display:block;width:100%;background:rgba(255,255,255,.35);border:1.5px solid rgba(255,255,255,.5);border-radius:50px;padding:8px;font-size:12px;font-weight:700;color:inherit;cursor:pointer;font-family:inherit;margin-top:10px;backdrop-filter:blur(4px);transition:background .15s}
+    .pet-change-btn:active{background:rgba(255,255,255,.5)}
+    .pet-speech{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:white;border-radius:16px;padding:10px 14px;font-size:13px;font-weight:600;color:#3f3f46;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:20;animation:speechIn .25s ease-out;pointer-events:none;max-width:200px;white-space:normal;text-align:center}
+    .pet-speech::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:white}
+    .pet-heart{position:fixed;pointer-events:none;z-index:9999;font-size:20px;animation:heartFloat .8s ease-out forwards}
+
+    /* ─── PET SELECTOR MODAL ─── */
+    .pet-modal-bg{position:fixed;inset:0;background:rgba(10,0,25,.7);z-index:9990;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(8px)}
+    .pet-modal-bg.show{display:flex}
+    .pet-modal{background:white;border-radius:28px 28px 0 0;padding:20px 16px 40px;width:100%;max-width:600px;animation:modalUp .3s cubic-bezier(.34,1.56,.64,1)}
+    @keyframes modalUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+    .pet-modal-title{font-size:16px;font-weight:800;color:#18181b;text-align:center;margin-bottom:16px}
+    .pet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .pet-opt{border-radius:18px;padding:14px 8px;text-align:center;cursor:pointer;border:2.5px solid transparent;transition:all .2s;background:#f8f5ff}
+    .pet-opt.selected{border-color:#8b2fc9;background:linear-gradient(135deg,#fdf4ff,#ede9fe);box-shadow:0 4px 16px rgba(139,47,201,.2)}
+    .pet-opt:active{transform:scale(.96)}
+    .pet-opt-em{font-size:40px;display:block;margin-bottom:5px}
+    .pet-opt-name{font-size:12px;font-weight:800;color:#3f3f46}
+    .pet-opt-stage{font-size:10px;color:#a1a1aa;margin-top:2px}
+
+    /* ─── PET PAGE ─── */
+    .pet-page-hero{padding:56px 20px 28px;text-align:center;color:white;position:relative;overflow:hidden}
+    .pet-big-wrap{position:relative;width:160px;height:160px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center}
+    .pet-big-emoji{font-size:110px;line-height:1;display:block;animation:petFloat 3s ease-in-out infinite;cursor:pointer;position:relative;z-index:2}
+    .pet-big-emoji.pet-happy{animation:petHappy .6s ease-out forwards}
+    .pet-legend .pet-big-emoji{animation:petFloat 3s ease-in-out infinite,legendGlow 2s ease-in-out infinite}
+    .pet-stage-timeline{padding:0 16px;margin-bottom:8px}
+    .pet-stage-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f4f4f5}
+    .pet-stage-item:last-child{border-bottom:none}
+    .pet-stage-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+    .pet-stage-dot.unlocked{background:linear-gradient(135deg,#8b5cf6,#ec4899);box-shadow:0 4px 12px rgba(139,92,246,.3)}
+    .pet-stage-dot.locked{background:#f4f4f5;font-size:13px}
+    .pet-stage-info{flex:1}
+    .pet-stage-name{font-size:13px;font-weight:700;color:#18181b}
+    .pet-stage-name.locked{color:#a1a1aa}
+    .pet-stage-desc{font-size:11px;color:#a1a1aa;margin-top:2px}
+    .pet-stage-xp{font-size:10px;font-weight:700;color:#8b5cf6;background:#f3f0ff;padding:2px 8px;border-radius:20px;flex-shrink:0}
   </style>
 </head>
 <body>
@@ -229,6 +307,14 @@
     <div class="lu-sub">恭喜你升级啦！</div>
     <div class="lu-name" id="lu-nm">养生达人</div>
     <button class="lu-btn" onclick="closeLU()">继续加油 ✨</button>
+  </div>
+</div>
+
+<!-- Pet selector modal -->
+<div class="pet-modal-bg" id="pet-modal-bg" onclick="closePetModal()">
+  <div class="pet-modal" onclick="event.stopPropagation()">
+    <div class="pet-modal-title">选择你的宠物 🌟</div>
+    <div class="pet-grid" id="pet-grid"></div>
   </div>
 </div>
 
@@ -273,6 +359,8 @@
   </div>
 
   <div class="wrap">
+    <div class="sec-lbl">我的宠物</div>
+    <div id="today-pet-card"></div>
     <div class="sec-lbl">今日推荐</div>
     <div id="daily-rec"></div>
     <div id="task-list"></div>
@@ -375,11 +463,17 @@
   </div>
 </div>
 
+<!-- ═══ PET PAGE ═══ -->
+<div id="page-pet" class="page">
+  <div id="pet-page-content"></div>
+</div>
+
 <div class="nav-shell">
   <div class="bnav">
     <button class="nbtn active" id="nav-today" onclick="showPage('today')"><span class="nicon">📋</span>今日</button>
     <button class="nbtn" id="nav-meal" onclick="showPage('meal')"><span class="nicon">🥗</span>饮食</button>
     <button class="nbtn" id="nav-stats" onclick="showPage('stats')"><span class="nicon">🏆</span>成就</button>
+    <button class="nbtn" id="nav-pet" onclick="showPage('pet')"><span class="nicon">🐾</span>宠物</button>
     <button class="nbtn" id="nav-settings" onclick="showPage('settings')"><span class="nicon">⚙️</span>设置</button>
   </div>
 </div>
@@ -468,6 +562,297 @@ const BADGES=[
 ];
 const XPT=10,XPB=50;
 
+// ─── PET DATA ───
+const PETS = {
+  luna: {
+    id: 'luna',
+    name: '月兔 Luna',
+    shortName: '月兔',
+    theme: {bg:'linear-gradient(135deg,#f3e8ff,#e9d5ff)', accent:'#9333ea', glow:'#c084fc', text:'#5b21b6'},
+    stages: [
+      {minXP:0,    emoji:'🥚', title:'月光蛋',  desc:'一颗散发着紫色光芒的神秘蛋...'},
+      {minXP:150,  emoji:'🐰', title:'月兔宝宝', desc:'刚出生的小兔子，耳朵软软的'},
+      {minXP:400,  emoji:'🐰', title:'月光少女', desc:'月色映在毛发上，闪着银光'},
+      {minXP:900,  emoji:'🌙', title:'月华使者', desc:'能借月光治愈人心的神奇兔'},
+      {minXP:2000, emoji:'✨', title:'传说月兔', desc:'广寒宫的守护者，永恒的月之使者'},
+    ],
+    taps: ['月亮等我回去呢~','今天喝水了吗？','月光能量充电中...','最爱你了啦！','嗷呜！好开心~']
+  },
+  hana: {
+    id: 'hana',
+    name: '花猫 Hana',
+    shortName: '花猫',
+    theme: {bg:'linear-gradient(135deg,#fce7f3,#fbcfe8)', accent:'#ec4899', glow:'#f472b6', text:'#9d174d'},
+    stages: [
+      {minXP:0,    emoji:'🌸', title:'花瓣种子', desc:'一粒藏着粉色梦想的种子'},
+      {minXP:150,  emoji:'🐱', title:'花猫咪咪', desc:'爱撒娇的粉色小猫'},
+      {minXP:400,  emoji:'🐱', title:'樱花少女', desc:'毛上沾着樱花瓣，香香的'},
+      {minXP:900,  emoji:'🌺', title:'花精灵猫', desc:'能听懂花语的神秘猫咪'},
+      {minXP:2000, emoji:'💮', title:'万花之主', desc:'每走一步都有花朵盛开的传说猫'},
+    ],
+    taps: ['喵～今天也要加油哦！','给你捎来春天的味道~','护肤了吗？','花花很喜欢你！','揉揉我嘛~']
+  },
+  nova: {
+    id: 'nova',
+    name: '星狐 Nova',
+    shortName: '星狐',
+    theme: {bg:'linear-gradient(135deg,#fef9c3,#fde68a)', accent:'#d97706', glow:'#fbbf24', text:'#92400e'},
+    stages: [
+      {minXP:0,    emoji:'⭐', title:'星尘碎片', desc:'从流星雨中落下的金色碎片'},
+      {minXP:150,  emoji:'🦊', title:'星光狐狸', desc:'尾巴发光的调皮小狐'},
+      {minXP:400,  emoji:'🦊', title:'星河少女', desc:'能预见星象的聪慧狐'},
+      {minXP:900,  emoji:'🌟', title:'金星守护', desc:'守护愿望的星之使者'},
+      {minXP:2000, emoji:'💫', title:'传说星狐', desc:'能点亮黑夜中所有星星的至高狐'},
+    ],
+    taps: ['星光祝福送给你！','今天也要闪闪发光哦~','哼，才不是喜欢你呢...','记得早睡！','嘿嘿，摸我头！']
+  },
+  mochi: {
+    id: 'mochi',
+    name: '熊仔 Mochi',
+    shortName: '熊仔',
+    theme: {bg:'linear-gradient(135deg,#dcfce7,#bbf7d0)', accent:'#16a34a', glow:'#4ade80', text:'#14532d'},
+    stages: [
+      {minXP:0,    emoji:'🌿', title:'绿叶宝宝', desc:'一片充满生机的嫩绿叶子'},
+      {minXP:150,  emoji:'🐼', title:'竹林宝宝', desc:'圆滚滚爱吃竹子的熊仔'},
+      {minXP:400,  emoji:'🐼', title:'森林小熊', desc:'跑起来像大球一样可爱'},
+      {minXP:900,  emoji:'🎋', title:'竹林守护', desc:'守护整片竹林的胖胖将军'},
+      {minXP:2000, emoji:'🌲', title:'传说大熊', desc:'能与自然沟通的传说神兽'},
+    ],
+    taps: ['哈啾～(竹子香)','多吃蔬菜哦！','滚来滚去好开心~','抱抱！','你今天运动了吗？']
+  },
+  dra: {
+    id: 'dra',
+    name: '小龙 Dra',
+    shortName: '小龙',
+    theme: {bg:'linear-gradient(135deg,#dbeafe,#bfdbfe)', accent:'#2563eb', glow:'#60a5fa', text:'#1e3a8a'},
+    stages: [
+      {minXP:0,    emoji:'🥚', title:'龙晶蛋',   desc:'蕴含着神秘龙力的闪亮蛋'},
+      {minXP:150,  emoji:'🐉', title:'龙宝宝',   desc:'刚孵化的小龙，翅膀还软'},
+      {minXP:400,  emoji:'🐉', title:'云海少龙', desc:'能在云层间滑翔的小龙'},
+      {minXP:900,  emoji:'💧', title:'碧海龙君', desc:'掌管雨水和泉源的水龙'},
+      {minXP:2000, emoji:'🌊', title:'传说神龙', desc:'能引动天下风云的至上神龙'},
+    ],
+    taps: ['嗷！喷水！','今天喝水了吗～','飞龙在天！','跟我飞吗？','噗！不小心喷你了...']
+  },
+  fae: {
+    id: 'fae',
+    name: '精灵 Fae',
+    shortName: '精灵',
+    theme: {bg:'linear-gradient(135deg,#ccfbf1,#99f6e4)', accent:'#0d9488', glow:'#2dd4bf', text:'#134e4a'},
+    stages: [
+      {minXP:0,    emoji:'🔮', title:'魔法水晶', desc:'沉睡在水晶中的精灵之力'},
+      {minXP:150,  emoji:'🧚', title:'小精灵',   desc:'刚觉醒的翠绿色小精灵'},
+      {minXP:400,  emoji:'🧚', title:'森林使者', desc:'传递自然祝福的精灵少女'},
+      {minXP:900,  emoji:'🌿', title:'精灵祭司', desc:'能与万物生灵交流的神圣精灵'},
+      {minXP:2000, emoji:'🌈', title:'传说精灵', desc:'只在传说中出现的彩虹精灵'},
+    ],
+    taps: ['森林的祝福给你~','今天要好好休息哦！','精灵魔法！','飞啊飞～','我一直在陪你呢']
+  }
+};
+
+function getPetStageIndex(xp) {
+  const stages = [{minXP:0},{minXP:150},{minXP:400},{minXP:900},{minXP:2000}];
+  let si = 0;
+  for (let i = stages.length-1; i >= 0; i--) {
+    if (xp >= stages[i].minXP) { si = i; break; }
+  }
+  return si;
+}
+
+function getSelectedPetId() {
+  return localStorage.getItem('selected_pet') || 'luna';
+}
+function getPetAffection() {
+  return parseInt(localStorage.getItem('pet_affection') || '0');
+}
+function setPetAffection(n) {
+  localStorage.setItem('pet_affection', String(n));
+}
+
+function getPetCurrentStage(petId) {
+  const st = calcStats();
+  const pet = PETS[petId];
+  const si = getPetStageIndex(st.tx);
+  return {pet, stage: pet.stages[si], si, xp: st.tx};
+}
+
+function renderTodayPetCard() {
+  const petId = getSelectedPetId();
+  const {pet, stage, si, xp} = getPetCurrentStage(petId);
+  const aff = getPetAffection();
+  const nextStage = pet.stages[si+1];
+  const prevXP = pet.stages[si].minXP;
+  const nextXP = nextStage ? nextStage.minXP : xp;
+  const pct = nextStage ? Math.min(100, Math.round((xp - prevXP) / (nextXP - prevXP) * 100)) : 100;
+  const isLegend = si >= 4;
+  const showOrbit = si >= 2;
+
+  let orbitHtml = '';
+  if (showOrbit) {
+    orbitHtml = '<div class="pet-orbit"><span class="orbit-dot">✨</span><span class="orbit-dot">⭐</span><span class="orbit-dot">💫</span></div>';
+  }
+
+  const card = document.getElementById('today-pet-card');
+  if (!card) return;
+  card.innerHTML = `
+    <div class="pet-card" style="background:${pet.theme.bg}">
+      <div class="pet-card-inner">
+        <div class="pet-stage-wrap ${isLegend ? 'pet-legend' : ''}">
+          ${orbitHtml}
+          <span class="pet-emoji" id="pet-emoji-today" onclick="tapPet(event,'today')" style="color:${pet.theme.text}">${stage.emoji}</span>
+          <div id="pet-speech-today" style="display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:white;border-radius:16px;padding:10px 14px;font-size:12px;font-weight:600;color:#3f3f46;white-space:normal;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:20;animation:speechIn .25s ease-out;pointer-events:none;max-width:160px;text-align:center;min-width:100px"></div>
+        </div>
+        <div class="pet-info">
+          <div class="pet-name" style="color:${pet.theme.text}">${pet.name}</div>
+          <div class="pet-stage-title" style="color:${pet.theme.accent}">${stage.title} · 阶段${si+1}</div>
+          <div class="pet-xp-label">成长进度</div>
+          <div class="pet-xp-track"><div class="pet-xp-fill" style="width:${pct}%;background:linear-gradient(90deg,${pet.theme.accent},${pet.theme.glow})"></div></div>
+          <div class="pet-xp-txt" style="color:${pet.theme.accent}">${nextStage ? xp-prevXP+'/'+(nextXP-prevXP)+' XP' : '已满级！'}</div>
+          <div class="pet-affection" style="color:${pet.theme.accent}">💕 互动 ${aff} 次</div>
+          <button class="pet-change-btn" style="color:${pet.theme.text}" onclick="openPetModal()">换宠物 ✦</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+let petSpeechTimer = null;
+function tapPet(e, location) {
+  const petId = getSelectedPetId();
+  const pet = PETS[petId];
+  const aff = getPetAffection() + 1;
+  setPetAffection(aff);
+
+  // heart particles
+  const x = e ? e.clientX : window.innerWidth/2;
+  const y = e ? e.clientY : window.innerHeight/2;
+  for (let i = 0; i < 4; i++) {
+    setTimeout(() => {
+      const h = document.createElement('div');
+      h.className = 'pet-heart';
+      h.textContent = '💕';
+      h.style.cssText = 'left:' + (x + (Math.random()-0.5)*50) + 'px;top:' + (y-20) + 'px';
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 900);
+    }, i * 80);
+  }
+
+  // happy animation
+  const emojiEl = document.getElementById('pet-emoji-' + location);
+  if (emojiEl) {
+    emojiEl.classList.remove('pet-happy');
+    void emojiEl.offsetWidth;
+    emojiEl.classList.add('pet-happy');
+    setTimeout(() => emojiEl.classList.remove('pet-happy'), 700);
+  }
+
+  // speech bubble
+  const msg = pet.taps[Math.floor(Math.random() * pet.taps.length)];
+  const bubbleId = 'pet-speech-' + location;
+  const bubble = document.getElementById(bubbleId);
+  if (bubble) {
+    bubble.textContent = msg;
+    bubble.style.display = 'block';
+    if (petSpeechTimer) clearTimeout(petSpeechTimer);
+    petSpeechTimer = setTimeout(() => {
+      if (bubble) bubble.style.display = 'none';
+    }, 2500);
+  }
+
+  // update affection display
+  renderTodayPetCard();
+}
+
+function openPetModal() {
+  const st = calcStats();
+  const selectedId = getSelectedPetId();
+  const grid = document.getElementById('pet-grid');
+  if (!grid) return;
+  grid.innerHTML = Object.values(PETS).map(pet => {
+    const si = getPetStageIndex(st.tx);
+    const stage = pet.stages[si];
+    const isSel = pet.id === selectedId;
+    return `<div class="pet-opt ${isSel ? 'selected' : ''}" onclick="selectPet('${pet.id}')">
+      <span class="pet-opt-em">${stage.emoji}</span>
+      <div class="pet-opt-name">${pet.shortName}</div>
+      <div class="pet-opt-stage">${stage.title}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('pet-modal-bg').classList.add('show');
+}
+
+function closePetModal() {
+  document.getElementById('pet-modal-bg').classList.remove('show');
+}
+
+function selectPet(petId) {
+  localStorage.setItem('selected_pet', petId);
+  closePetModal();
+  renderTodayPetCard();
+  renderPetPage();
+  toast('已选择 ' + PETS[petId].name + ' ✨');
+}
+
+function renderPetPage() {
+  const petId = getSelectedPetId();
+  const {pet, stage, si, xp} = getPetCurrentStage(petId);
+  const aff = getPetAffection();
+  const isLegend = si >= 4;
+  const showOrbit = si >= 2;
+
+  let orbitHtml = '';
+  if (showOrbit) {
+    orbitHtml = '<div class="pet-orbit" style="width:160px;height:160px;position:absolute;top:0;left:0"><span class="orbit-dot" style="font-size:16px">✨</span><span class="orbit-dot" style="font-size:16px">⭐</span><span class="orbit-dot" style="font-size:16px">💫</span></div>';
+  }
+
+  const stagesHtml = pet.stages.map((s, i) => {
+    const unlocked = xp >= s.minXP;
+    const isCurrent = i === si;
+    return `<div class="pet-stage-item">
+      <div class="pet-stage-dot ${unlocked ? 'unlocked' : 'locked'}">${unlocked ? s.emoji : '🔒'}</div>
+      <div class="pet-stage-info">
+        <div class="pet-stage-name ${unlocked ? '' : 'locked'}">${s.title}${isCurrent ? ' ← 当前' : ''}</div>
+        <div class="pet-stage-desc">${s.desc}</div>
+      </div>
+      <span class="pet-stage-xp">${s.minXP} XP</span>
+    </div>`;
+  }).join('');
+
+  const nextStage = pet.stages[si+1];
+  const prevXP = pet.stages[si].minXP;
+  const nextXP = nextStage ? nextStage.minXP : xp;
+  const pct = nextStage ? Math.min(100, Math.round((xp - prevXP) / (nextXP - prevXP) * 100)) : 100;
+
+  const container = document.getElementById('pet-page-content');
+  if (!container) return;
+  container.innerHTML = `
+    <div class="pet-page-hero" style="background:${pet.theme.bg}">
+      <div class="pet-big-wrap ${isLegend ? 'pet-legend' : ''}">
+        ${orbitHtml}
+        <span class="pet-big-emoji" id="pet-emoji-pet" onclick="tapPet(event,'pet')" style="color:${pet.theme.text}">${stage.emoji}</span>
+        <div id="pet-speech-pet" style="display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:white;border-radius:16px;padding:10px 14px;font-size:12px;font-weight:600;color:#3f3f46;white-space:normal;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:20;pointer-events:none;max-width:160px;text-align:center;min-width:100px"></div>
+      </div>
+      <div style="color:${pet.theme.text};font-size:22px;font-weight:800;margin-bottom:4px">${pet.name}</div>
+      <div style="color:${pet.theme.accent};font-size:13px;font-weight:700;margin-bottom:4px">${stage.title} · 阶段${si+1}/5</div>
+      <div style="color:${pet.theme.text};font-size:12px;opacity:.7;margin-bottom:16px">${stage.desc}</div>
+      <div style="background:rgba(255,255,255,.4);border-radius:10px;height:8px;margin:0 20px;overflow:hidden;margin-bottom:6px">
+        <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,${pet.theme.accent},${pet.theme.glow});border-radius:10px;transition:width .8s"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:${pet.theme.accent};margin:0 20px 12px">
+        <span>${nextStage ? (xp-prevXP)+'/'+(nextXP-prevXP)+' XP' : '已达最高阶段'}</span>
+        <span>💕 已互动${aff}次</span>
+      </div>
+      <button class="pet-change-btn" style="max-width:200px;margin:0 auto;color:${pet.theme.text}" onclick="openPetModal()">换宠物 ✦</button>
+    </div>
+    <div class="wrap" style="padding-top:14px">
+      <div class="sec-lbl">成长阶段</div>
+      <div class="icard" style="padding:0 16px">
+        <div class="pet-stage-timeline">${stagesHtml}</div>
+      </div>
+      <div style="height:10px"></div>
+    </div>`;
+}
+
+// ─── CORE FUNCTIONS ───
 function calcStats(){
   const h=JSON.parse(localStorage.getItem('history')||'{}'),ks=Object.keys(h).sort();
   const tt=ks.reduce((s,k)=>s+(h[k].done||0),0);
@@ -504,7 +889,7 @@ function toggleTask(id,e){
     else toast('✅ +'+XPT+' XP');
   }
   pxp=st.tx;
-  renderTasks();updateRing();updateXPBar();
+  renderTasks();updateRing();updateXPBar();renderTodayPetCard();
 }
 function toggleOpen(id){
   const el=document.getElementById('tr-'+id);
@@ -515,21 +900,21 @@ function spawnP(e){
   const x=e?e.clientX:innerWidth/2,y=e?e.clientY:innerHeight/2;
   ['⭐','✨','💫','🌟','💥'].forEach((em,i)=>{
     const p=document.createElement('div');p.className='particle';p.textContent=em;
-    p.style.cssText=`left:${x+(Math.random()-.5)*70}px;top:${y-10}px;font-size:${14+~~(Math.random()*10)}px;animation-delay:${i*.06}s`;
+    p.style.cssText='left:'+(x+(Math.random()-.5)*70)+'px;top:'+(y-10)+'px;font-size:'+(14+~~(Math.random()*10))+'px;animation-delay:'+(i*.06)+'s';
     document.body.appendChild(p);setTimeout(()=>p.remove(),1000);
   });
 }
 function spawnXP(e,t){
   const x=e?e.clientX:innerWidth/2,y=e?e.clientY:innerHeight/2;
   const el=document.createElement('div');el.className='xpop';el.textContent=t+' XP';
-  el.style.cssText=`left:${x-20}px;top:${y-30}px`;
+  el.style.cssText='left:'+(x-20)+'px;top:'+(y-30)+'px';
   document.body.appendChild(el);setTimeout(()=>el.remove(),1100);
 }
 function confetti(){
   const em=['🎉','🎊','⭐','🌟','💫','✨','🎈','💎','👑'];
   for(let i=0;i<20;i++)setTimeout(()=>{
     const p=document.createElement('div');p.className='particle';p.textContent=em[~~(Math.random()*em.length)];
-    p.style.cssText=`left:${Math.random()*innerWidth}px;top:${Math.random()*innerHeight*.7}px;font-size:${14+~~(Math.random()*14)}px`;
+    p.style.cssText='left:'+Math.random()*innerWidth+'px;top:'+Math.random()*innerHeight*.7+'px;font-size:'+(14+~~(Math.random()*14))+'px';
     document.body.appendChild(p);setTimeout(()=>p.remove(),1000);
   },i*55);
 }
@@ -547,25 +932,17 @@ function updateRing(){
 }
 function updateXPBar(){
   const st=calcStats(),{li,lv,nx,inL,need,pct}=lvOf(st.tx);
-  document.getElementById('h-lv').textContent=`Lv.${li+1} ${lv.name} ${lv.icon}`;
-  document.getElementById('h-st').textContent=`🔥 ${st.streak}天`;
+  document.getElementById('h-lv').textContent='Lv.'+(li+1)+' '+lv.name+' '+lv.icon;
+  document.getElementById('h-st').textContent='🔥 '+st.streak+'天';
   document.getElementById('xpprog').style.width=pct+'%';
-  document.getElementById('xptxt').textContent=nx?`${inL}/${need} XP`:`${st.tx} XP`;
+  document.getElementById('xptxt').textContent=nx?inL+'/'+need+' XP':st.tx+' XP';
   pxp=st.tx;
 }
 
 function renderDailyRec(){
   const dy=~~((Date.now()-new Date(new Date().getFullYear(),0,0))/86400000);
   const idx=(dy-1+30)%30,r=DAILY_REC[idx];
-  document.getElementById('daily-rec').innerHTML=`<div class="rec-card">
-    <div class="rec-top"><span class="rec-title">🌟 今日推荐</span><span class="rec-badge">第${idx+1}/30天</span></div>
-    <div class="rec-list">
-      <div class="rec-item"><span class="rec-icon">🥐</span><span class="rec-tag">早餐</span><span class="rec-content">${r.breakfast}</span></div>
-      <div class="rec-item"><span class="rec-icon">🥗</span><span class="rec-tag">午餐</span><span class="rec-content">${r.lunch}</span></div>
-      <div class="rec-item"><span class="rec-icon">🍜</span><span class="rec-tag">晚餐</span><span class="rec-content">${r.dinner}</span></div>
-      <div class="rec-item"><span class="rec-icon">🌿</span><span class="rec-tag">养生</span><span class="rec-content">${r.tip}</span></div>
-      <div class="rec-item"><span class="rec-icon">💪</span><span class="rec-tag">运动</span><span class="rec-content">${r.exercise}</span></div>
-    </div></div>`;
+  document.getElementById('daily-rec').innerHTML='<div class="rec-card"><div class="rec-top"><span class="rec-title">🌟 今日推荐</span><span class="rec-badge">第'+(idx+1)+'/30天</span></div><div class="rec-list"><div class="rec-item"><span class="rec-icon">🥐</span><span class="rec-tag">早餐</span><span class="rec-content">'+r.breakfast+'</span></div><div class="rec-item"><span class="rec-icon">🥗</span><span class="rec-tag">午餐</span><span class="rec-content">'+r.lunch+'</span></div><div class="rec-item"><span class="rec-icon">🍜</span><span class="rec-tag">晚餐</span><span class="rec-content">'+r.dinner+'</span></div><div class="rec-item"><span class="rec-icon">🌿</span><span class="rec-tag">养生</span><span class="rec-content">'+r.tip+'</span></div><div class="rec-item"><span class="rec-icon">💪</span><span class="rec-tag">运动</span><span class="rec-content">'+r.exercise+'</span></div></div></div>';
 }
 
 function renderTasks(){
@@ -574,35 +951,29 @@ function renderTasks(){
   TASKS.forEach(t=>{if(!groups[t.sec])groups[t.sec]=[];groups[t.sec].push(t);});
   let html='';
   Object.entries(groups).forEach(([sec,tasks])=>{
-    html+=`<div class="task-group"><div class="group-header"><span class="group-name">${sec}</span></div>`;
+    html+='<div class="task-group"><div class="group-header"><span class="group-name">'+sec+'</span></div>';
     tasks.forEach(t=>{
-      const done=!!s[t.id],openCls=document.getElementById('tr-'+t.id)?.classList.contains('open')?'open':'';
-      html+=`<div class="task-row ${done?'done':''} ${openCls}" id="tr-${t.id}" onclick="toggleOpen('${t.id}')">
-        <div class="t-ico-wrap ${t.icoBg}">${t.icon}</div>
-        <div class="t-info">
-          <div class="t-name">${t.title}</div>
-          <div class="t-meta">
-            <span class="t-time">${t.time}</span>
-            <span class="t-xp">${done?'✅':''} +10 XP</span>
-          </div>
-        </div>
-        <span class="t-expand">▼</span>
-        <div class="t-check" onclick="event.stopPropagation();toggleTask('${t.id}',event)">${done?'✓':''}</div>
-      </div>
-      <div class="t-body"><div class="t-body-inner">${t.desc}</div></div>`;
+      const done=!!s[t.id],openCls=document.getElementById('tr-'+t.id)&&document.getElementById('tr-'+t.id).classList.contains('open')?'open':'';
+      html+='<div class="task-row '+(done?'done':'')+' '+openCls+'" id="tr-'+t.id+'" onclick="toggleOpen(\''+t.id+'\')">'
+        +'<div class="t-ico-wrap '+t.icoBg+'">'+t.icon+'</div>'
+        +'<div class="t-info"><div class="t-name">'+t.title+'</div>'
+        +'<div class="t-meta"><span class="t-time">'+t.time+'</span><span class="t-xp">'+(done?'✅':'')+' +10 XP</span></div></div>'
+        +'<span class="t-expand">▼</span>'
+        +'<div class="t-check" onclick="event.stopPropagation();toggleTask(\''+t.id+'\',event)">'+(done?'✓':'')+'</div>'
+        +'</div><div class="t-body"><div class="t-body-inner">'+t.desc+'</div></div>';
     });
-    html+=`</div>`;
+    html+='</div>';
   });
   c.innerHTML=html;
 }
 
 function renderTip(){
   const dy=~~((Date.now()-new Date(new Date().getFullYear(),0,0))/86400000),tip=TIPS[dy%TIPS.length];
-  document.getElementById('daily-tip').innerHTML=`<div class="tip-head">${tip.title}</div><div class="tip-body">${tip.content}</div>`;
+  document.getElementById('daily-tip').innerHTML='<div class="tip-head">'+tip.title+'</div><div class="tip-body">'+tip.content+'</div>';
 }
 function renderHeader(){
   const n=new Date(),days=['日','一','二','三','四','五','六'];
-  document.getElementById('h-date').textContent=`${n.getFullYear()}年${n.getMonth()+1}月${n.getDate()}日 · 周${days[n.getDay()]}`.toUpperCase();
+  document.getElementById('h-date').textContent=(n.getFullYear()+'年'+(n.getMonth()+1)+'月'+n.getDate()+'日 · 周'+days[n.getDay()]).toUpperCase();
   const h=n.getHours();
   const g={early:'还没睡？记得早点休息 🌙',morning:'早安！今天也是变美的一天 ☀️',lunch:'上午好！午饭记得多夹蔬菜 🥗',afternoon:'下午好！记得多喝水 💧',evening:'下班了！护肤运动别忘 🏃',night:'晚上好！记得23点前睡觉 🌙'};
   const k=h<6?'early':h<10?'morning':h<14?'lunch':h<18?'afternoon':h<21?'evening':'night';
@@ -614,7 +985,7 @@ function renderStats(){
   document.getElementById('s-ico').textContent=lv.icon;
   document.getElementById('s-nm').textContent=lv.name;
   document.getElementById('s-num').textContent='Lv.'+(li+1);
-  document.getElementById('s-next').textContent=nx?`距「${nx.name}」还需 ${need-inL} XP`:'已达最高等级 🏆';
+  document.getElementById('s-next').textContent=nx?'距「'+nx.name+'」还需 '+(need-inL)+' XP':'已达最高等级 🏆';
   document.getElementById('s-fill').style.width=pct+'%';
   document.getElementById('s-xlbl').textContent=inL+' XP';
   document.getElementById('s-xmax').textContent='/ '+(nx?need:st.tx)+' XP';
@@ -624,29 +995,23 @@ function renderStats(){
   document.getElementById('s-perf').textContent=st.pd;
   document.getElementById('bg-grid').innerHTML=BADGES.map(b=>{
     const u=b.c(st);
-    return`<div class="bg-item ${u?'unlocked':'locked'}"><div class="bg-em">${u?b.icon:'🔒'}</div><div class="bg-name">${b.name}</div><div class="bg-desc">${b.desc}</div></div>`;
+    return '<div class="bg-item '+(u?'unlocked':'locked')+'"><div class="bg-em">'+(u?b.icon:'🔒')+'</div><div class="bg-name">'+b.name+'</div><div class="bg-desc">'+b.desc+'</div></div>';
   }).join('');
   const h=JSON.parse(localStorage.getItem('history')||'{}'),td=dk(),dn=['日','一','二','三','四','五','六'];
   let wh='';
   for(let i=6;i>=0;i--){
     const d=new Date();d.setDate(d.getDate()-i);const k=d.toISOString().split('T')[0],data=h[k],p2=data?~~(data.done/data.total*100):0,it=k===td;
-    wh+=`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px">
-      <div style="font-size:10px;color:${p2>0?'#8b2fc9':'#d4d4d8'};font-weight:700">${p2>0?p2+'%':'—'}</div>
-      <div style="width:100%;height:54px;background:#f4f0ff;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end">
-        <div style="height:${p2}%;background:linear-gradient(0deg,#8b2fc9,#c026d3);transition:height .6s;border-radius:8px"></div>
-      </div>
-      <div style="font-size:11px;color:${it?'#8b2fc9':'#a1a1aa'};font-weight:${it?800:500}">周${dn[d.getDay()]}</div>
-    </div>`;
+    wh+='<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px">'
+      +'<div style="font-size:10px;color:'+(p2>0?'#8b2fc9':'#d4d4d8')+';font-weight:700">'+(p2>0?p2+'%':'—')+'</div>'
+      +'<div style="width:100%;height:54px;background:#f4f0ff;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end">'
+      +'<div style="height:'+p2+'%;background:linear-gradient(0deg,#8b2fc9,#c026d3);transition:height .6s;border-radius:8px"></div></div>'
+      +'<div style="font-size:11px;color:'+(it?'#8b2fc9':'#a1a1aa')+';font-weight:'+(it?800:500)+'">周'+dn[d.getDay()]+'</div></div>';
   }
   document.getElementById('week-bars').innerHTML=wh;
 }
 function renderNotifSch(){
   document.getElementById('topic-input').value=localStorage.getItem('bark_key')||'';
-  document.getElementById('notif-sch').innerHTML=NOTIFS.map(n=>`
-    <div class="nrow">
-      <span style="font-size:10px;font-weight:800;color:#8b2fc9;background:#f3f0ff;padding:2px 8px;border-radius:20px;white-space:nowrap;margin-top:2px">${n.time}</span>
-      <div><div style="font-size:13px;font-weight:700;color:#18181b">${n.title}</div><div style="font-size:12px;color:#a1a1aa;margin-top:1px">${n.msg}</div></div>
-    </div>`).join('');
+  document.getElementById('notif-sch').innerHTML=NOTIFS.map(n=>'<div class="nrow"><span style="font-size:10px;font-weight:800;color:#8b2fc9;background:#f3f0ff;padding:2px 8px;border-radius:20px;white-space:nowrap;margin-top:2px">'+n.time+'</span><div><div style="font-size:13px;font-weight:700;color:#18181b">'+n.title+'</div><div style="font-size:12px;color:#a1a1aa;margin-top:1px">'+n.msg+'</div></div></div>').join('');
 }
 function showPage(n){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -655,13 +1020,14 @@ function showPage(n){
   document.getElementById('nav-'+n).classList.add('active');
   if(n==='stats')renderStats();
   if(n==='settings')renderNotifSch();
+  if(n==='pet')renderPetPage();
 }
 function saveTopic(){const v=document.getElementById('topic-input').value.trim();if(v){localStorage.setItem('bark_key',v);toast('✅ Bark Key 已保存');}}
 function resetToday(){if(confirm('重置今日打卡记录？')){localStorage.removeItem('day_'+dk());renderTasks();updateRing();toast('已重置');}}
 function clearAll(){if(confirm('清除所有历史数据？此操作无法撤销。')){Object.keys(localStorage).forEach(k=>{if(k.startsWith('day_')||k==='history')localStorage.removeItem(k);});renderTasks();updateRing();updateXPBar();toast('已清除所有数据');}}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 
-renderHeader();renderDailyRec();renderTasks();updateRing();updateXPBar();renderTip();
+renderHeader();renderDailyRec();renderTasks();updateRing();updateXPBar();renderTip();renderTodayPetCard();
 setInterval(renderHeader,60000);
 </script>
 </body>
