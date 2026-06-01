@@ -6,352 +6,339 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="养生计划">
-  <meta name="theme-color" content="#7c3aed">
+  <meta name="theme-color" content="#f9a8d4">
   <title>我的养生计划</title>
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-    :root {
-      --purple:#7c3aed; --purple2:#a855f7; --purple-light:#f3f0ff;
-      --pink:#ec4899; --green:#10b981; --orange:#f59e0b;
-      --text:#1f2937; --text-light:#6b7280; --bg:#f8f5ff;
-    }
-    body { font-family:-apple-system,'PingFang SC','Hiragino Sans GB',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; padding-bottom:80px; }
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    :root{--pu:#8b5cf6;--pk:#ec4899;--go:#f59e0b;--gr:#22c55e;--text:#1e1b4b;--text2:#6b7280;--bg:#faf5ff}
+    body{font-family:-apple-system,'PingFang SC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:96px}
 
-    /* HEADER */
-    .header { background:linear-gradient(135deg,#4c1d95,#7c3aed,#a855f7); color:white; padding:44px 20px 54px; position:relative; overflow:hidden; }
-    .header::before { content:''; position:absolute; top:-40px; right:-40px; width:160px; height:160px; background:rgba(255,255,255,0.08); border-radius:50%; }
-    .header-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-    .level-badge { background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:5px 13px; font-size:12px; font-weight:700; }
-    .streak-badge { background:linear-gradient(135deg,#f59e0b,#ef4444); border-radius:20px; padding:5px 12px; font-size:12px; font-weight:700; }
-    .header-title { text-align:center; margin-bottom:14px; }
-    .header-title .date { font-size:12px; opacity:0.75; margin-bottom:2px; }
-    .header-title h1 { font-size:20px; font-weight:800; }
-    .header-title .greeting { font-size:12px; opacity:0.85; margin-top:4px; }
-    .xp-label { display:flex; justify-content:space-between; font-size:11px; opacity:0.8; margin-bottom:5px; }
-    .xp-bar { height:8px; background:rgba(255,255,255,0.2); border-radius:10px; overflow:hidden; }
-    .xp-fill { height:100%; background:linear-gradient(90deg,#fbbf24,#f59e0b); border-radius:10px; transition:width 0.8s cubic-bezier(0.34,1.56,0.64,1); }
+    /* ANIMATED HERO */
+    .hero{background:linear-gradient(135deg,#fda4af,#c084fc,#818cf8,#fb7185);background-size:300% 300%;animation:grad 8s ease infinite;padding:52px 20px 76px;position:relative;overflow:hidden}
+    @keyframes grad{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    .hero::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:rgba(255,255,255,0.1);border-radius:50%}
+    .hero::after{content:'';position:absolute;bottom:-40px;left:-30px;width:130px;height:130px;background:rgba(255,255,255,0.07);border-radius:50%}
+    .hero-top{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;margin-bottom:18px}
+    .pill{background:rgba(255,255,255,0.22);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.35);border-radius:50px;padding:6px 14px;font-size:12px;font-weight:700;color:white}
 
-    /* PROGRESS CARD */
-    .progress-card { background:white; border-radius:20px; padding:18px 20px; margin:-28px 16px 16px; box-shadow:0 8px 24px rgba(124,58,237,0.15); position:relative; z-index:10; }
-    .progress-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
-    .progress-header span { font-size:13px; color:var(--text-light); }
-    .progress-count { font-size:22px; font-weight:800; color:var(--purple); }
-    .today-xp { font-size:11px; color:var(--orange); font-weight:700; }
-    .progress-bar { height:12px; background:#f0eaff; border-radius:10px; overflow:hidden; }
-    .progress-fill { height:100%; background:linear-gradient(90deg,#7c3aed,#a855f7,#ec4899); border-radius:10px; transition:width 0.6s cubic-bezier(0.34,1.56,0.64,1); }
-    .progress-note { font-size:12px; color:var(--text-light); margin-top:8px; }
+    /* RING */
+    .ring-wrap{display:flex;justify-content:center;align-items:center;position:relative;z-index:1;margin:0 auto 14px;width:150px;height:150px}
+    .ring-svg{transform:rotate(-90deg);position:absolute;top:0;left:0}
+    .r-bg{fill:none;stroke:rgba(255,255,255,0.22);stroke-width:11}
+    .r-fill{fill:none;stroke:white;stroke-width:11;stroke-linecap:round;stroke-dasharray:384;stroke-dashoffset:384;transition:stroke-dashoffset 0.8s cubic-bezier(0.34,1.56,0.64,1);filter:drop-shadow(0 0 8px rgba(255,255,255,0.5))}
+    .ring-mid{position:absolute;text-align:center;color:white;pointer-events:none}
+    .ring-n{font-size:34px;font-weight:800;line-height:1}
+    .ring-s{font-size:13px;opacity:0.75}
+    .ring-l{font-size:10px;opacity:0.6;margin-top:1px}
+    .hero-bottom{text-align:center;color:white;position:relative;z-index:1}
+    .hero-date{font-size:11px;opacity:0.7}
+    .hero-greet{font-size:13px;opacity:0.9;margin-top:3px;font-weight:500}
+    .xp-row{display:flex;align-items:center;gap:10px;margin-top:14px;position:relative;z-index:1}
+    .xp-track{flex:1;height:6px;background:rgba(255,255,255,0.22);border-radius:10px;overflow:hidden}
+    .xp-fill{height:100%;background:white;border-radius:10px;transition:width 0.8s cubic-bezier(0.34,1.56,0.64,1)}
+    .xp-lbl{font-size:11px;color:rgba(255,255,255,0.85);font-weight:600;white-space:nowrap}
 
-    .container { padding:0 16px; }
-    .section-label { font-size:11px; font-weight:700; letter-spacing:1px; color:var(--text-light); padding:14px 4px 6px; }
+    /* STATUS FLOAT */
+    .status-float{background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);border-radius:18px;padding:11px 20px;margin:-20px 16px 0;text-align:center;font-size:13px;font-weight:700;color:#6d28d9;box-shadow:0 4px 24px rgba(139,92,246,0.18);position:relative;z-index:10}
 
-    /* TASK CARD */
-    .task-card { background:white; border-radius:16px; padding:14px; margin-bottom:8px; display:flex; align-items:flex-start; gap:10px; box-shadow:0 2px 8px rgba(0,0,0,0.06); cursor:pointer; transition:all 0.25s; border:2px solid transparent; user-select:none; position:relative; overflow:hidden; }
-    .task-card:active { transform:scale(0.97); }
-    .task-card.done { background:linear-gradient(135deg,#f3f0ff,#fce7f3); border-color:#c4b5fd; }
-    .time-badge { background:var(--purple-light); color:var(--purple); font-size:11px; font-weight:700; padding:3px 8px; border-radius:20px; white-space:nowrap; flex-shrink:0; margin-top:2px; }
-    .task-icon { font-size:22px; flex-shrink:0; }
-    .task-content { flex:1; min-width:0; }
-    .task-title { font-size:14px; font-weight:700; transition:all 0.2s; }
-    .task-card.done .task-title { color:#a78bfa; text-decoration:line-through; }
-    .task-desc { font-size:12px; color:var(--text-light); margin-top:3px; line-height:1.55; }
-    .task-card.done .task-desc { color:#c4b5fd; }
-    .task-xp { font-size:10px; font-weight:700; color:var(--orange); background:#fef3c7; padding:1px 6px; border-radius:10px; margin-top:4px; display:inline-block; }
-    .task-check { width:28px; height:28px; border-radius:50%; border:2.5px solid #e5e7eb; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px; transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1); margin-top:2px; }
-    .task-card.done .task-check { background:linear-gradient(135deg,#7c3aed,#ec4899); border-color:transparent; color:white; transform:scale(1.1); }
-    @keyframes checkBounce { 0%{transform:scale(0.5)} 70%{transform:scale(1.35)} 100%{transform:scale(1.1)} }
-    .task-card.just-done .task-check { animation:checkBounce 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+    /* CONTAINER */
+    .container{padding:0 16px}
+    .sec-head{display:flex;align-items:center;gap:7px;padding:18px 0 8px}
+    .sec-title{font-size:10px;font-weight:800;letter-spacing:1.5px;color:#9ca3af;text-transform:uppercase}
 
-    /* REC CARD */
-    .rec-card { background:white; border-radius:16px; overflow:hidden; box-shadow:0 2px 12px rgba(124,58,237,0.1); margin-bottom:8px; }
-    .rec-header { background:linear-gradient(90deg,#4c1d95,#7c3aed); color:white; padding:10px 14px; display:flex; justify-content:space-between; align-items:center; }
-    .rec-header span { font-size:13px; font-weight:700; }
-    .rec-day { font-size:11px; opacity:0.8; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:20px; }
-    .rec-body { padding:12px 14px; }
-    .rec-row { display:flex; gap:10px; padding:7px 0; border-bottom:1px solid #f9f5ff; align-items:flex-start; }
-    .rec-row:last-child { border-bottom:none; }
-    .rec-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
-    .rec-label { font-size:11px; font-weight:700; color:var(--purple); background:var(--purple-light); padding:2px 7px; border-radius:20px; flex-shrink:0; white-space:nowrap; margin-top:1px; }
-    .rec-text { font-size:13px; color:var(--text); line-height:1.5; }
+    /* TASK ITEM */
+    .task-item{background:white;border-radius:16px;margin-bottom:8px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.05);position:relative;transition:box-shadow 0.2s}
+    .task-item.done{background:linear-gradient(135deg,#fdf4ff,#fce7f3)}
+    .task-item.done::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(#c084fc,#f472b6);border-radius:3px 0 0 3px}
+    .task-head{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;user-select:none}
+    .t-icon{font-size:20px;flex-shrink:0}
+    .t-main{flex:1;min-width:0}
+    .t-row1{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .t-name{font-size:14px;font-weight:700;transition:color 0.2s}
+    .task-item.done .t-name{color:#c084fc;text-decoration:line-through}
+    .t-time{font-size:10px;color:#8b5cf6;background:#f3f0ff;padding:2px 7px;border-radius:20px;font-weight:700}
+    .t-xp{font-size:10px;color:#f59e0b;background:#fef3c7;padding:2px 7px;border-radius:20px;font-weight:700}
+    .t-arrow{font-size:10px;color:#d1d5db;transition:transform 0.3s;flex-shrink:0;margin-left:auto}
+    .task-item.open .t-arrow{transform:rotate(180deg)}
+    .t-check{width:30px;height:30px;border-radius:50%;border:2.5px solid #e5e7eb;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);cursor:pointer;flex-shrink:0;background:white}
+    .task-item.done .t-check{background:linear-gradient(135deg,#8b5cf6,#ec4899);border-color:transparent;color:white;transform:scale(1.08)}
+    .t-body{max-height:0;overflow:hidden;transition:max-height 0.35s cubic-bezier(0.4,0,0.2,1)}
+    .task-item.open .t-body{max-height:220px}
+    .t-desc{font-size:13px;color:#4b5563;line-height:1.65;padding:10px 14px 13px 44px;border-top:1px solid #faf5ff}
+    .task-item.done .t-desc{color:#c4b5fd}
+
+    /* REC */
+    .rec-card{background:white;border-radius:16px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.05);margin-bottom:4px}
+    .rec-head{background:linear-gradient(90deg,#6d28d9,#8b5cf6);color:white;padding:10px 16px;display:flex;justify-content:space-between;align-items:center}
+    .rec-head-t{font-size:13px;font-weight:700}
+    .rec-badge{font-size:11px;background:rgba(255,255,255,0.2);padding:2px 9px;border-radius:20px}
+    .rec-body{padding:2px 0}
+    .rec-row{display:flex;gap:10px;padding:8px 16px;border-bottom:1px solid #faf5ff;align-items:flex-start}
+    .rec-row:last-child{border-bottom:none}
+    .rec-em{font-size:15px;flex-shrink:0;margin-top:1px}
+    .rec-tag{font-size:11px;font-weight:700;color:#7c3aed;background:#f3f0ff;padding:2px 7px;border-radius:20px;flex-shrink:0;white-space:nowrap;margin-top:1px}
+    .rec-txt{font-size:13px;color:#374151;line-height:1.5}
 
     /* TIP */
-    .tip-box { background:linear-gradient(135deg,#fdf4ff,#fce7f3); border:1px solid #f0abfc; border-radius:16px; padding:14px 16px; margin:4px 0 8px; }
-    .tip-box h3 { font-size:13px; color:#9333ea; margin-bottom:6px; }
-    .tip-box p { font-size:13px; color:#6b21a8; line-height:1.65; }
+    .tip-card{background:linear-gradient(135deg,#fdf4ff,#fce7f3);border-radius:16px;padding:14px 16px;margin-top:4px;border:1px solid #f0abfc}
+    .tip-t{font-size:13px;font-weight:700;color:#9333ea;margin-bottom:6px}
+    .tip-b{font-size:13px;color:#7e22ce;line-height:1.65}
 
-    /* MEAL PAGE */
-    .meal-card { background:white; border-radius:14px; padding:14px 16px; margin-bottom:8px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
-    .meal-card h4 { font-size:13px; color:var(--text-light); margin-bottom:8px; }
-    .meal-row { display:flex; align-items:baseline; gap:8px; padding:5px 0; border-bottom:1px solid #f9f5ff; }
-    .meal-row:last-child { border-bottom:none; }
-    .meal-time { font-size:11px; font-weight:700; color:var(--purple); background:var(--purple-light); padding:2px 7px; border-radius:20px; white-space:nowrap; }
-    .meal-text { font-size:13px; color:var(--text); line-height:1.5; }
-    .meal-note { font-size:11px; color:#999; }
+    /* PAGE HEADERS */
+    .pg-hero{background:linear-gradient(135deg,#fda4af,#c084fc,#818cf8);background-size:300% 300%;animation:grad 8s ease infinite;padding:56px 20px 28px;color:white;text-align:center}
+    .pg-hero h1{font-size:22px;font-weight:800}
+    .pg-hero p{font-size:13px;opacity:0.85;margin-top:5px}
 
-    /* STATS PAGE */
-    .level-card { background:linear-gradient(135deg,#4c1d95,#7c3aed,#a855f7); border-radius:20px; padding:22px; color:white; margin-bottom:12px; position:relative; overflow:hidden; }
-    .level-card::before { content:''; position:absolute; top:-30px; right:-30px; width:120px; height:120px; background:rgba(255,255,255,0.1); border-radius:50%; }
-    .level-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
-    .level-icon-big { font-size:44px; }
-    .level-info { text-align:right; }
-    .level-name { font-size:20px; font-weight:800; }
-    .level-num { font-size:13px; opacity:0.8; }
-    .level-xp-label { font-size:12px; opacity:0.8; margin-bottom:6px; }
-    .level-xp-bar { height:10px; background:rgba(255,255,255,0.2); border-radius:10px; overflow:hidden; }
-    .level-xp-fill { height:100%; background:linear-gradient(90deg,#fbbf24,#f59e0b); border-radius:10px; transition:width 0.8s ease; }
-    .level-xp-text { font-size:11px; opacity:0.75; margin-top:5px; text-align:right; }
-    .stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
-    .stat-box { background:white; border-radius:14px; padding:16px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
-    .stat-number { font-size:26px; font-weight:800; color:var(--purple); }
-    .stat-label { font-size:12px; color:var(--text-light); margin-top:3px; }
-    .badges-section { background:white; border-radius:14px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,0.05); margin-bottom:12px; }
-    .badges-section h3 { font-size:14px; font-weight:700; margin-bottom:14px; color:var(--purple); }
-    .badges-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-    .badge-item { text-align:center; padding:12px 6px; border-radius:12px; background:var(--purple-light); }
-    .badge-item.locked { background:#f3f4f6; opacity:0.45; }
-    .badge-icon { font-size:26px; margin-bottom:4px; }
-    .badge-name { font-size:10px; font-weight:700; color:var(--purple); line-height:1.3; }
-    .badge-item.locked .badge-name { color:#9ca3af; }
-    .badge-desc { font-size:9px; color:var(--text-light); margin-top:2px; line-height:1.3; }
-    .week-section { background:white; border-radius:14px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,0.05); margin-bottom:12px; }
-    .week-section h3 { font-size:14px; font-weight:600; margin-bottom:12px; }
+    /* MEAL */
+    .info-card{background:white;border-radius:14px;padding:14px 16px;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+    .info-card h4{font-size:13px;font-weight:700;color:#6b7280;margin-bottom:8px}
+    .info-row{display:flex;align-items:baseline;gap:8px;padding:5px 0;border-bottom:1px solid #faf5ff}
+    .info-row:last-child{border-bottom:none}
+    .i-tag{font-size:11px;font-weight:700;color:#7c3aed;background:#f3f0ff;padding:2px 7px;border-radius:20px;white-space:nowrap}
+    .i-txt{font-size:13px;color:#374151;line-height:1.5}
+    .i-note{font-size:11px;color:#9ca3af}
+
+    /* STATS */
+    .lv-hero{background:linear-gradient(135deg,#4c1d95,#7c3aed,#a855f7);padding:56px 24px 28px;text-align:center;color:white;position:relative;overflow:hidden}
+    .lv-hero::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;background:rgba(255,255,255,0.08);border-radius:50%}
+    .lv-orb{font-size:60px;margin-bottom:6px}
+    .lv-name{font-size:22px;font-weight:800}
+    .lv-num{font-size:13px;opacity:0.75;margin-bottom:14px}
+    .lv-bar-wrap{background:rgba(255,255,255,0.2);border-radius:10px;overflow:hidden;height:9px;margin:0 20px}
+    .lv-bar-fill{height:100%;background:linear-gradient(90deg,#fbbf24,#f59e0b);border-radius:10px;transition:width 0.8s ease}
+    .lv-bar-info{display:flex;justify-content:space-between;font-size:11px;opacity:0.75;margin:5px 20px 0}
+    .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 16px 0}
+    .stat-card{background:white;border-radius:14px;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+    .stat-n{font-size:28px;font-weight:800;background:linear-gradient(135deg,#7c3aed,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .stat-l{font-size:12px;color:#9ca3af;margin-top:3px}
+    .badges-sec{padding:0 16px 10px}
+    .badges-sec h3{font-size:14px;font-weight:700;color:#374151;padding:14px 0 10px}
+    .bg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .bg-card{text-align:center;padding:13px 6px;border-radius:14px;background:#f3f0ff;transition:transform 0.15s}
+    .bg-card:active{transform:scale(0.96)}
+    .bg-card.locked{background:#f9fafb;opacity:0.38}
+    .bg-em{font-size:28px;margin-bottom:4px}
+    .bg-name{font-size:10px;font-weight:700;color:#7c3aed;line-height:1.3}
+    .bg-card.locked .bg-name{color:#9ca3af}
+    .bg-desc{font-size:9px;color:#9ca3af;margin-top:2px;line-height:1.3}
+    .week-sec{padding:0 16px 16px}
+    .week-sec h3{font-size:14px;font-weight:700;color:#374151;padding-bottom:10px}
 
     /* SETTINGS */
-    .settings-card { background:white; border-radius:14px; padding:16px; margin-bottom:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
-    .settings-card h3 { font-size:14px; font-weight:700; margin-bottom:12px; color:var(--purple); }
-    .topic-box { width:100%; border:2px solid #ede9fe; border-radius:10px; padding:10px 12px; font-size:14px; color:var(--purple); background:var(--purple-light); margin-top:6px; font-family:monospace; }
-    .btn-purple { background:linear-gradient(135deg,var(--purple),#a855f7); color:white; border:none; border-radius:10px; padding:12px 16px; font-size:14px; font-weight:700; cursor:pointer; width:100%; margin-top:8px; font-family:inherit; }
-    .btn-ghost { background:#f5f5f5; color:#888; border:none; border-radius:10px; padding:10px 16px; font-size:13px; cursor:pointer; width:100%; margin-top:6px; font-family:inherit; }
-    .btn-danger { color:#ef4444; }
-    .step-row { display:flex; gap:12px; padding:9px 0; border-bottom:1px solid #f9f5ff; }
-    .step-row:last-child { border-bottom:none; }
-    .step-num { width:22px; height:22px; border-radius:50%; background:var(--purple); color:white; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0; margin-top:1px; }
-    .step-text { font-size:13px; line-height:1.6; color:var(--text); }
-    .step-text strong { color:var(--purple); }
-    .notif-row { display:flex; gap:10px; padding:7px 0; border-bottom:1px solid #f9f5ff; align-items:flex-start; }
-    .notif-row:last-child { border-bottom:none; }
+    .s-card{background:white;border-radius:14px;padding:16px;margin:8px 16px;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+    .s-card h3{font-size:14px;font-weight:700;color:#7c3aed;margin-bottom:10px}
+    .s-input{width:100%;border:2px solid #ede9fe;border-radius:10px;padding:10px 12px;font-size:14px;color:#7c3aed;background:#f3f0ff;margin-top:6px;font-family:monospace}
+    .s-btn{background:linear-gradient(135deg,#7c3aed,#a855f7);color:white;border:none;border-radius:10px;padding:12px;font-size:14px;font-weight:700;width:100%;margin-top:8px;cursor:pointer;font-family:inherit}
+    .s-ghost{background:#f3f4f6;color:#6b7280;border:none;border-radius:10px;padding:10px;font-size:13px;width:100%;margin-top:6px;cursor:pointer;font-family:inherit}
+    .s-danger{color:#ef4444}
+    .s-step{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid #faf5ff}
+    .s-step:last-child{border-bottom:none}
+    .s-dot{width:22px;height:22px;border-radius:50%;background:#7c3aed;color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+    .s-txt{font-size:13px;line-height:1.6;color:#374151}
+    .s-txt strong{color:#7c3aed}
+    .n-row{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid #faf5ff;align-items:flex-start}
+    .n-row:last-child{border-bottom:none}
 
-    /* NAV */
-    .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:white; border-top:1px solid #f0eaff; display:flex; z-index:100; box-shadow:0 -4px 20px rgba(124,58,237,0.08); }
-    .nav-btn { flex:1; display:flex; flex-direction:column; align-items:center; padding:8px 0 10px; font-size:10px; color:#aaa; cursor:pointer; border:none; background:none; gap:3px; font-family:inherit; transition:color 0.2s; }
-    .nav-btn.active { color:var(--purple); }
-    .nav-icon { font-size:20px; }
-    .page { display:none; }
-    .page.active { display:block; }
+    /* FLOATING NAV */
+    .nav-outer{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:100;width:calc(100% - 32px);max-width:400px}
+    .bottom-nav{background:rgba(20,5,50,0.88);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:50px;display:flex;padding:6px;gap:2px;box-shadow:0 8px 32px rgba(124,58,237,0.35)}
+    .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 6px;font-size:9px;color:rgba(255,255,255,0.38);cursor:pointer;border:none;background:none;gap:3px;font-family:inherit;border-radius:40px;transition:all 0.25s;white-space:nowrap}
+    .nav-btn.active{color:white;background:rgba(255,255,255,0.14)}
+    .nav-icon{font-size:18px}
+
+    /* PAGES */
+    .page{display:none}
+    .page.active{display:block;animation:pgIn 0.22s ease}
+    @keyframes pgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
     /* TOAST */
-    .toast { position:fixed; bottom:88px; left:50%; transform:translateX(-50%); background:rgba(76,29,149,0.92); color:white; padding:10px 22px; border-radius:24px; font-size:13px; font-weight:600; opacity:0; transition:opacity 0.3s; pointer-events:none; white-space:nowrap; z-index:999; }
-    .toast.show { opacity:1; }
+    .toast{position:fixed;bottom:106px;left:50%;transform:translateX(-50%);background:rgba(20,5,50,0.92);backdrop-filter:blur(12px);color:white;padding:10px 22px;border-radius:50px;font-size:13px;font-weight:700;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;z-index:999}
+    .toast.show{opacity:1}
 
-    /* PARTICLES */
-    .particle { position:fixed; pointer-events:none; z-index:9999; font-size:18px; animation:particleFly 0.9s ease-out forwards; }
-    @keyframes particleFly { 0%{transform:translateY(0) scale(1) rotate(0deg);opacity:1} 100%{transform:translateY(-90px) scale(0.3) rotate(30deg);opacity:0} }
-    .xp-float { position:fixed; pointer-events:none; z-index:9999; font-size:15px; font-weight:800; color:#f59e0b; text-shadow:0 1px 4px rgba(0,0,0,0.3); animation:xpFloat 1s ease-out forwards; }
-    @keyframes xpFloat { 0%{transform:translateY(0) scale(1);opacity:1} 60%{transform:translateY(-50px) scale(1.2);opacity:1} 100%{transform:translateY(-90px) scale(0.8);opacity:0} }
+    /* FX */
+    .particle{position:fixed;pointer-events:none;z-index:9999;font-size:18px;animation:pFly 0.9s ease-out forwards}
+    @keyframes pFly{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-90px) scale(0.3);opacity:0}}
+    .xp-pop{position:fixed;pointer-events:none;z-index:9999;font-size:15px;font-weight:800;color:#f59e0b;text-shadow:0 1px 4px rgba(0,0,0,0.4);animation:xpUp 1s ease-out forwards}
+    @keyframes xpUp{0%{transform:translateY(0);opacity:1}60%{transform:translateY(-50px) scale(1.1);opacity:1}100%{transform:translateY(-90px);opacity:0}}
 
     /* LEVEL UP */
-    .levelup-overlay { position:fixed; inset:0; background:rgba(76,29,149,0.82); display:none; align-items:center; justify-content:center; z-index:9998; backdrop-filter:blur(8px); }
-    .levelup-overlay.show { display:flex; }
-    .levelup-card { background:white; border-radius:24px; padding:36px 40px; text-align:center; box-shadow:0 20px 60px rgba(124,58,237,0.4); animation:lvlPop 0.5s cubic-bezier(0.34,1.56,0.64,1); }
-    @keyframes lvlPop { 0%{transform:scale(0.4);opacity:0} 100%{transform:scale(1);opacity:1} }
-    .levelup-icon { font-size:64px; margin-bottom:10px; }
-    .levelup-sub { font-size:14px; color:var(--text-light); margin-bottom:6px; }
-    .levelup-name { font-size:28px; font-weight:800; color:var(--purple); margin-bottom:18px; }
-    .levelup-btn { background:linear-gradient(135deg,var(--purple),#a855f7); color:white; border:none; border-radius:50px; padding:13px 44px; font-size:15px; font-weight:700; cursor:pointer; font-family:inherit; }
+    .lu-overlay{position:fixed;inset:0;background:rgba(15,0,40,0.88);display:none;align-items:center;justify-content:center;z-index:9998;backdrop-filter:blur(10px)}
+    .lu-overlay.show{display:flex}
+    .lu-box{background:white;border-radius:28px;padding:40px 36px;text-align:center;box-shadow:0 20px 60px rgba(124,58,237,0.5);animation:luPop 0.5s cubic-bezier(0.34,1.56,0.64,1);max-width:290px;width:90%}
+    @keyframes luPop{0%{transform:scale(0.3);opacity:0}100%{transform:scale(1);opacity:1}}
+    .lu-icon{font-size:68px}
+    .lu-sub{font-size:13px;color:#9ca3af;margin:10px 0 5px}
+    .lu-name{font-size:24px;font-weight:800;background:linear-gradient(135deg,#7c3aed,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px}
+    .lu-btn{background:linear-gradient(135deg,#7c3aed,#a855f7);color:white;border:none;border-radius:50px;padding:13px 44px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
   </style>
 </head>
 <body>
 
-<div class="levelup-overlay" id="levelup-overlay" onclick="closeLevelUp()">
-  <div class="levelup-card" onclick="event.stopPropagation()">
-    <div class="levelup-icon" id="levelup-icon">👑</div>
-    <div class="levelup-sub">恭喜升级！</div>
-    <div class="levelup-name" id="levelup-name">养生达人</div>
-    <button class="levelup-btn" onclick="closeLevelUp()">继续加油 ✨</button>
+<div class="lu-overlay" id="lu-overlay" onclick="closeLU()">
+  <div class="lu-box" onclick="event.stopPropagation()">
+    <div class="lu-icon" id="lu-icon">👑</div>
+    <div class="lu-sub">恭喜升级！</div>
+    <div class="lu-name" id="lu-name">养生达人</div>
+    <button class="lu-btn" onclick="closeLU()">继续加油 ✨</button>
   </div>
 </div>
 
 <!-- TODAY -->
 <div id="page-today" class="page active">
-  <div class="header">
-    <div class="header-top">
-      <div class="level-badge" id="header-level">Lv.1 养生小白 🌱</div>
-      <div class="streak-badge" id="header-streak">🔥 0天</div>
+  <div class="hero">
+    <div class="hero-top">
+      <div class="pill" id="h-level">Lv.1 养生小白 🌱</div>
+      <div class="pill" id="h-streak">🔥 0天</div>
     </div>
-    <div class="header-title">
-      <div class="date" id="date-display">加载中...</div>
-      <h1>✨ 我的养生计划</h1>
-      <div class="greeting" id="greeting-text"></div>
-    </div>
-    <div>
-      <div class="xp-label"><span id="xp-level-label">经验值</span><span id="xp-text">0 / 150 XP</span></div>
-      <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
-    </div>
-  </div>
-  <div class="progress-card">
-    <div class="progress-header">
-      <span>今日进度</span>
-      <div style="text-align:right">
-        <div class="progress-count" id="progress-text">0/12</div>
-        <div class="today-xp" id="today-xp">+0 XP今日</div>
+    <div class="ring-wrap">
+      <svg class="ring-svg" width="150" height="150" viewBox="0 0 150 150">
+        <circle class="r-bg" cx="75" cy="75" r="61"/>
+        <circle class="r-fill" id="ring-fill" cx="75" cy="75" r="61"/>
+      </svg>
+      <div class="ring-mid">
+        <div class="ring-n" id="ring-n">0</div>
+        <div class="ring-s">/12</div>
+        <div class="ring-l">今日完成</div>
       </div>
     </div>
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-    <div class="progress-note" id="progress-note">今天还没开始，起来打卡吧 💪</div>
+    <div class="hero-bottom">
+      <div class="hero-date" id="h-date"></div>
+      <div class="hero-greet" id="h-greet"></div>
+    </div>
+    <div class="xp-row">
+      <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+      <div class="xp-lbl" id="xp-lbl">0/150 XP</div>
+    </div>
   </div>
+  <div class="status-float" id="status-note">今天还没开始，起来打卡吧 💪</div>
   <div class="container">
-    <div class="section-label">✨ 今日推荐</div>
+    <div class="sec-head"><span class="sec-title">✨ 今日推荐</span></div>
     <div id="daily-rec"></div>
   </div>
   <div class="container" id="task-list"></div>
-  <div class="container"><div class="tip-box" id="daily-tip"></div></div>
+  <div class="container"><div class="tip-card" id="daily-tip"></div></div>
+  <div style="height:10px"></div>
 </div>
 
 <!-- MEAL -->
 <div id="page-meal" class="page">
-  <div class="header">
-    <div class="header-title" style="padding-top:0">
-      <div class="date">养生套餐</div>
-      <h1>🥗 每日饮食方案</h1>
-      <div class="greeting">深圳龙华 · 外卖版 · 可以吃辣！</div>
-    </div>
-  </div>
-  <div class="container" style="padding-top:20px">
-    <div class="section-label">🌅 早餐方案</div>
-    <div class="meal-card">
+  <div class="pg-hero"><h1>🥗 每日饮食方案</h1><p>深圳龙华 · 外卖版 · 可以吃辣！</p></div>
+  <div class="container" style="padding-top:14px">
+    <div class="sec-head"><span class="sec-title">🌅 早餐方案</span></div>
+    <div class="info-card">
       <h4>便利店选法（7-11 / 全家 / 美宜佳）</h4>
-      <div class="meal-row"><span class="meal-time">首选</span><span class="meal-text">茶叶蛋1个 + 全麦三明治 <span class="meal-note">（蛋白质+碳水，撑到午饭）</span></span></div>
-      <div class="meal-row"><span class="meal-time">次选</span><span class="meal-text">牛奶/豆浆 + 面包/饭团</span></div>
-      <div class="meal-row"><span class="meal-time">加分项</span><span class="meal-text">顺手买根香蕉 <span class="meal-note">（维生素B6，对皮肤好）</span></span></div>
-      <div class="meal-row"><span class="meal-time">避开</span><span class="meal-text">油条、炸鸡腿包、甜面包 <span class="meal-note">（高油高糖，皮肤变差）</span></span></div>
+      <div class="info-row"><span class="i-tag">首选</span><span class="i-txt">茶叶蛋1个 + 全麦三明治 <span class="i-note">（蛋白质+碳水，撑到午饭）</span></span></div>
+      <div class="info-row"><span class="i-tag">次选</span><span class="i-txt">牛奶/豆浆 + 面包/饭团</span></div>
+      <div class="info-row"><span class="i-tag">加分项</span><span class="i-txt">顺手买根香蕉 <span class="i-note">（维生素B6，对皮肤好）</span></span></div>
+      <div class="info-row"><span class="i-tag">避开</span><span class="i-txt">油条、炸鸡腿包、甜面包</span></div>
     </div>
-    <div class="meal-card">
-      <h4>深圳早餐外卖选法</h4>
-      <div class="meal-row"><span class="meal-time">推荐</span><span class="meal-text">肠粉套餐 <span class="meal-note">（龙华多，清淡蛋白质够）</span></span></div>
-      <div class="meal-row"><span class="meal-time">推荐</span><span class="meal-text">皮蛋瘦肉粥 + 小菜 <span class="meal-note">（护胃皮肤友好）</span></span></div>
-      <div class="meal-row"><span class="meal-time">备注</span><span class="meal-text">下单备注 <strong>少油少盐</strong></span></div>
+    <div class="info-card">
+      <h4>深圳早餐外卖</h4>
+      <div class="info-row"><span class="i-tag">推荐</span><span class="i-txt">肠粉套餐 <span class="i-note">（龙华多，清淡蛋白质够）</span></span></div>
+      <div class="info-row"><span class="i-tag">推荐</span><span class="i-txt">皮蛋瘦肉粥 + 小菜</span></div>
+      <div class="info-row"><span class="i-tag">备注</span><span class="i-txt">下单时备注 <strong>少油少盐</strong></span></div>
     </div>
-    <div class="section-label">☀️ 午餐外卖</div>
-    <div class="meal-card">
-      <div class="meal-row"><span class="meal-time">必须有</span><span class="meal-text">蔬菜2种以上</span></div>
-      <div class="meal-row"><span class="meal-time">优先选</span><span class="meal-text">粤菜盖浇饭 / 轻食沙拉 / 砂锅粥套餐</span></div>
-      <div class="meal-row"><span class="meal-time">少点</span><span class="meal-text">麻辣烫、炸鸡、奶茶套餐</span></div>
+    <div class="sec-head"><span class="sec-title">☀️ 午餐外卖</span></div>
+    <div class="info-card">
+      <div class="info-row"><span class="i-tag">必须有</span><span class="i-txt">蔬菜2种以上</span></div>
+      <div class="info-row"><span class="i-tag">优先选</span><span class="i-txt">粤菜盖浇饭 / 轻食沙拉 / 砂锅粥</span></div>
+      <div class="info-row"><span class="i-tag">少点</span><span class="i-txt">麻辣烫、炸鸡、奶茶套餐</span></div>
     </div>
-    <div class="tip-box">
-      <h3>💡 四川人在深圳怎么吃辣又护肤</h3>
-      <p>辣不用戒！点麻辣香锅多选蔬菜、豆腐、菌菇，少选油豆皮。一周2-3次辣完全没问题，天天猛辣才伤皮肤。</p>
+    <div class="tip-card"><div class="tip-t">💡 四川人吃辣怎么护肤</div><div class="tip-b">辣不用戒！点麻辣香锅多选蔬菜、豆腐、菌菇。一周2-3次辣完全没问题，天天猛辣才伤皮肤。</div></div>
+    <div class="sec-head"><span class="sec-title">🌆 晚餐外卖</span></div>
+    <div class="info-card">
+      <div class="info-row"><span class="i-tag">首选</span><span class="i-txt">粥 + 小菜 / 蒸菜套餐 / 清汤面</span></div>
+      <div class="info-row"><span class="i-tag">宵夜</span><span class="i-txt">尽量不吃，实在饿喝一杯纯牛奶</span></div>
     </div>
-    <div class="section-label">🌆 晚餐外卖</div>
-    <div class="meal-card">
-      <div class="meal-row"><span class="meal-time">首选</span><span class="meal-text">粥 + 小菜 / 蒸菜套餐 / 清汤面</span></div>
-      <div class="meal-row"><span class="meal-time">宵夜</span><span class="meal-text">尽量不吃，实在饿喝一杯纯牛奶</span></div>
+    <div class="sec-head"><span class="sec-title">✨ 护肤饮食</span></div>
+    <div class="info-card">
+      <div class="info-row"><span class="i-tag">多吃</span><span class="i-txt">西红柿、胡萝卜、蓝莓、深绿蔬菜、三文鱼</span></div>
+      <div class="info-row"><span class="i-tag">少吃</span><span class="i-txt">油炸食品、甜饮料、高糖零食</span></div>
+      <div class="info-row"><span class="i-tag">必须做</span><span class="i-txt">每天喝水4L以上 💧 皮肤暗沉多数是缺水</span></div>
     </div>
-    <div class="section-label">✨ 护肤饮食重点</div>
-    <div class="meal-card">
-      <div class="meal-row"><span class="meal-time">多吃</span><span class="meal-text">西红柿、胡萝卜、蓝莓、深绿蔬菜、三文鱼</span></div>
-      <div class="meal-row"><span class="meal-time">少吃</span><span class="meal-text">油炸食品、甜饮料、高糖零食</span></div>
-      <div class="meal-row"><span class="meal-time">必须做</span><span class="meal-text">每天喝水4L以上 💧 皮肤暗沉多数是缺水</span></div>
-    </div>
-    <div style="height:20px"></div>
+    <div style="height:10px"></div>
   </div>
 </div>
 
 <!-- STATS -->
 <div id="page-stats" class="page">
-  <div class="header">
-    <div class="header-title" style="padding-top:0">
-      <div class="date">成就与统计</div>
-      <h1>🏆 我的成就</h1>
-    </div>
+  <div class="lv-hero">
+    <div class="lv-orb" id="s-icon">🌱</div>
+    <div class="lv-name" id="s-name">养生小白</div>
+    <div class="lv-num" id="s-num">Lv.1</div>
+    <div class="lv-bar-wrap"><div class="lv-bar-fill" id="s-xpbar" style="width:0%"></div></div>
+    <div class="lv-bar-info"><span id="s-xplbl">距下一级还需150 XP</span><span id="s-xptxt">0/150</span></div>
   </div>
-  <div class="container" style="padding-top:20px">
-    <div class="level-card">
-      <div class="level-top">
-        <div class="level-icon-big" id="stats-level-icon">🌱</div>
-        <div class="level-info">
-          <div class="level-name" id="stats-level-name">养生小白</div>
-          <div class="level-num" id="stats-level-num">Lv.1</div>
-        </div>
-      </div>
-      <div class="level-xp-label" id="stats-xp-label">距离下一级还需 150 XP</div>
-      <div class="level-xp-bar"><div class="level-xp-fill" id="stats-xp-fill" style="width:0%"></div></div>
-      <div class="level-xp-text" id="stats-xp-text">0 / 150 XP</div>
-    </div>
-    <div class="stat-grid">
-      <div class="stat-box"><div class="stat-number" id="streak-num">0</div><div class="stat-label">🔥 连续打卡</div></div>
-      <div class="stat-box"><div class="stat-number" id="total-xp-display">0</div><div class="stat-label">⭐ 累计XP</div></div>
-      <div class="stat-box"><div class="stat-number" id="total-tasks">0</div><div class="stat-label">✅ 完成任务</div></div>
-      <div class="stat-box"><div class="stat-number" id="perfect-days">0</div><div class="stat-label">💎 完美天数</div></div>
-    </div>
-    <div class="badges-section">
-      <h3>🎖️ 成就徽章</h3>
-      <div class="badges-grid" id="badges-grid"></div>
-    </div>
-    <div class="week-section">
-      <h3>📅 最近7天完成率</h3>
-      <div id="week-chart" style="display:flex;gap:6px;margin-top:4px"></div>
-    </div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-n" id="s-streak">0</div><div class="stat-l">🔥 连续打卡</div></div>
+    <div class="stat-card"><div class="stat-n" id="s-totalxp">0</div><div class="stat-l">⭐ 累计XP</div></div>
+    <div class="stat-card"><div class="stat-n" id="s-tasks">0</div><div class="stat-l">✅ 完成任务</div></div>
+    <div class="stat-card"><div class="stat-n" id="s-perfect">0</div><div class="stat-l">💎 完美天数</div></div>
+  </div>
+  <div class="badges-sec">
+    <h3>🎖️ 成就徽章</h3>
+    <div class="bg-grid" id="badges-grid"></div>
+  </div>
+  <div class="week-sec">
+    <h3>📅 最近7天</h3>
+    <div style="display:flex;gap:6px" id="week-chart"></div>
   </div>
 </div>
 
 <!-- SETTINGS -->
 <div id="page-settings" class="page">
-  <div class="header">
-    <div class="header-title" style="padding-top:0">
-      <div class="date">配置推送</div>
-      <h1>⚙️ 设置</h1>
-    </div>
+  <div class="pg-hero"><h1>⚙️ 设置</h1></div>
+  <div class="s-card">
+    <h3>📲 Bark 推送配置</h3>
+    <p style="font-size:13px;color:#888;line-height:1.6;margin-bottom:10px">Bark 走苹果通知通道，国内完全可用，不需要VPN。</p>
+    <label style="font-size:12px;color:#888">Bark Key：</label>
+    <input type="text" class="s-input" id="topic-input" placeholder="粘贴你的 Bark Key...">
+    <button class="s-btn" onclick="saveTopic()">💾 保存</button>
   </div>
-  <div class="container" style="padding-top:20px">
-    <div class="settings-card">
-      <h3>📲 Bark 推送配置</h3>
-      <p style="font-size:13px;color:#888;line-height:1.6;margin-bottom:10px">Bark 走苹果通知通道，国内完全可用，不需要VPN。</p>
-      <label style="font-size:12px;color:#888">Bark Key（从Bark App复制）：</label>
-      <input type="text" class="topic-box" id="topic-input" placeholder="粘贴你的 Bark Key..." />
-      <button class="btn-purple" onclick="saveTopic()">💾 保存 Key</button>
-    </div>
-    <div class="settings-card">
-      <h3>📱 添加到主屏幕</h3>
-      <div class="step-row"><div class="step-num">1</div><div class="step-text">用 <strong>Safari</strong> 打开此页面</div></div>
-      <div class="step-row"><div class="step-num">2</div><div class="step-text">底部点击分享按钮 → 「<strong>添加到主屏幕</strong>」</div></div>
-      <div class="step-row"><div class="step-num">3</div><div class="step-text">以后直接从桌面打开，打卡记录自动保存 ✅</div></div>
-    </div>
-    <div class="settings-card">
-      <h3>🔔 推送时间表</h3>
-      <div id="notif-schedule"></div>
-    </div>
-    <div class="settings-card">
-      <h3>🔄 数据管理</h3>
-      <button class="btn-ghost" onclick="resetToday()">🔁 重置今日打卡记录</button>
-      <button class="btn-ghost btn-danger" onclick="clearAll()">⚠️ 清除所有历史数据</button>
-    </div>
+  <div class="s-card">
+    <h3>📱 添加到主屏幕</h3>
+    <div class="s-step"><div class="s-dot">1</div><div class="s-txt">用 <strong>Safari</strong> 打开此页面</div></div>
+    <div class="s-step"><div class="s-dot">2</div><div class="s-txt">底部分享按钮 → 「<strong>添加到主屏幕</strong>」</div></div>
+    <div class="s-step"><div class="s-dot">3</div><div class="s-txt">打卡记录自动保存在手机 ✅</div></div>
   </div>
+  <div class="s-card">
+    <h3>🔔 推送时间表</h3>
+    <div id="notif-schedule"></div>
+  </div>
+  <div class="s-card">
+    <h3>🔄 数据管理</h3>
+    <button class="s-ghost" onclick="resetToday()">🔁 重置今日打卡记录</button>
+    <button class="s-ghost s-danger" onclick="clearAll()">⚠️ 清除所有历史数据</button>
+  </div>
+  <div style="height:10px"></div>
 </div>
 
-<div class="bottom-nav">
-  <button class="nav-btn active" id="nav-today" onclick="showPage('today')"><span class="nav-icon">📋</span>今日计划</button>
-  <button class="nav-btn" id="nav-meal" onclick="showPage('meal')"><span class="nav-icon">🥗</span>饮食方案</button>
-  <button class="nav-btn" id="nav-stats" onclick="showPage('stats')"><span class="nav-icon">🏆</span>我的成就</button>
-  <button class="nav-btn" id="nav-settings" onclick="showPage('settings')"><span class="nav-icon">⚙️</span>设置</button>
+<div class="nav-outer">
+  <div class="bottom-nav">
+    <button class="nav-btn active" id="nav-today" onclick="showPage('today')"><span class="nav-icon">📋</span>今日</button>
+    <button class="nav-btn" id="nav-meal" onclick="showPage('meal')"><span class="nav-icon">🥗</span>饮食</button>
+    <button class="nav-btn" id="nav-stats" onclick="showPage('stats')"><span class="nav-icon">🏆</span>成就</button>
+    <button class="nav-btn" id="nav-settings" onclick="showPage('settings')"><span class="nav-icon">⚙️</span>设置</button>
+  </div>
 </div>
 <div class="toast" id="toast"></div>
 
 <script>
-const TASKS = [
-  {id:'t01',time:'07:30',section:'🌅 早晨',icon:'☀️',title:'起床喝温水',desc:'先别看手机！床头那杯水喝掉，600ml，喝完再刷。空腹喝温水能启动肠胃、排毒、控油，比任何护肤品都便宜。今天也是皮肤变好的一天💧'},
-  {id:'t02',time:'07:45',section:'🌅 早晨',icon:'🥐',title:'出门买早餐',desc:'不吃早餐→血糖崩→午饭暴食→下午犯困→皮肤变差，这个链条你经历过多少次了？楼下便利店：茶叶蛋1个+三明治，5分钟搞定，今天的代谢从这里开始。'},
-  {id:'t03',time:'08:30',section:'🚇 上班路上',icon:'🚶',title:'通勤走路段',desc:'现在就准备下车，走路去公司。15分钟步行=今天的运动量完成✅ 不用健身房，不用额外时间。走路时挺胸收腹，练姿势的同时顺便燃脂，一举两得。'},
-  {id:'t04',time:'10:30',section:'💼 工作时间',icon:'💧',title:'喝水 + 眼睛放松',desc:'已经坐了2小时了。站起来，走到茶水间，接600ml水喝掉。顺手做个肩颈绕圈，左右各5次。久坐会让血液循环变差，直接影响脸色——起来动一下，比涂口红还提气色。'},
-  {id:'t05',time:'12:00',section:'💼 工作时间',icon:'🥗',title:'午餐外卖',desc:'外卖备注写上：少油少辣，多加蔬菜。选择顺序：蒸菜>炒菜>油炸。深色蔬菜（菠菜/西兰花/胡萝卜）含抗氧化成分，直接护肤。今天蔬菜达标了，皮肤会悄悄记账的🌿'},
-  {id:'t06',time:'12:30',section:'💼 工作时间',icon:'🚶',title:'饭后散步10分钟',desc:'吃完饭立刻坐着=血糖飙升+消化变慢+下午犯困。出去走10分钟，哪怕就在楼道里转，也能让血糖稳住、消化提速。走完回来，下午精力比同事强一截。'},
-  {id:'t07',time:'14:30',section:'💼 工作时间',icon:'🍵',title:'下午补水',desc:'现在感觉有点困？不是因为累，是因为缺水。喝400ml水或无糖绿茶（绿茶里的EGCG是护肤成分，比很多精华便宜100倍）。奶茶今天先放放，给皮肤一个机会🍃'},
-  {id:'t08',time:'16:30',section:'💼 工作时间',icon:'🧍',title:'起身活动2分钟',desc:'对着屏幕盯了一下午，现在做：双手交叉放脑后，头缓缓向后仰，停5秒。然后左耳贴左肩、右耳贴右肩，各停5秒。就这几个动作，预防颈椎病，顺便让下班后不那么疲惫。'},
-  {id:'t09',time:'18:30',section:'🚇 下班路上',icon:'🏃',title:'通勤多走一段',desc:'提前一站下车，走路回家。今天上班路走过了，现在这段是加成——两段加起来30分钟，正好达到每日运动量。走路时深呼吸，把白天的压力呼出去，到家时整个人会轻松很多。'},
-  {id:'t10',time:'19:30',section:'🌆 晚间',icon:'🍜',title:'晚餐外卖',desc:'今天辣的吃够了吗？晚上试试：砂锅粥+小菜，或者蒸菜套餐，或者清汤面。清淡的晚饭让肠胃休息，睡眠质量提升，明天早上起来脸不浮肿。你会发现皮肤状态和前一天晚饭直接挂钩🌾'},
-  {id:'t11',time:'21:00',section:'🌆 晚间',icon:'✨',title:'护肤程序',desc:'第1步：温水洗脸（35度，别用热水，热水破坏皮肤屏障）→ 第2步：爽肤水轻拍到吸收 → 第3步：保湿乳锁水。总共5分钟。坚持30天会有人问你用了什么产品✨'},
-  {id:'t12',time:'22:30',section:'🌙 入睡',icon:'🌙',title:'准备入睡',desc:'皮肤在23:00-02:00修复最活跃，这是真的。今天喝水了、走路了、护肤了——已经比昨天的自己好了一点点。放下手机，给自己10分钟缓冲，晚安🌙'},
+const TASKS=[
+  {id:'t01',time:'07:30',sec:'🌅 早晨',icon:'☀️',title:'起床喝温水',desc:'先别看手机！床头那杯水喝掉，600ml，喝完再刷。空腹喝温水能启动肠胃、排毒、控油，比任何护肤品都便宜。今天也是皮肤变好的一天💧'},
+  {id:'t02',time:'07:45',sec:'🌅 早晨',icon:'🥐',title:'出门买早餐',desc:'不吃早餐→血糖崩→午饭暴食→下午犯困→皮肤变差，这个链条你经历过多少次了？楼下便利店：茶叶蛋1个+三明治，5分钟搞定，今天的代谢从这里开始。'},
+  {id:'t03',time:'08:30',sec:'🚇 上班路上',icon:'🚶',title:'通勤走路段',desc:'现在就准备下车，走路去公司。15分钟步行=今天的运动量完成✅ 不用健身房，不用额外时间。走路时挺胸收腹，练姿势的同时顺便燃脂，一举两得。'},
+  {id:'t04',time:'10:30',sec:'💼 工作时间',icon:'💧',title:'喝水 + 眼睛放松',desc:'已经坐了2小时了。站起来，走到茶水间，接600ml水喝掉。顺手做个肩颈绕圈，左右各5次。久坐会让血液循环变差，直接影响脸色——起来动一下，比涂口红还提气色。'},
+  {id:'t05',time:'12:00',sec:'💼 工作时间',icon:'🥗',title:'午餐外卖',desc:'外卖备注写上：少油少辣，多加蔬菜。选择顺序：蒸菜>炒菜>油炸。深色蔬菜（菠菜/西兰花/胡萝卜）含抗氧化成分，直接护肤。今天蔬菜达标了，皮肤会悄悄记账的🌿'},
+  {id:'t06',time:'12:30',sec:'💼 工作时间',icon:'🚶',title:'饭后散步10分钟',desc:'吃完饭立刻坐着=血糖飙升+消化变慢+下午犯困。出去走10分钟，哪怕就在楼道里转，也能让血糖稳住、消化提速。走完回来，下午精力比同事强一截。'},
+  {id:'t07',time:'14:30',sec:'💼 工作时间',icon:'🍵',title:'下午补水',desc:'现在感觉有点困？不是因为累，是因为缺水。喝400ml水或无糖绿茶（绿茶里的EGCG是护肤成分，比很多精华便宜100倍）。奶茶今天先放放，给皮肤一个机会🍃'},
+  {id:'t08',time:'16:30',sec:'💼 工作时间',icon:'🧍',title:'起身活动2分钟',desc:'对着屏幕盯了一下午，现在做：双手交叉放脑后，头缓缓向后仰，停5秒。然后左耳贴左肩、右耳贴右肩，各停5秒。就这几个动作，预防颈椎病，顺便让下班后不那么疲惫。'},
+  {id:'t09',time:'18:30',sec:'🚇 下班路上',icon:'🏃',title:'通勤多走一段',desc:'提前一站下车，走路回家。今天上班路走过了，现在这段是加成——两段加起来30分钟，正好达到每日运动量。走路时深呼吸，把白天的压力呼出去，到家时整个人会轻松很多。'},
+  {id:'t10',time:'19:30',sec:'🌆 晚间',icon:'🍜',title:'晚餐外卖',desc:'今天辣的吃够了吗？晚上试试：砂锅粥+小菜，或者蒸菜套餐，或者清汤面。清淡的晚饭让肠胃休息，睡眠质量提升，明天早上起来脸不浮肿。你会发现皮肤状态和前一天晚饭直接挂钩🌾'},
+  {id:'t11',time:'21:00',sec:'🌆 晚间',icon:'✨',title:'护肤程序',desc:'第1步：温水洗脸（35度，别用热水，热水破坏皮肤屏障）→ 第2步：爽肤水轻拍到吸收 → 第3步：保湿乳锁水。总共5分钟。坚持30天会有人问你用了什么产品✨'},
+  {id:'t12',time:'22:30',sec:'🌙 入睡',icon:'🌙',title:'准备入睡',desc:'皮肤在23:00-02:00修复最活跃，这是真的。今天喝水了、走路了、护肤了——已经比昨天的自己好了一点点。放下手机，给自己10分钟缓冲，晚安🌙'},
 ];
-
-const TIPS = [
+const TIPS=[
   {title:'💧 每日补水目标',content:'今天喝够4L水了吗？皮肤暗沉、干燥很多时候是缺水导致的。保温杯放桌上，每小时喝一口，比你想象的容易。'},
   {title:'🥗 护肤从饮食开始',content:'多吃：西红柿（茄红素防晒抗氧化）、胡萝卜（维生素A）、深绿叶菜、蓝莓。少吃：油炸食品、甜饮料、高糖零食。'},
   {title:'😴 睡眠 = 护肤',content:'皮肤在22:00-02:00修复最活跃。23:00前入睡，抵得上你涂所有护肤品。熬夜一晚，第二天肤色差1-2个等级。'},
@@ -359,8 +346,7 @@ const TIPS = [
   {title:'🚇 通勤就是你的运动',content:'上班路提前一站下车走15分钟 + 下班路再走15分钟 = 每天30分钟步行，不需要额外抽时间运动。坚持一个月，体重、皮肤、睡眠都会改变。'},
   {title:'🌅 早餐的重要性',content:'不吃早餐 → 血糖大幅波动 → 午餐容易暴食 → 精力下午崩塌。楼下便利店茶叶蛋+三明治，30秒搞定，让全天能量更稳定。'},
 ];
-
-const NOTIFS = [
+const NOTIFS=[
   {time:'07:30',title:'☀️ 早安，起床啦～',msg:'先别看手机！床头那杯水喝掉600ml'},
   {time:'07:45',title:'🥐 出门前吃点东西',msg:'便利店茶叶蛋+三明治，5分钟搞定'},
   {time:'08:30',title:'🚶 提前一站下车！',msg:'走路去公司，今天运动量完成✅'},
@@ -374,9 +360,8 @@ const NOTIFS = [
   {time:'21:00',title:'✨ 护肤3步，做了吗',msg:'洗脸→爽肤水→保湿乳，5分钟✨'},
   {time:'22:30',title:'🌙 该放下手机了',msg:'23点前睡，皮肤自动修复，晚安🌙'},
 ];
-
-const DAILY_REC = [
-  {breakfast:'便利店：茶叶蛋2个 + 全麦三明治',lunch:'粤菜外卖：菜心牛肉 + 杂粮饭',dinner:'皮蛋瘦肉粥 + 凉拌黄瓜',tip:'补水目标：保温杯放桌上，每完成一件事就喝一口，不知不觉4L就够了',exercise:'上下班各提前一站下车，今天认真走，别刷手机'},
+const DAILY_REC=[
+  {breakfast:'便利店：茶叶蛋2个 + 全麦三明治',lunch:'粤菜外卖：菜心牛肉 + 杂粮饭',dinner:'皮蛋瘦肉粥 + 凉拌黄瓜',tip:'保温杯放桌上，每完成一件事就喝一口，不知不觉4L就够了',exercise:'上下班各提前一站下车，今天认真走，别刷手机'},
   {breakfast:'外卖：广式肠粉加蛋 + 热豆浆',lunch:'轻食沙拉（鸡胸肉款，龙华多门店）',dinner:'清汤牛腩米线 + 烫青菜',tip:'洗脸水温别太热！35-38度最好，热水洗脸会破坏皮肤屏障，加重出油',exercise:'下班路绕一条街走，比直接回家多5分钟也好'},
   {breakfast:'便利店：全家饭团（金枪鱼）+ 纯牛奶250ml',lunch:'砂锅粥套餐（鱼片或虾，配小菜）',dinner:'蒸菜套餐（蒸鱼/蒸蛋/蒸豆腐，选一种）',tip:'今晚22:30放下手机试试。早睡1小时，明天皮肤状态对比一下',exercise:'走路时有意识挺胸收腹，练姿势的同时顺便锻炼核心'},
   {breakfast:'外卖：云吞面（清汤）',lunch:'番茄鸡蛋盖浇饭 + 紫菜蛋花汤',dinner:'白灼虾 + 蒜蓉炒菜心 + 米饭',tip:'午饭多点一份番茄！茄红素是天然抗氧化剂，常吃皮肤更有光泽',exercise:'上班路上试试爬楼梯而不是坐电梯'},
@@ -391,7 +376,7 @@ const DAILY_REC = [
   {breakfast:'便利店：全家三角饭团 + 热豆浆',lunch:'粤式蒸饭（蒸蛋豆腐或蒸排骨）+ 青菜',dinner:'砂锅老火靓汤（龙华有很多外卖）',tip:'今日挑战：晚饭后不点宵夜！饿了喝一杯无糖酸奶',exercise:'今天走路注意脚踝：每10步用脚尖走5步，练小腿'},
   {breakfast:'外卖：叉烧包 + 白粥（早茶款）',lunch:'牛肉炒河粉（今天补充铁元素，护肤有帮助）',dinner:'番茄蛋花汤 + 清炒豆苗 + 米饭',tip:'两周了！坚持两周的人皮肤会开始有变化，主要来自喝水和睡眠改善',exercise:'今天全天步数目标：8000步，打开健康App看看'},
   {breakfast:'便利店：茶叶蛋 + 全麦面包 + 牛奶',lunch:'鸡肉菜心盖浇饭',dinner:'粥底火锅或皮蛋瘦肉粥（清淡版）',tip:'今晚换个干净枕套！枕套上的细菌是痘痘的隐形帮凶',exercise:'上下班路今天各多走一站，挑战一下！'},
-  {breakfast:'外卖：虾仁炒蛋肠粉',lunch:'鸡胸轻食健身餐（藜麦+蔬菜+鸡肉）',dinner:'清蒸鲈鱼 + 炒时蔬（今天补优质蛋白）',tip:'涂保湿霜时顺带轻轻按摩眼周，促进循环，慢慢减少细纹',exercise:'下班路保持快走，心率到110-120次/分钟效果最好'},
+  {breakfast:'外卖：虾仁炒蛋肠粉',lunch:'鸡胸轻食健身餐（藜麦+蔬菜+鸡肉）',dinner:'清蒸鲈鱼 + 炒时蔬',tip:'涂保湿霜时顺带轻轻按摩眼周，促进循环，慢慢减少细纹',exercise:'下班路保持快走，心率到110-120次/分钟效果最好'},
   {breakfast:'便利店：全家饭团 + 纯牛奶',lunch:'越南河粉（清汤牛肉片，清淡好选择）',dinner:'杂粮粥 + 凉拌海带 + 卤豆干',tip:'今天少吃一样加工食品（薯片/速食面/甜饼干），皮肤会说谢谢',exercise:'上班路做颈部运动：低头5秒、仰头5秒、左右各5秒，走路也能做'},
   {breakfast:'外卖：皮蛋粥 + 腐乳',lunch:'湘菜小炒（今天可以吃辣！小炒肉+蒸菜）',dinner:'冬瓜虾仁汤 + 蒸蛋 + 米饭',tip:'皮肤出油多大概率是缺水。多喝水而不是反复洗脸，越洗越油',exercise:'下班路绑定一首最爱的歌，走完这首才到家，多走10分钟'},
   {breakfast:'便利店：茶叶蛋 + 牛奶 + 香蕉',lunch:'日式便当（三文鱼/鸡肉+沙拉）',dinner:'番茄牛肉汤面（汤底清爽，蔬菜多）',tip:'在手机设一个下午2:30的提醒"喝水"，今天看看会不会忘记',exercise:'走路时有意识挺直背部，肩膀向后打开，姿态好身体也好'},
@@ -401,228 +386,190 @@ const DAILY_REC = [
   {breakfast:'便利店：茶叶蛋 + 全麦三明治（回到经典）',lunch:'健康轻食（无酱沙拉或减脂餐）',dinner:'鲜虾云吞汤 + 烫青菜',tip:'买护肤品时，成分表第一位是"水"就是正常的，不要被过度宣传骗',exercise:'下班路上每走100步找个地方做一次深蹲，练下肢力量'},
   {breakfast:'外卖：蛋炒饭（今天早餐换口味）',lunch:'麻辣香锅（今天可以辣！多选蔬菜豆腐）',dinner:'清蒸冬瓜 + 番茄蛋花汤 + 米饭',tip:'午饭吃完不要立刻坐下，先站10分钟，对消化和饭后血糖都有帮助',exercise:'走路时脚跟先着地，再慢慢过渡到脚尖，保护膝盖'},
   {breakfast:'便利店：全家饭团 + 热豆浆（无糖）',lunch:'粿条汤（客家风味，龙华有，清淡）',dinner:'芋头排骨粥（暖胃，今天换换）',tip:'今晚护肤后，看看镜子，做一次自我鼓励——坚持了25天很了不起',exercise:'走路时用肚脐引导方向，感受核心肌群发力'},
-  {breakfast:'外卖：马来西亚椰浆饭或云吞汤',lunch:'日式乌冬面（清汤款，加蔬菜）',dinner:'蚝油生菜 + 清蒸虾 + 米饭（今天高蛋白）',tip:'今晚睡前不刷短视频，改成听轻音乐，帮助更快入睡',exercise:'到公司后做30秒踮脚尖运动，活化小腿，促进血液循环'},
+  {breakfast:'外卖：马来西亚椰浆饭或云吞汤',lunch:'日式乌冬面（清汤款，加蔬菜）',dinner:'蚝油生菜 + 清蒸虾 + 米饭',tip:'今晚睡前不刷短视频，改成听轻音乐，帮助更快入睡',exercise:'到公司后做30秒踮脚尖运动，活化小腿，促进血液循环'},
   {breakfast:'便利店：茶叶蛋 + 牛奶 + 坚果一小包',lunch:'泰式炒河粉（今天泰国风味）',dinner:'清淡炒菜 + 白粥（今天简单吃，让肠胃休息）',tip:'今日护肤：睡前厚涂唇膏，明天唇色明显改善',exercise:'今天下班路放慢脚步，享受走路的过程，不赶路'},
-  {breakfast:'外卖：虾仁蛋炒饭',lunch:'台式卤肉饭 + 味增汤 + 烫青菜',dinner:'西红柿炖牛腩 + 杂粮米饭（维生素C+铁同补）',tip:'快一个月了！哪些习惯建立了？哪些还需要加强？做个小复盘',exercise:'今天全天目标1万步，回家前步数不够就在楼下多走一圈'},
+  {breakfast:'外卖：虾仁蛋炒饭',lunch:'台式卤肉饭 + 味增汤 + 烫青菜',dinner:'西红柿炖牛腩 + 杂粮米饭',tip:'快一个月了！哪些习惯建立了？哪些还需要加强？做个小复盘',exercise:'今天全天目标1万步，回家前步数不够就在楼下多走一圈'},
   {breakfast:'便利店：全麦面包 + 花生酱 + 牛奶',lunch:'海南鸡饭（清淡，鸡肉蛋白质高，龙华有）',dinner:'排骨藕汤 + 清炒豌豆尖',tip:'今天给自己买一个好用的保湿产品或一份喜欢的健康餐，奖励自己坚持',exercise:'和往常一样认真走完通勤路，这已经是你的习惯了'},
   {breakfast:'外卖：粤式早茶（叉烧包+虾饺+皮蛋粥，今天犒劳）',lunch:'随便吃自己最想吃的，今天没有限制！',dinner:'皮蛋瘦肉粥（回到第1天，感受一下30天的变化）',tip:'30天完成！皮肤、睡眠、精力都应该有改善了。循环继续，保持就是胜利💪',exercise:'今天走路时回想一下这30天，你已经多走了约180公里'},
 ];
 
-// ===== 游戏系统 =====
-const LEVELS = [
-  {xp:0,   name:'养生小白', icon:'🌱'},
-  {xp:150, name:'养生学徒', icon:'🌿'},
-  {xp:400, name:'养生少女', icon:'✨'},
-  {xp:800, name:'养生达人', icon:'💎'},
-  {xp:1500,name:'养生仙女', icon:'👑'},
-  {xp:3000,name:'养生大师', icon:'🏆'},
+const LEVELS=[{xp:0,name:'养生小白',icon:'🌱'},{xp:150,name:'养生学徒',icon:'🌿'},{xp:400,name:'养生少女',icon:'✨'},{xp:800,name:'养生达人',icon:'💎'},{xp:1500,name:'养生仙女',icon:'👑'},{xp:3000,name:'养生大师',icon:'🏆'}];
+const BADGES=[
+  {id:'first',icon:'🌟',name:'第一步',desc:'完成第一次打卡',check:s=>s.totalTasks>=1},
+  {id:'s3',icon:'🔥',name:'三天热身',desc:'连续打卡3天',check:s=>s.maxStreak>=3},
+  {id:'s7',icon:'💥',name:'一周战士',desc:'连续打卡7天',check:s=>s.maxStreak>=7},
+  {id:'p1',icon:'⭐',name:'完美一天',desc:'单日完成全部12项',check:s=>s.perfectDays>=1},
+  {id:'t50',icon:'💪',name:'五十连击',desc:'累计完成50个任务',check:s=>s.totalTasks>=50},
+  {id:'t100',icon:'🎯',name:'百步穿杨',desc:'累计完成100个任务',check:s=>s.totalTasks>=100},
+  {id:'s14',icon:'👑',name:'两周王者',desc:'连续打卡14天',check:s=>s.maxStreak>=14},
+  {id:'p3',icon:'💎',name:'三次完美',desc:'三次单日全部完成',check:s=>s.perfectDays>=3},
+  {id:'s30',icon:'🏆',name:'月度传说',desc:'连续打卡30天',check:s=>s.maxStreak>=30},
 ];
-const BADGES = [
-  {id:'first',   icon:'🌟',name:'第一步',  desc:'完成第一次打卡',    check:s=>s.totalTasks>=1},
-  {id:'streak3', icon:'🔥',name:'三天热身',desc:'连续打卡3天',       check:s=>s.maxStreak>=3},
-  {id:'streak7', icon:'💥',name:'一周战士',desc:'连续打卡7天',       check:s=>s.maxStreak>=7},
-  {id:'perfect1',icon:'⭐',name:'完美一天',desc:'单日完成全部12项',  check:s=>s.perfectDays>=1},
-  {id:'tasks50', icon:'💪',name:'五十连击',desc:'累计完成50个任务',  check:s=>s.totalTasks>=50},
-  {id:'tasks100',icon:'🎯',name:'百步穿杨',desc:'累计完成100个任务', check:s=>s.totalTasks>=100},
-  {id:'streak14',icon:'👑',name:'两周王者',desc:'连续打卡14天',      check:s=>s.maxStreak>=14},
-  {id:'perfect3',icon:'💎',name:'三次完美',desc:'三次单日全部完成',  check:s=>s.perfectDays>=3},
-  {id:'streak30',icon:'🏆',name:'月度传说',desc:'连续打卡30天',      check:s=>s.maxStreak>=30},
-];
-const XP_TASK=10, XP_BONUS=50;
+const XP_T=10,XP_B=50;
 
-function computeStats(){
-  const h=JSON.parse(localStorage.getItem('history')||'{}');
-  const keys=Object.keys(h).sort();
-  const totalTasks=keys.reduce((s,k)=>s+(h[k].done||0),0);
-  const totalXP=keys.reduce((s,k)=>{
-    const d=h[k].done||0,t=h[k].total||12;
-    return s+d*XP_TASK+(d>=t?XP_BONUS:0);
-  },0);
-  const perfectDays=keys.filter(k=>(h[k].done||0)>=(h[k].total||12)).length;
-  let streak=0;
-  for(let i=0;;i++){const d=new Date();d.setDate(d.getDate()-i);const k=d.toISOString().split('T')[0];if(h[k]&&h[k].done>0)streak++;else break;}
-  let maxStreak=0,cur=0;
-  keys.forEach(k=>{if(h[k]&&h[k].done>0){cur++;maxStreak=Math.max(maxStreak,cur);}else cur=0;});
+function stats(){
+  const h=JSON.parse(localStorage.getItem('history')||'{}'),ks=Object.keys(h).sort();
+  const totalTasks=ks.reduce((s,k)=>s+(h[k].done||0),0);
+  const totalXP=ks.reduce((s,k)=>{const d=h[k].done||0,t=h[k].total||12;return s+d*XP_T+(d>=t?XP_B:0);},0);
+  const perfectDays=ks.filter(k=>(h[k].done||0)>=(h[k].total||12)).length;
+  let streak=0;for(let i=0;;i++){const d=new Date();d.setDate(d.getDate()-i);const k=d.toISOString().split('T')[0];if(h[k]&&h[k].done>0)streak++;else break;}
+  let maxStreak=0,cur=0;ks.forEach(k=>{if(h[k]&&h[k].done>0){cur++;maxStreak=Math.max(maxStreak,cur);}else cur=0;});
   return{totalTasks,totalXP,perfectDays,streak,maxStreak};
 }
-
-function getLevelInfo(xp){
-  let li=0;
-  for(let i=LEVELS.length-1;i>=0;i--){if(xp>=LEVELS[i].xp){li=i;break;}}
-  const lv=LEVELS[li],nx=LEVELS[li+1];
-  const inLv=xp-lv.xp, need=nx?nx.xp-lv.xp:1;
-  const pct=nx?Math.min(100,Math.round(inLv/need*100)):100;
+function lvInfo(xp){
+  let li=0;for(let i=LEVELS.length-1;i>=0;i--){if(xp>=LEVELS[i].xp){li=i;break;}}
+  const lv=LEVELS[li],nx=LEVELS[li+1],inLv=xp-lv.xp,need=nx?nx.xp-lv.xp:1,pct=nx?Math.min(100,Math.round(inLv/need*100)):100;
   return{li,lv,nx,inLv,need,pct};
 }
-
-function getDateKey(){return new Date().toISOString().split('T')[0];}
-function getDayState(){const r=localStorage.getItem('day_'+getDateKey());return r?JSON.parse(r):{};}
-function saveDayState(state){
-  const k=getDateKey();
-  localStorage.setItem('day_'+k,JSON.stringify(state));
-  const done=Object.values(state).filter(Boolean).length;
+function dateKey(){return new Date().toISOString().split('T')[0];}
+function dayState(){const r=localStorage.getItem('day_'+dateKey());return r?JSON.parse(r):{};}
+function saveState(s){
+  const k=dateKey();localStorage.setItem('day_'+k,JSON.stringify(s));
+  const done=Object.values(s).filter(Boolean).length;
   const h=JSON.parse(localStorage.getItem('history')||'{}');
-  h[k]={done,total:TASKS.length};
-  localStorage.setItem('history',JSON.stringify(h));
+  h[k]={done,total:TASKS.length};localStorage.setItem('history',JSON.stringify(h));
 }
 
 let prevXP=0;
-function toggleTask(id,event){
-  const state=getDayState();
-  const wasUnchecked=!state[id];
-  state[id]=!state[id];
-  saveDayState(state);
-  const stats=computeStats();
-  if(wasUnchecked){
-    spawnParticles(event);
-    spawnXPFloat(event,'+'+XP_TASK+' XP');
-    const oldLv=getLevelInfo(prevXP).li, newLv=getLevelInfo(stats.totalXP).li;
-    if(newLv>oldLv) setTimeout(()=>showLevelUp(LEVELS[newLv]),600);
-    const done=Object.values(state).filter(Boolean).length;
-    if(done===TASKS.length){
-      setTimeout(()=>{spawnConfetti();showToast('🎉 完美！+'+XP_BONUS+' 额外XP！');},400);
-    } else {
-      showToast('✅ +'+XP_TASK+' XP');
-    }
+function toggleTask(id,e){
+  const s=dayState(),was=!s[id];s[id]=!s[id];saveState(s);
+  const st=stats();
+  if(was){
+    spawnP(e);spawnXP(e,'+'+XP_T+' XP');
+    const ol=lvInfo(prevXP).li,nl=lvInfo(st.totalXP).li;
+    if(nl>ol)setTimeout(()=>showLU(LEVELS[nl]),600);
+    const done=Object.values(s).filter(Boolean).length;
+    if(done===TASKS.length){setTimeout(()=>{confetti();toast('🎉 完美！+'+XP_B+' 额外XP！');},400);}
+    else toast('✅ +'+XP_T+' XP');
   }
-  prevXP=stats.totalXP;
-  renderTasks(); updateProgress(); updateHeaderXP();
+  prevXP=st.totalXP;
+  renderTasks();updateRing();updateXP();
+}
+function toggleDesc(id){
+  document.getElementById('ti-'+id).classList.toggle('open');
 }
 
-function spawnParticles(e){
-  const x=e?e.clientX:window.innerWidth/2, y=e?e.clientY:window.innerHeight/2;
+function spawnP(e){
+  const x=e?e.clientX:innerWidth/2,y=e?e.clientY:innerHeight/2;
   ['⭐','✨','💫','🌟','💥','🎊'].forEach((em,i)=>{
-    const p=document.createElement('div'); p.className='particle'; p.textContent=em;
+    const p=document.createElement('div');p.className='particle';p.textContent=em;
     p.style.cssText=`left:${x+(Math.random()-.5)*70}px;top:${y-10}px;animation-delay:${i*.05}s`;
-    document.body.appendChild(p); setTimeout(()=>p.remove(),1000);
+    document.body.appendChild(p);setTimeout(()=>p.remove(),1000);
   });
 }
-function spawnXPFloat(e,txt){
-  const x=e?e.clientX:window.innerWidth/2, y=e?e.clientY:window.innerHeight/2;
-  const el=document.createElement('div'); el.className='xp-float'; el.textContent=txt;
+function spawnXP(e,t){
+  const x=e?e.clientX:innerWidth/2,y=e?e.clientY:innerHeight/2;
+  const el=document.createElement('div');el.className='xp-pop';el.textContent=t;
   el.style.cssText=`left:${x-20}px;top:${y-30}px`;
-  document.body.appendChild(el); setTimeout(()=>el.remove(),1100);
+  document.body.appendChild(el);setTimeout(()=>el.remove(),1100);
 }
-function spawnConfetti(){
+function confetti(){
   const em=['🎉','🎊','⭐','🌟','💫','✨','🎈','💎','👑'];
-  for(let i=0;i<18;i++) setTimeout(()=>{
-    const p=document.createElement('div'); p.className='particle';
-    p.textContent=em[Math.floor(Math.random()*em.length)];
-    p.style.cssText=`left:${Math.random()*window.innerWidth}px;top:${Math.random()*window.innerHeight*.7}px;font-size:${14+Math.random()*16}px`;
-    document.body.appendChild(p); setTimeout(()=>p.remove(),1000);
+  for(let i=0;i<18;i++)setTimeout(()=>{
+    const p=document.createElement('div');p.className='particle';p.textContent=em[~~(Math.random()*em.length)];
+    p.style.cssText=`left:${Math.random()*innerWidth}px;top:${Math.random()*innerHeight*.7}px;font-size:${14+Math.random()*16}px`;
+    document.body.appendChild(p);setTimeout(()=>p.remove(),1000);
   },i*60);
 }
+function showLU(lv){document.getElementById('lu-icon').textContent=lv.icon;document.getElementById('lu-name').textContent=lv.name;document.getElementById('lu-overlay').classList.add('show');confetti();}
+function closeLU(){document.getElementById('lu-overlay').classList.remove('show');}
 
-function showLevelUp(lv){
-  document.getElementById('levelup-icon').textContent=lv.icon;
-  document.getElementById('levelup-name').textContent=lv.name;
-  document.getElementById('levelup-overlay').classList.add('show');
-  spawnConfetti();
+function updateRing(){
+  const s=dayState(),done=Object.values(s).filter(Boolean).length,pct=done/TASKS.length;
+  const circumference=384,offset=circumference*(1-pct);
+  document.getElementById('ring-fill').style.strokeDashoffset=offset;
+  document.getElementById('ring-n').textContent=done;
+  const notes=['今天还没开始，起来打卡吧 💪','好的开始！继续 🌱','已完成'+done+'项，不错！','过半了！状态很好 ✨','快完成了，冲！🎯','🎉 今天全部完成！太棒了！'];
+  const ni=done===0?0:done<=2?1:done<=5?2:done<=8?3:done<TASKS.length?4:5;
+  document.getElementById('status-note').textContent=notes[ni];
 }
-function closeLevelUp(){document.getElementById('levelup-overlay').classList.remove('show');}
-
-function updateHeaderXP(){
-  const s=computeStats();
-  const{li,lv,nx,inLv,need,pct}=getLevelInfo(s.totalXP);
-  document.getElementById('header-level').textContent=`Lv.${li+1} ${lv.name} ${lv.icon}`;
-  document.getElementById('header-streak').textContent=`🔥 ${s.streak}天`;
+function updateXP(){
+  const st=stats(),{li,lv,nx,inLv,need,pct}=lvInfo(st.totalXP);
+  document.getElementById('h-level').textContent=`Lv.${li+1} ${lv.name} ${lv.icon}`;
+  document.getElementById('h-streak').textContent=`🔥 ${st.streak}天`;
   document.getElementById('xp-fill').style.width=pct+'%';
-  document.getElementById('xp-text').textContent=nx?`${inLv} / ${need} XP`:`${s.totalXP} XP`;
-  prevXP=s.totalXP;
+  document.getElementById('xp-lbl').textContent=nx?`${inLv}/${need} XP`:`${st.totalXP} XP`;
+  prevXP=st.totalXP;
 }
 
 function renderDailyRec(){
   const dy=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/86400000);
-  const idx=(dy-1+30)%30, rec=DAILY_REC[idx], dn=idx+1;
-  document.getElementById('daily-rec').innerHTML=`
-    <div class="rec-card">
-      <div class="rec-header"><span>🌟 今日推荐</span><span class="rec-day">第${dn}/30天</span></div>
-      <div class="rec-body">
-        <div class="rec-row"><span class="rec-icon">🥐</span><span class="rec-label">早餐</span><span class="rec-text">${rec.breakfast}</span></div>
-        <div class="rec-row"><span class="rec-icon">🥗</span><span class="rec-label">午餐</span><span class="rec-text">${rec.lunch}</span></div>
-        <div class="rec-row"><span class="rec-icon">🍜</span><span class="rec-label">晚餐</span><span class="rec-text">${rec.dinner}</span></div>
-        <div class="rec-row"><span class="rec-icon">🌿</span><span class="rec-label">养生</span><span class="rec-text">${rec.tip}</span></div>
-        <div class="rec-row"><span class="rec-icon">💪</span><span class="rec-label">运动</span><span class="rec-text">${rec.exercise}</span></div>
-      </div>
-    </div>`;
+  const idx=(dy-1+30)%30,r=DAILY_REC[idx];
+  document.getElementById('daily-rec').innerHTML=`<div class="rec-card">
+    <div class="rec-head"><span class="rec-head-t">🌟 今日推荐</span><span class="rec-badge">第${idx+1}/30天</span></div>
+    <div class="rec-body">
+      <div class="rec-row"><span class="rec-em">🥐</span><span class="rec-tag">早餐</span><span class="rec-txt">${r.breakfast}</span></div>
+      <div class="rec-row"><span class="rec-em">🥗</span><span class="rec-tag">午餐</span><span class="rec-txt">${r.lunch}</span></div>
+      <div class="rec-row"><span class="rec-em">🍜</span><span class="rec-tag">晚餐</span><span class="rec-txt">${r.dinner}</span></div>
+      <div class="rec-row"><span class="rec-em">🌿</span><span class="rec-tag">养生</span><span class="rec-txt">${r.tip}</span></div>
+      <div class="rec-row"><span class="rec-em">💪</span><span class="rec-tag">运动</span><span class="rec-txt">${r.exercise}</span></div>
+    </div></div>`;
 }
 
 function renderTasks(){
-  const state=getDayState(), c=document.getElementById('task-list');
-  let html='', cs='';
+  const s=dayState(),c=document.getElementById('task-list');
+  let html='',cs='';
   TASKS.forEach(t=>{
-    if(t.section!==cs){cs=t.section;html+=`<div class="section-label">${cs}</div>`;}
-    const done=!!state[t.id];
-    html+=`<div class="task-card ${done?'done':''}" onclick="toggleTask('${t.id}',event)">
-      <div class="time-badge">${t.time}</div>
-      <div class="task-icon">${t.icon}</div>
-      <div class="task-content">
-        <div class="task-title">${t.title}</div>
-        <div class="task-desc">${t.desc}</div>
-        <div class="task-xp">${done?'✅ 已获得 +10 XP':'⭐ 完成得 +10 XP'}</div>
+    if(t.sec!==cs){cs=t.sec;html+=`<div class="sec-head"><span class="sec-title">${cs}</span></div>`;}
+    const done=!!s[t.id];
+    html+=`<div class="task-item ${done?'done':''}" id="ti-${t.id}">
+      <div class="task-head" onclick="toggleDesc('${t.id}')">
+        <span class="t-icon">${t.icon}</span>
+        <div class="t-main">
+          <div class="t-row1">
+            <span class="t-name">${t.title}</span>
+            <span class="t-time">${t.time}</span>
+            <span class="t-xp">${done?'✅ +10':'⭐ +10'} XP</span>
+          </div>
+        </div>
+        <span class="t-arrow">▼</span>
+        <div class="t-check" onclick="event.stopPropagation();toggleTask('${t.id}',event)">${done?'✓':''}</div>
       </div>
-      <div class="task-check">${done?'✓':''}</div>
+      <div class="t-body"><div class="t-desc">${t.desc}</div></div>
     </div>`;
   });
   c.innerHTML=html;
 }
 
-function updateProgress(){
-  const state=getDayState();
-  const done=Object.values(state).filter(Boolean).length, total=TASKS.length;
-  const pct=Math.round(done/total*100);
-  const xp=done*XP_TASK+(done>=total?XP_BONUS:0);
-  document.getElementById('progress-text').textContent=`${done}/${total}`;
-  document.getElementById('progress-fill').style.width=pct+'%';
-  document.getElementById('today-xp').textContent=`+${xp} XP今日`;
-  const notes=['今天还没开始，起来打卡吧 💪','好的开始！继续 🌱','已完成'+done+'项，不错！','过半了！状态很好 ✨','快完成了，冲！🎯','🎉 完美！今天全部完成！'];
-  const ni=done===0?0:done<=2?1:done<=5?2:done<=8?3:done<total?4:5;
-  document.getElementById('progress-note').textContent=notes[ni];
-}
-
-function renderHeader(){
-  const now=new Date(), days=['日','一','二','三','四','五','六'];
-  document.getElementById('date-display').textContent=`${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 周${days[now.getDay()]}`;
-  const h=now.getHours();
-  const g={early:'还没睡？记得早点休息 🌙',morning:'早安！今天也是变美的一天 ☀️',lunch:'上午好！午饭记得多夹蔬菜 🥗',afternoon:'下午好！记得多喝水 💧',evening:'下班了！护肤和运动别忘 🏃',night:'晚上好！记得23点前睡觉 🌙'};
-  const k=h<6?'early':h<10?'morning':h<14?'lunch':h<18?'afternoon':h<21?'evening':'night';
-  document.getElementById('greeting-text').textContent=g[k];
-}
-
 function renderTip(){
-  const dy=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/86400000);
-  const tip=TIPS[dy%TIPS.length];
-  document.getElementById('daily-tip').innerHTML=`<h3>${tip.title}</h3><p>${tip.content}</p>`;
+  const dy=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/86400000),tip=TIPS[dy%TIPS.length];
+  document.getElementById('daily-tip').innerHTML=`<div class="tip-t">${tip.title}</div><div class="tip-b">${tip.content}</div>`;
+}
+function renderHeader(){
+  const n=new Date(),days=['日','一','二','三','四','五','六'];
+  document.getElementById('h-date').textContent=`${n.getFullYear()}年${n.getMonth()+1}月${n.getDate()}日 周${days[n.getDay()]}`;
+  const h=n.getHours();
+  const g={early:'还没睡？记得早点休息 🌙',morning:'早安！今天也是变美的一天 ☀️',lunch:'上午好！午饭记得多夹蔬菜 🥗',afternoon:'下午好！记得多喝水 💧',evening:'下班了！护肤运动别忘 🏃',night:'晚上好！记得23点前睡觉 🌙'};
+  const k=h<6?'early':h<10?'morning':h<14?'lunch':h<18?'afternoon':h<21?'evening':'night';
+  document.getElementById('h-greet').textContent=g[k];
 }
 
 function renderStats(){
-  const s=computeStats();
-  const{li,lv,nx,inLv,need,pct}=getLevelInfo(s.totalXP);
-  document.getElementById('stats-level-icon').textContent=lv.icon;
-  document.getElementById('stats-level-name').textContent=lv.name;
-  document.getElementById('stats-level-num').textContent=`Lv.${li+1}`;
-  document.getElementById('stats-xp-label').textContent=nx?`距离「${nx.name}」还需${need-inLv} XP`:'已达最高等级 🏆';
-  document.getElementById('stats-xp-fill').style.width=pct+'%';
-  document.getElementById('stats-xp-text').textContent=nx?`${inLv} / ${need} XP`:`${s.totalXP} XP 满级！`;
-  document.getElementById('streak-num').textContent=s.streak;
-  document.getElementById('total-xp-display').textContent=s.totalXP;
-  document.getElementById('total-tasks').textContent=s.totalTasks;
-  document.getElementById('perfect-days').textContent=s.perfectDays;
+  const st=stats(),{li,lv,nx,inLv,need,pct}=lvInfo(st.totalXP);
+  document.getElementById('s-icon').textContent=lv.icon;
+  document.getElementById('s-name').textContent=lv.name;
+  document.getElementById('s-num').textContent=`Lv.${li+1}`;
+  document.getElementById('s-xplbl').textContent=nx?`距「${nx.name}」还需${need-inLv} XP`:'已达最高等级 🏆';
+  document.getElementById('s-xpbar').style.width=pct+'%';
+  document.getElementById('s-xptxt').textContent=nx?`${inLv}/${need}`:`${st.totalXP}`;
+  document.getElementById('s-streak').textContent=st.streak;
+  document.getElementById('s-totalxp').textContent=st.totalXP;
+  document.getElementById('s-tasks').textContent=st.totalTasks;
+  document.getElementById('s-perfect').textContent=st.perfectDays;
   document.getElementById('badges-grid').innerHTML=BADGES.map(b=>{
-    const u=b.check(s);
-    return`<div class="badge-item ${u?'':'locked'}"><div class="badge-icon">${u?b.icon:'🔒'}</div><div class="badge-name">${b.name}</div><div class="badge-desc">${b.desc}</div></div>`;
+    const u=b.check(st);
+    return`<div class="bg-card ${u?'':'locked'}"><div class="bg-em">${u?b.icon:'🔒'}</div><div class="bg-name">${b.name}</div><div class="bg-desc">${b.desc}</div></div>`;
   }).join('');
-  const h=JSON.parse(localStorage.getItem('history')||'{}'),today=getDateKey(),dn=['日','一','二','三','四','五','六'];
+  const h=JSON.parse(localStorage.getItem('history')||'{}'),td=dateKey(),dn=['日','一','二','三','四','五','六'];
   let wh='';
   for(let i=6;i>=0;i--){
-    const d=new Date();d.setDate(d.getDate()-i);
-    const k=d.toISOString().split('T')[0],data=h[k],p2=data?Math.round(data.done/data.total*100):0,it=k===today;
+    const d=new Date();d.setDate(d.getDate()-i);const k=d.toISOString().split('T')[0],data=h[k],p2=data?Math.round(data.done/data.total*100):0,it=k===td;
     wh+=`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
-      <div style="font-size:10px;color:${p2>0?'#7c3aed':'#bbb'};font-weight:600">${p2>0?p2+'%':'—'}</div>
-      <div style="width:100%;height:56px;background:#f3f0ff;border-radius:6px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end">
-        <div style="height:${p2}%;background:linear-gradient(0deg,#7c3aed,#a855f7);transition:height 0.6s"></div>
+      <div style="font-size:10px;color:${p2>0?'#8b5cf6':'#d1d5db'};font-weight:600">${p2>0?p2+'%':'—'}</div>
+      <div style="width:100%;height:52px;background:#f3f0ff;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end">
+        <div style="height:${p2}%;background:linear-gradient(0deg,#8b5cf6,#c084fc);transition:height 0.6s"></div>
       </div>
-      <div style="font-size:11px;color:${it?'#7c3aed':'#aaa'};font-weight:${it?'700':'400'}">周${dn[d.getDay()]}</div>
+      <div style="font-size:11px;color:${it?'#8b5cf6':'#9ca3af'};font-weight:${it?700:400}">周${dn[d.getDay()]}</div>
     </div>`;
   }
   document.getElementById('week-chart').innerHTML=wh;
@@ -631,40 +578,26 @@ function renderStats(){
 function renderNotifSchedule(){
   document.getElementById('topic-input').value=localStorage.getItem('bark_key')||'';
   document.getElementById('notif-schedule').innerHTML=NOTIFS.map(n=>`
-    <div class="notif-row">
-      <span style="font-size:11px;font-weight:700;color:#7c3aed;background:#f3f0ff;padding:2px 8px;border-radius:20px;white-space:nowrap;margin-top:2px">${n.time}</span>
-      <div><div style="font-size:13px;font-weight:600">${n.title}</div><div style="font-size:12px;color:#999;margin-top:1px">${n.msg}</div></div>
+    <div class="n-row">
+      <span style="font-size:11px;font-weight:700;color:#8b5cf6;background:#f3f0ff;padding:2px 8px;border-radius:20px;white-space:nowrap;margin-top:2px">${n.time}</span>
+      <div><div style="font-size:13px;font-weight:600">${n.title}</div><div style="font-size:12px;color:#9ca3af;margin-top:1px">${n.msg}</div></div>
     </div>`).join('');
 }
 
-function showPage(name){
+function showPage(n){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
-  document.getElementById('nav-'+name).classList.add('active');
-  if(name==='stats') renderStats();
-  if(name==='settings') renderNotifSchedule();
+  document.getElementById('page-'+n).classList.add('active');
+  document.getElementById('nav-'+n).classList.add('active');
+  if(n==='stats')renderStats();
+  if(n==='settings')renderNotifSchedule();
 }
+function saveTopic(){const v=document.getElementById('topic-input').value.trim();if(v){localStorage.setItem('bark_key',v);toast('✅ Bark Key 已保存');}}
+function resetToday(){if(confirm('重置今日打卡记录？')){localStorage.removeItem('day_'+dateKey());renderTasks();updateRing();toast('已重置今日打卡');}}
+function clearAll(){if(confirm('清除所有历史数据？此操作无法撤销。')){Object.keys(localStorage).forEach(k=>{if(k.startsWith('day_')||k==='history')localStorage.removeItem(k);});renderTasks();updateRing();updateXP();toast('已清除所有数据');}}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 
-function saveTopic(){
-  const v=document.getElementById('topic-input').value.trim();
-  if(v){localStorage.setItem('bark_key',v);showToast('✅ Bark Key 已保存');}
-}
-function resetToday(){
-  if(confirm('重置今日打卡记录？')){localStorage.removeItem('day_'+getDateKey());renderTasks();updateProgress();showToast('已重置今日打卡');}
-}
-function clearAll(){
-  if(confirm('清除所有历史数据？此操作无法撤销。')){
-    Object.keys(localStorage).forEach(k=>{if(k.startsWith('day_')||k==='history')localStorage.removeItem(k);});
-    renderTasks();updateProgress();updateHeaderXP();showToast('已清除所有数据');
-  }
-}
-function showToast(msg){
-  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2000);
-}
-
-renderHeader();renderDailyRec();renderTasks();updateProgress();updateHeaderXP();renderTip();
+renderHeader();renderDailyRec();renderTasks();updateRing();updateXP();renderTip();
 setInterval(renderHeader,60000);
 </script>
 </body>
