@@ -31,7 +31,7 @@
       .ring-big{font-size:64px}
     }
 
-    .hero{background:linear-gradient(160deg,#1a0533 0%,#4a1060 35%,#8b2fc9 65%,#c44dff 100%);padding:54px 20px 64px;position:relative;overflow:hidden}
+    .hero{padding:54px 20px 64px;position:relative;overflow:hidden}
     .hero-orbs{position:absolute;inset:0;pointer-events:none}
     .orb{position:absolute;border-radius:50%;filter:blur(40px);opacity:.45}
     .orb1{width:180px;height:180px;background:#f43f5e;top:-60px;right:-40px}
@@ -323,6 +323,17 @@
     .pet-stage-name.locked{color:#a1a1aa}
     .pet-stage-desc{font-size:11px;color:#a1a1aa;margin-top:2px}
     .pet-stage-xp{font-size:10px;font-weight:700;color:#8b5cf6;background:#f3f0ff;padding:2px 8px;border-radius:20px;flex-shrink:0}
+
+    @keyframes sceneFall{0%{transform:translateY(-30px) rotate(0deg)}100%{transform:translateY(110vh) rotate(360deg)}}
+    @keyframes sceneDrift{0%{transform:translateX(0)}100%{transform:translateX(120vw)}}
+    @keyframes sceneTwinkle{0%,100%{opacity:.2;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+    @keyframes sceneRise{0%{transform:translateY(0);opacity:.8}100%{transform:translateY(-120vh);opacity:0}}
+    @keyframes sceneWave{0%,100%{transform:translateX(0)}50%{transform:translateX(-3%)}}
+    @keyframes scenePulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
+    @keyframes sceneFlicker{0%,100%{opacity:.6}50%{opacity:1}}
+    @keyframes sceneAurora{0%,100%{transform:skewX(-5deg) scaleY(1)}50%{transform:skewX(5deg) scaleY(1.1)}}
+    @keyframes sceneFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-15px) rotate(2deg)}}
+    @keyframes sceneSway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
   </style>
 </head>
 <body>
@@ -346,8 +357,10 @@
 
 <!-- ═══ TODAY ═══ -->
 <div id="page-today" class="page active">
-  <div class="hero">
-    <div class="hero-orbs"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+  <div class="hero" id="hero-main">
+    <div id="hero-scene" style="position:absolute;inset:0;z-index:0;overflow:hidden"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.4) 100%);z-index:0;pointer-events:none"></div>
+    <div style="position:relative;z-index:1">
     <div class="hero-top">
       <div class="hpill" id="h-lv">Lv.1 养生小白 🌱</div>
       <div class="hpill hpill-fire" id="h-st">🔥 0天</div>
@@ -376,6 +389,7 @@
     <div class="xp-row">
       <div class="xp-track"><div class="xp-prog" id="xpprog" style="width:0%"></div></div>
       <div class="xp-txt" id="xptxt">0/150 XP</div>
+    </div>
     </div>
   </div>
 
@@ -1781,7 +1795,547 @@ function resetToday(){if(confirm('重置今日打卡记录？')){localStorage.re
 function clearAll(){if(confirm('清除所有历史数据？此操作无法撤销。')){Object.keys(localStorage).forEach(k=>{if(k.startsWith('day_')||k==='history')localStorage.removeItem(k);});renderTasks();updateRing();updateXPBar();toast('已清除所有数据');}}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 
-renderHeader();renderDailyRec();renderTasks();updateRing();updateXPBar();renderTip();renderTodayPetCard();
+
+const SCENES = [
+  {
+    name: '樱花晨曦',
+    render: () => {
+      const petals = Array.from({length:8}, (_,i) =>
+        `<div style="position:absolute;left:${8+i*11}%;top:-20px;font-size:${14+i%3*4}px;animation:sceneFall ${2.5+i*.4}s linear ${i*.4}s infinite">🌸</div>`
+      ).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#ffcba4,#ff9a9e 50%,#ffecd2)">
+        <svg viewBox="0 0 400 120" style="position:absolute;bottom:0;width:100%;height:55%" preserveAspectRatio="none">
+          <path d="M0 80 Q60 30 120 60 Q180 10 240 50 Q300 20 360 40 Q380 30 400 45 L400 120 L0 120Z" fill="#c084fc" opacity="0.4"/>
+          <path d="M0 100 Q80 60 160 85 Q240 50 320 75 L400 80 L400 120 L0 120Z" fill="#9333ea" opacity="0.3"/>
+        </svg>
+        ${petals}
+      </div>`;
+    }
+  },
+  {
+    name: '星空夜语',
+    render: () => {
+      const stars = Array.from({length:20}, (_,i) =>
+        `<div style="position:absolute;left:${Math.round(3+i*4.7)}%;top:${Math.round(5+i%7*12)}%;width:3px;height:3px;background:white;border-radius:50%;animation:sceneTwinkle ${1+i%4*.5}s ease-in-out ${i*.2}s infinite"></div>`
+      ).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#0a0020,#1a0a4a 50%,#2d1470)">
+        ${stars}
+        <svg viewBox="0 0 400 200" style="position:absolute;top:10%;right:5%;width:15%" preserveAspectRatio="xMidYMid meet">
+          <path d="M40 20 A30 30 0 1 1 10 50 A20 20 0 1 0 40 20Z" fill="#fbbf24" opacity="0.9"/>
+        </svg>
+      </div>`;
+    }
+  },
+  {
+    name: '金色落日',
+    render: () => {
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#ff6b35,#f7c59f 50%,#ffe0b2)">
+        <div style="position:absolute;bottom:28%;left:50%;transform:translateX(-50%);width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,#ff8c00,#ff4500);box-shadow:0 0 40px #ff8c00,0 0 80px rgba(255,140,0,.4)"></div>
+        <svg viewBox="0 0 400 130" style="position:absolute;bottom:0;width:100%;height:50%" preserveAspectRatio="none">
+          <path d="M0 70 Q40 30 80 55 Q120 20 160 45 Q200 15 240 40 Q280 10 320 35 Q360 20 400 30 L400 130 L0 130Z" fill="#374151" opacity="0.8"/>
+          <path d="M0 90 Q50 70 100 80 Q150 60 200 75 Q250 55 300 70 L400 65 L400 130 L0 130Z" fill="#1f2937" opacity="0.9"/>
+          <ellipse cx="80" cy="55" rx="50" ry="18" fill="#6b7280" opacity="0.5"/>
+          <ellipse cx="300" cy="45" rx="60" ry="20" fill="#6b7280" opacity="0.4"/>
+        </svg>
+      </div>`;
+    }
+  },
+  {
+    name: '大海波涌',
+    render: () => {
+      const gulls = [
+        `<svg viewBox="0 0 40 20" style="position:absolute;top:18%;left:20%;width:30px"><path d="M0 10 Q10 2 20 10 Q30 2 40 10" fill="none" stroke="white" stroke-width="2"/></svg>`,
+        `<svg viewBox="0 0 40 20" style="position:absolute;top:25%;left:55%;width:24px"><path d="M0 10 Q10 2 20 10 Q30 2 40 10" fill="none" stroke="white" stroke-width="2"/></svg>`,
+        `<svg viewBox="0 0 40 20" style="position:absolute;top:12%;left:70%;width:20px"><path d="M0 10 Q10 2 20 10 Q30 2 40 10" fill="none" stroke="white" stroke-width="2"/></svg>`
+      ].join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#87ceeb,#1e90ff 60%,#006994)">
+        <svg viewBox="0 0 400 80" style="position:absolute;bottom:0;width:100%;height:40%;animation:sceneWave 4s ease-in-out infinite" preserveAspectRatio="none">
+          <path d="M0 40 Q50 20 100 40 Q150 60 200 40 Q250 20 300 40 Q350 60 400 40 L400 80 L0 80Z" fill="rgba(255,255,255,0.3)"/>
+          <path d="M0 50 Q50 30 100 50 Q150 70 200 50 Q250 30 300 50 Q350 70 400 50 L400 80 L0 80Z" fill="rgba(255,255,255,0.2)"/>
+        </svg>
+        ${gulls}
+        ${Array.from({length:8},(_,i)=>`<div style="position:absolute;left:${10+i*12}%;bottom:${15+i%3*8}%;width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.7)"></div>`).join('')}
+      </div>`;
+    }
+  },
+  {
+    name: '瑞雪初晨',
+    render: () => {
+      const flakes = Array.from({length:15}, (_,i) =>
+        `<div style="position:absolute;left:${5+i*6}%;top:-10px;font-size:${10+i%3*4}px;animation:sceneFall ${3+i*.3}s linear ${i*.35}s infinite;opacity:.8">❄️</div>`
+      ).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#e8f4f8,#b0d4e8 50%,#708090)">
+        <svg viewBox="0 0 400 100" style="position:absolute;bottom:0;width:100%;height:45%" preserveAspectRatio="none">
+          <path d="M0 60 Q80 20 160 50 Q240 10 320 40 Q360 20 400 35 L400 100 L0 100Z" fill="white" opacity="0.9"/>
+          <path d="M0 80 Q60 60 120 72 Q200 50 280 68 Q340 55 400 62 L400 100 L0 100Z" fill="#e2e8f0" opacity="0.8"/>
+        </svg>
+        ${flakes}
+      </div>`;
+    }
+  },
+  {
+    name: '枫叶秋韵',
+    render: () => {
+      const leaves = Array.from({length:10}, (_,i) =>
+        `<div style="position:absolute;left:${5+i*9}%;top:-15px;font-size:${12+i%4*4}px;animation:sceneFall ${2.2+i*.35}s linear ${i*.3}s infinite;transform-origin:center">🍁</div>`
+      ).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#ff8c00,#ff4500 50%,#cc3300)">
+        <svg viewBox="0 0 400 130" style="position:absolute;bottom:0;width:100%;height:50%" preserveAspectRatio="none">
+          <rect x="20" y="40" width="18" height="90" fill="#3d1c00" opacity="0.8" rx="4"/>
+          <rect x="360" y="50" width="16" height="80" fill="#3d1c00" opacity="0.8" rx="4"/>
+          <path d="M10 50 Q30 10 50 40 Q60 5 70 45 L60 130 L10 130Z" fill="#4a1a00" opacity="0.7"/>
+          <path d="M340 55 Q360 15 380 45 Q390 10 400 42 L400 130 L330 130Z" fill="#4a1a00" opacity="0.7"/>
+        </svg>
+        ${leaves}
+      </div>`;
+    }
+  },
+  {
+    name: '彩虹雨后',
+    render: () => {
+      const rain = Array.from({length:8}, (_,i) =>
+        `<div style="position:absolute;left:${10+i*10}%;top:-10px;width:1px;height:16px;background:rgba(150,180,200,0.7);animation:sceneFall ${.6+i*.1}s linear ${i*.15}s infinite"></div>`
+      ).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#a8edea,#fed6e3 50%,#e0f7fa)">
+        <svg viewBox="0 0 400 200" style="position:absolute;top:10%;left:50%;transform:translateX(-50%);width:90%" preserveAspectRatio="none">
+          <path d="M20 100 Q200 -20 380 100" fill="none" stroke="#e53e3e" stroke-width="6" opacity="0.7"/>
+          <path d="M25 105 Q200 -10 375 105" fill="none" stroke="#dd6b20" stroke-width="5" opacity="0.65"/>
+          <path d="M30 110 Q200 0 370 110" fill="none" stroke="#d69e2e" stroke-width="5" opacity="0.65"/>
+          <path d="M35 115 Q200 10 365 115" fill="none" stroke="#38a169" stroke-width="5" opacity="0.6"/>
+          <path d="M40 120 Q200 20 360 120" fill="none" stroke="#3182ce" stroke-width="4" opacity="0.6"/>
+          <path d="M45 125 Q200 30 355 125" fill="none" stroke="#553c9a" stroke-width="4" opacity="0.55"/>
+          <path d="M50 130 Q200 40 350 130" fill="none" stroke="#805ad5" stroke-width="4" opacity="0.5"/>
+        </svg>
+        ${rain}
+      </div>`;
+    }
+  },
+  {
+    name: '极光奇境',
+    render: () => {
+      const stars = Array.from({length:15}, (_,i) =>
+        `<div style="position:absolute;left:${i*7}%;top:${5+i%5*8}%;width:2px;height:2px;background:white;border-radius:50%;animation:sceneTwinkle ${1.5+i*.3}s ease-in-out ${i*.2}s infinite"></div>`
+      ).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#001a1a,#003333 50%,#006666)">
+        ${stars}
+        <svg viewBox="0 0 400 200" style="position:absolute;top:0;width:100%;height:65%" preserveAspectRatio="none">
+          <path d="M-50 80 Q100 20 200 60 Q300 100 450 40" fill="none" stroke="#00ff88" stroke-width="20" opacity="0.25" style="animation:sceneAurora 5s ease-in-out infinite"/>
+          <path d="M-50 100 Q100 40 200 80 Q300 120 450 60" fill="none" stroke="#00ccff" stroke-width="16" opacity="0.2" style="animation:sceneAurora 6s ease-in-out 1s infinite"/>
+          <path d="M-50 120 Q100 60 200 100 Q300 140 450 80" fill="none" stroke="#cc88ff" stroke-width="12" opacity="0.18" style="animation:sceneAurora 7s ease-in-out 2s infinite"/>
+        </svg>
+      </div>`;
+    }
+  },
+  {
+    name: '云海漫步',
+    render: () => {
+      const clouds = Array.from({length:6}, (_,i) => {
+        const y = 20+i*12, spd = 18+i*4, delay = -i*3, opacity = 0.5+i%3*.15;
+        return `<div style="position:absolute;top:${y}%;left:-200px;animation:sceneDrift ${spd}s linear ${delay}s infinite;opacity:${opacity}">
+          <div style="position:relative;width:${100+i%3*40}px;height:40px">
+            <div style="position:absolute;width:60px;height:40px;background:white;border-radius:50%;top:5px;left:10px"></div>
+            <div style="position:absolute;width:80px;height:35px;background:white;border-radius:50%;top:10px;left:20px"></div>
+            <div style="position:absolute;width:50px;height:30px;background:white;border-radius:50%;top:12px;left:50px"></div>
+          </div>
+        </div>`;
+      }).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#c9d6ff,#e2e2e2 50%,#ffffff)">
+        ${clouds}
+      </div>`;
+    }
+  },
+  {
+    name: '向日葵田',
+    render: () => {
+      const flowers = Array.from({length:5}, (_,i) =>
+        `<svg viewBox="0 0 50 80" style="position:absolute;bottom:0;left:${10+i*18}%;width:${35+i%3*10}px;animation:sceneSway ${2+i*.3}s ease-in-out ${i*.2}s infinite;transform-origin:bottom center">
+          <rect x="23" y="30" width="4" height="50" fill="#2d6a2d"/>
+          <circle cx="25" cy="20" r="10" fill="#8b4513"/>
+          <circle cx="25" cy="20" r="14" fill="none" stroke="#fbbf24" stroke-width="8"/>
+        </svg>`
+      ).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#87ceeb 45%,#f6d365 45%,#fda085)">
+        ${flowers}
+      </div>`;
+    }
+  },
+  {
+    name: '月圆中秋',
+    render: () => {
+      const stars = Array.from({length:12}, (_,i) =>
+        `<div style="position:absolute;left:${i*8+2}%;top:${4+i%5*9}%;width:2px;height:2px;background:white;border-radius:50%;animation:sceneTwinkle ${1.2+i*.4}s ease-in-out ${i*.3}s infinite"></div>`
+      ).join('');
+      const lanterns = Array.from({length:5}, (_,i) =>
+        `<div style="position:absolute;left:${15+i*17}%;bottom:${5+i%3*8}%;font-size:${16+i%2*6}px;animation:sceneRise ${4+i*.5}s ease-in ${i*.8}s infinite">🏮</div>`
+      ).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#1a0533,#2d1470 50%,#4a1090)">
+        ${stars}
+        <div style="position:absolute;top:10%;right:12%;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,#fffde7,#ffd54f);box-shadow:0 0 30px #ffd54f,0 0 60px rgba(255,213,79,.4)"></div>
+        ${lanterns}
+      </div>`;
+    }
+  },
+  {
+    name: '蝴蝶春园',
+    render: () => {
+      const colors = ['#f9a8d4','#fde68a','#c4b5fd','#6ee7b7','#fb923c','#67e8f9'];
+      const butterflies = Array.from({length:6}, (_,i) =>
+        `<div style="position:absolute;left:${10+i*15}%;top:${10+i%4*15}%;font-size:${14+i%3*4}px;animation:sceneFloat ${2+i*.4}s ease-in-out ${i*.3}s infinite">🦋</div>`
+      ).join('');
+      const flowers = Array.from({length:8}, (_,i) =>
+        `<div style="position:absolute;bottom:${2+i%3*5}%;left:${5+i*12}%;font-size:${14+i%2*4}px">🌸</div>`
+      ).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#a8ff78,#78ffd6 50%,#84fab0)">
+        ${flowers}
+        ${butterflies}
+      </div>`;
+    }
+  },
+  {
+    name: '深海世界',
+    render: () => {
+      const bubbles = Array.from({length:8}, (_,i) =>
+        `<div style="position:absolute;left:${8+i*11}%;bottom:${10+i%3*8}%;width:${6+i%4*4}px;height:${6+i%4*4}px;border-radius:50%;border:1.5px solid rgba(127,219,255,0.6);animation:sceneRise ${3+i*.4}s ease-in ${i*.5}s infinite"></div>`
+      ).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#001f3f,#0074d9 50%,#7fdbff)">
+        ${bubbles}
+        <svg viewBox="0 0 400 80" style="position:absolute;bottom:0;width:100%;height:35%" preserveAspectRatio="none">
+          <path d="M30 0 Q35 80 40 0 Q45 80 50 0 Q55 80 60 0" fill="none" stroke="#2ecc40" stroke-width="3" opacity="0.7"/>
+          <path d="M120 0 Q125 80 130 0 Q135 80 140 0 Q145 80 150 0" fill="none" stroke="#01ff70" stroke-width="3" opacity="0.6"/>
+          <path d="M280 0 Q285 80 290 0 Q295 80 300 0 Q305 80 310 0" fill="none" stroke="#2ecc40" stroke-width="3" opacity="0.7"/>
+        </svg>
+        <svg viewBox="0 0 80 30" style="position:absolute;top:35%;left:20%;width:60px;opacity:.6">
+          <ellipse cx="35" cy="15" rx="25" ry="10" fill="#ff851b"/>
+          <polygon points="60,8 80,0 80,30 60,22" fill="#ff851b"/>
+          <circle cx="15" cy="12" r="3" fill="white"/><circle cx="14" cy="11" r="1.5" fill="black"/>
+        </svg>
+        <svg viewBox="0 0 80 30" style="position:absolute;top:55%;left:60%;width:50px;opacity:.5;transform:scaleX(-1)">
+          <ellipse cx="35" cy="15" rx="25" ry="10" fill="#ff4136"/>
+          <polygon points="60,8 80,0 80,30 60,22" fill="#ff4136"/>
+          <circle cx="15" cy="12" r="3" fill="white"/><circle cx="14" cy="11" r="1.5" fill="black"/>
+        </svg>
+      </div>`;
+    }
+  },
+  {
+    name: '沙漠黄昏',
+    render: () => {
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#ff512f,#dd2476 45%,#7b2d8b)">
+        <div style="position:absolute;top:8%;right:15%;font-size:28px;animation:sceneTwinkle 2s ease-in-out infinite">✨</div>
+        <svg viewBox="0 0 400 160" style="position:absolute;bottom:0;width:100%;height:55%" preserveAspectRatio="none">
+          <path d="M0 100 Q100 60 200 80 Q300 40 400 70 L400 160 L0 160Z" fill="#c2a05a" opacity="0.9"/>
+          <path d="M0 130 Q80 100 160 120 Q240 95 320 115 Q360 105 400 110 L400 160 L0 160Z" fill="#d4a853"/>
+          <rect x="50" y="55" width="12" height="45" fill="#3d1c00" rx="6"/>
+          <rect x="38" y="68" width="12" height="20" fill="#3d1c00" rx="5" transform="rotate(-20,44,68)"/>
+          <rect x="62" y="65" width="12" height="20" fill="#3d1c00" rx="5" transform="rotate(20,68,65)"/>
+          <rect x="200" y="60" width="14" height="50" fill="#3d1c00" rx="7"/>
+          <rect x="186" y="74" width="12" height="18" fill="#3d1c00" rx="5" transform="rotate(-20,192,74)"/>
+          <rect x="214" y="70" width="12" height="18" fill="#3d1c00" rx="5" transform="rotate(20,220,70)"/>
+          <rect x="330" y="65" width="10" height="40" fill="#3d1c00" rx="5"/>
+          <rect x="318" y="76" width="10" height="16" fill="#3d1c00" rx="4" transform="rotate(-20,323,76)"/>
+        </svg>
+      </div>`;
+    }
+  },
+  {
+    name: '竹林清晨',
+    render: () => {
+      const bamboo = Array.from({length:5}, (_,i) =>
+        `<div style="position:absolute;left:${12+i*18}%;bottom:0;width:${8+i%2*4}px;height:${60+i%3*15}%;background:linear-gradient(180deg,#2d6a4f,#52b788);border-radius:4px;opacity:0.85">
+          ${Array.from({length:4},(_,j)=>`<div style="position:absolute;top:${15+j*25}%;left:-8px;width:20px;height:3px;background:#1b4332;border-radius:2px;transform:rotate(${j%2?15:-15}deg)"></div>`).join('')}
+        </div>`
+      ).join('');
+      const birds = [
+        `<svg viewBox="0 0 30 15" style="position:absolute;top:12%;left:30%;width:22px;animation:sceneDrift 12s linear 0s infinite"><path d="M0 8 Q8 2 15 8 Q22 2 30 8" fill="none" stroke="#374151" stroke-width="1.5"/></svg>`,
+        `<svg viewBox="0 0 30 15" style="position:absolute;top:18%;left:55%;width:18px;animation:sceneDrift 15s linear -3s infinite"><path d="M0 8 Q8 2 15 8 Q22 2 30 8" fill="none" stroke="#374151" stroke-width="1.5"/></svg>`
+      ].join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#d4fc79,#96e6a1 50%,#2ecc71)">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,.1) 40%,transparent)"></div>
+        ${bamboo}
+        ${birds}
+      </div>`;
+    }
+  },
+  {
+    name: '夜樱如梦',
+    render: () => {
+      const petals = Array.from({length:6}, (_,i) =>
+        `<div style="position:absolute;left:${12+i*13}%;top:-15px;font-size:${12+i%2*4}px;animation:sceneFall ${3+i*.4}s linear ${i*.5}s infinite;filter:drop-shadow(0 0 4px #ff9ec9)">🌸</div>`
+      ).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#1a1a2e,#16213e 50%,#0f3460)">
+        ${Array.from({length:10},(_,i)=>`<div style="position:absolute;left:${i*10}%;top:${5+i%4*8}%;width:2px;height:2px;background:#ffd6e7;border-radius:50%;animation:sceneTwinkle ${1.5+i*.3}s ease-in-out ${i*.2}s infinite"></div>`).join('')}
+        <div style="position:absolute;top:8%;right:18%;width:50px;height:50px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,240,.9),rgba(255,240,200,.5));box-shadow:0 0 20px rgba(255,255,200,.4)"></div>
+        <svg viewBox="0 0 200 120" style="position:absolute;bottom:0;left:5%;width:45%;opacity:.7">
+          <rect x="90" y="30" width="10" height="90" fill="#ff9ec9" opacity="0.4"/>
+          <path d="M95 30 Q40 10 10 40 Q50 20 95 30Z" fill="#ff9ec9" opacity="0.3"/>
+          <path d="M95 30 Q150 5 180 35 Q145 15 95 30Z" fill="#ffb3d1" opacity="0.3"/>
+          <path d="M95 40 Q20 30 0 60 Q40 35 95 40Z" fill="#ffc8de" opacity="0.25"/>
+          <path d="M95 40 Q170 25 200 55 Q160 32 95 40Z" fill="#ffd6e7" opacity="0.25"/>
+        </svg>
+        ${petals}
+      </div>`;
+    }
+  },
+  {
+    name: '骤雨雷鸣',
+    render: () => {
+      const rain = Array.from({length:20}, (_,i) =>
+        `<div style="position:absolute;left:${i*5}%;top:-15px;width:1.5px;height:18px;background:rgba(200,220,240,0.7);animation:sceneFall ${.4+i%3*.1}s linear ${i*.08}s infinite"></div>`
+      ).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#2c3e50,#3d4d60 50%,#546e7a)">
+        <div style="position:absolute;top:5%;left:10%;width:80%;height:25%;background:radial-gradient(ellipse,#455a64,#37474f);border-radius:50%;opacity:.8"></div>
+        <div style="position:absolute;top:3%;left:30%;width:50%;height:20%;background:radial-gradient(ellipse,#546e7a,#455a64);border-radius:50%;opacity:.7"></div>
+        <div style="position:absolute;inset:0;background:rgba(255,255,255,.07);animation:sceneFlicker 3s ease-in-out 2s infinite;pointer-events:none"></div>
+        ${rain}
+      </div>`;
+    }
+  },
+  {
+    name: '热带黎明',
+    render: () => {
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#f093fb,#f5576c 45%,#fda085)">
+        <div style="position:absolute;bottom:25%;right:25%;width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,#fff9c4,#ffcc02);box-shadow:0 0 30px #ffcc02"></div>
+        <svg viewBox="0 0 400 130" style="position:absolute;bottom:0;width:100%;height:45%" preserveAspectRatio="none">
+          <path d="M-20 60 Q0 30 20 55 Q0 40 -20 60Z" fill="#1a3a1a" opacity="0.8" transform="translate(340,0)"/>
+          <rect x="355" y="55" width="8" height="75" fill="#2d5a1b"/>
+          <path d="M355 55 Q330 20 345 50 Q340 25 355 55Z" fill="#1a3a1a" opacity="0.8"/>
+          <path d="M355 55 Q380 15 368 48 Q375 22 355 55Z" fill="#1a3a1a" opacity="0.8"/>
+        </svg>
+        <svg viewBox="0 0 60 30" style="position:absolute;top:15%;left:20%;width:50px;animation:sceneFloat 3s ease-in-out infinite"><path d="M0 20 Q15 5 30 15 Q40 5 60 10" fill="none" stroke="#1a1a2e" stroke-width="2.5"/></svg>
+        <svg viewBox="0 0 60 30" style="position:absolute;top:22%;left:45%;width:40px;animation:sceneFloat 3.5s ease-in-out .5s infinite"><path d="M0 20 Q15 5 30 15 Q40 5 60 10" fill="none" stroke="#1a1a2e" stroke-width="2"/></svg>
+        <svg viewBox="0 0 60 30" style="position:absolute;top:10%;left:65%;width:35px;animation:sceneFloat 4s ease-in-out 1s infinite"><path d="M0 20 Q15 5 30 15 Q40 5 60 10" fill="none" stroke="#1a1a2e" stroke-width="2"/></svg>
+      </div>`;
+    }
+  },
+  {
+    name: '云雾仙山',
+    render: () => {
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#f8f9fa,#e9ecef 50%,#dee2e6)">
+        <svg viewBox="0 0 400 200" style="position:absolute;bottom:0;width:100%;height:70%" preserveAspectRatio="none">
+          <path d="M0 120 Q80 40 160 90 Q200 30 240 80 Q300 20 360 70 Q380 50 400 65 L400 200 L0 200Z" fill="#b0bec5" opacity="0.3"/>
+          <path d="M0 140 Q70 70 140 110 Q190 60 250 100 Q310 50 380 90 L400 100 L400 200 L0 200Z" fill="#90a4ae" opacity="0.45"/>
+          <path d="M0 160 Q60 100 130 140 Q180 90 250 130 Q320 80 400 120 L400 200 L0 200Z" fill="#78909c" opacity="0.6"/>
+          <path d="M0 175 Q50 130 110 160 Q170 120 240 155 Q310 110 400 145 L400 200 L0 200Z" fill="#607d8b" opacity="0.75"/>
+        </svg>
+        ${Array.from({length:3},(_,i)=>`<div style="position:absolute;top:${50+i*12}%;left:${-10+i*20}%;width:${150+i*60}px;height:20px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);border-radius:50%;animation:sceneDrift ${20+i*8}s linear ${-i*5}s infinite;filter:blur(3px)"></div>`).join('')}
+      </div>`;
+    }
+  },
+  {
+    name: '烟花盛放',
+    render: () => {
+      const colors = ['#ffd700','#ff4444','#4488ff','#44ff88','#ff44cc'];
+      const fireworks = colors.map((c,i) =>
+        `<svg viewBox="0 0 80 80" style="position:absolute;left:${10+i*18}%;top:${10+i%3*18}%;width:${40+i%2*20}px;animation:scenePulse ${1.5+i*.3}s ease-in-out ${i*.4}s infinite">
+          ${Array.from({length:8},(_,j)=>{
+            const angle = j*45, rad = angle*Math.PI/180;
+            const x1=40, y1=40, x2=Math.round(40+30*Math.cos(rad)), y2=Math.round(40+30*Math.sin(rad));
+            return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="2.5" stroke-linecap="round"/>`;
+          }).join('')}
+          <circle cx="40" cy="40" r="4" fill="${c}"/>
+        </svg>`
+      ).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#000000,#0d0d2b)">
+        ${Array.from({length:20},(_,i)=>`<div style="position:absolute;left:${i*5}%;top:${5+i%7*12}%;width:2px;height:2px;background:white;border-radius:50%;animation:sceneTwinkle ${1+i%3*.5}s ease-in-out ${i*.15}s infinite"></div>`).join('')}
+        ${fireworks}
+      </div>`;
+    }
+  },
+  {
+    name: '海滩夕照',
+    render: () => {
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#f7971e,#ffd200 40%,#ff6b6b 60%,#1a6b8a)">
+        <div style="position:absolute;bottom:35%;left:50%;transform:translateX(-50%);width:200px;height:8px;background:linear-gradient(90deg,transparent,rgba(255,210,0,.7),transparent);border-radius:50%"></div>
+        <svg viewBox="0 0 400 80" style="position:absolute;bottom:0;width:100%;height:35%;animation:sceneWave 5s ease-in-out infinite" preserveAspectRatio="none">
+          <path d="M0 30 Q50 10 100 30 Q150 50 200 30 Q250 10 300 30 Q350 50 400 30 L400 80 L0 80Z" fill="rgba(255,255,255,0.2)"/>
+        </svg>
+        <svg viewBox="0 0 50 100" style="position:absolute;bottom:25%;right:10%;width:30px;opacity:.85">
+          <rect x="22" y="40" width="6" height="60" fill="#2d5a1b"/>
+          <path d="M25 40 Q5 10 15 35 Q5 15 25 40Z" fill="#1a3a1a"/>
+          <path d="M25 40 Q45 5 38 38 Q45 12 25 40Z" fill="#1a3a1a"/>
+        </svg>
+        <svg viewBox="0 0 50 100" style="position:absolute;bottom:20%;left:8%;width:25px;opacity:.8">
+          <rect x="22" y="40" width="6" height="60" fill="#2d5a1b"/>
+          <path d="M25 40 Q5 10 15 35 Q5 15 25 40Z" fill="#1a3a1a"/>
+          <path d="M25 40 Q45 5 38 38 Q45 12 25 40Z" fill="#1a3a1a"/>
+        </svg>
+      </div>`;
+    }
+  },
+  {
+    name: '红叶风暴',
+    render: () => {
+      const leafColors = ['🍁','🍂'];
+      const leaves = Array.from({length:12}, (_,i) =>
+        `<div style="position:absolute;left:${i*8}%;top:-18px;font-size:${10+i%4*5}px;animation:sceneFall ${1.8+i*.25}s linear ${i*.2}s infinite">${leafColors[i%2]}</div>`
+      ).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#8b0000,#cc0000 45%,#ff4500)">
+        <svg viewBox="0 0 400 120" style="position:absolute;bottom:0;width:100%;height:45%" preserveAspectRatio="none">
+          <rect x="10" y="20" width="20" height="100" fill="#1a0800" rx="4"/>
+          <rect x="370" y="30" width="18" height="90" fill="#1a0800" rx="4"/>
+          <path d="M20 20 Q60 -30 80 30 Q50 -10 20 20Z" fill="#2d0800" opacity="0.8"/>
+          <path d="M370 30 Q420 -20 400 25 Q405 -5 370 30Z" fill="#2d0800" opacity="0.8"/>
+        </svg>
+        ${leaves}
+      </div>`;
+    }
+  },
+  {
+    name: '银河低垂',
+    render: () => {
+      const stars = Array.from({length:30}, (_,i) =>
+        `<div style="position:absolute;left:${i*3.3}%;top:${5+i%10*8}%;width:${1+i%3}px;height:${1+i%3}px;background:white;border-radius:50%;animation:sceneTwinkle ${1+i%4*.4}s ease-in-out ${i*.1}s infinite;opacity:${.4+i%3*.2}"></div>`
+      ).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#000011,#000033 50%,#0a0050)">
+        ${stars}
+        <div style="position:absolute;top:20%;left:10%;width:80%;height:30%;background:linear-gradient(120deg,transparent 0%,rgba(180,160,255,.06) 20%,rgba(200,180,255,.1) 40%,rgba(180,160,255,.06) 60%,transparent 100%);transform:rotate(-15deg);filter:blur(4px)"></div>
+        <div style="position:absolute;top:5%;left:-10%;width:20px;height:2px;background:linear-gradient(90deg,white,transparent);border-radius:2px;animation:sceneDrift 6s linear 2s infinite;opacity:.7"></div>
+      </div>`;
+    }
+  },
+  {
+    name: '郁金香园',
+    render: () => {
+      const tulipColors = ['#e53e3e','#ed64a6','#ffd700','#9f7aea'];
+      const tulips = Array.from({length:8}, (_,i) =>
+        `<svg viewBox="0 0 30 60" style="position:absolute;bottom:0;left:${8+i*11}%;width:${22+i%3*6}px">
+          <rect x="13" y="28" width="4" height="32" fill="#276749" rx="2"/>
+          <path d="M8 28 Q8 5 15 8 Q22 5 22 28 Q18 20 15 22 Q12 20 8 28Z" fill="${tulipColors[i%4]}"/>
+        </svg>`
+      ).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#56ccf2,#2f80ed 40%,#52c234 40%,#2d6a4f)">
+        ${tulips}
+      </div>`;
+    }
+  },
+  {
+    name: '锦鲤池塘',
+    render: () => {
+      const ripples = Array.from({length:4}, (_,i) =>
+        `<div style="position:absolute;left:${20+i*20}%;top:${30+i%2*25}%;width:${30+i*10}px;height:${30+i*10}px;border-radius:50%;border:1.5px solid rgba(255,255,255,.3);animation:scenePulse ${2+i*.4}s ease-in-out ${i*.6}s infinite"></div>`
+      ).join('');
+      const koi = [
+        `<svg viewBox="0 0 70 30" style="position:absolute;top:38%;left:15%;width:55px;opacity:.85"><ellipse cx="30" cy="15" rx="22" ry="9" fill="#ff6b35"/><path d="M52 6 Q70 0 68 15 Q70 30 52 24Z" fill="#ff8c00"/><ellipse cx="12" cy="13" r="3" fill="white"/><circle cx="11" cy="12" r="1.5" fill="black"/></svg>`,
+        `<svg viewBox="0 0 70 30" style="position:absolute;top:55%;left:50%;width:48px;opacity:.8;transform:scaleX(-1)"><ellipse cx="30" cy="15" rx="22" ry="9" fill="#e53e3e"/><path d="M52 6 Q70 0 68 15 Q70 30 52 24Z" fill="#c53030"/><ellipse cx="12" cy="13" r="3" fill="white"/><circle cx="11" cy="12" r="1.5" fill="black"/></svg>`,
+        `<svg viewBox="0 0 70 30" style="position:absolute;top:25%;left:65%;width:42px;opacity:.75"><ellipse cx="30" cy="15" rx="22" ry="9" fill="#ff9a00"/><path d="M52 6 Q70 0 68 15 Q70 30 52 24Z" fill="#e67e00"/><ellipse cx="12" cy="13" r="3" fill="white"/><circle cx="11" cy="12" r="1.5" fill="black"/></svg>`
+      ].join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#43b89c,#3d9970 45%,#2e7d32)">
+        ${ripples}
+        ${koi}
+      </div>`;
+    }
+  },
+  {
+    name: '阳光晨曦',
+    render: () => {
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#56ccf2,#2f80ed 50%,#4caf50)">
+        <div style="position:absolute;top:0;left:0;width:200px;height:200px;background:conic-gradient(from 180deg at 0% 0%,transparent 60%,rgba(255,255,200,.12) 65%,transparent 70%,rgba(255,255,200,.1) 75%,transparent 80%,rgba(255,255,200,.08) 85%,transparent 90%);pointer-events:none"></div>
+        <svg viewBox="0 0 400 100" style="position:absolute;bottom:0;width:100%;height:42%" preserveAspectRatio="none">
+          <path d="M0 50 Q100 20 200 45 Q300 15 400 40 L400 100 L0 100Z" fill="#388e3c" opacity="0.9"/>
+          <path d="M0 65 Q80 45 160 60 Q240 40 320 58 Q360 48 400 55 L400 100 L0 100Z" fill="#2e7d32" opacity="0.95"/>
+        </svg>
+        <div style="position:absolute;top:12%;left:22%;width:70px;height:28px;position:absolute">
+          <div style="position:absolute;top:12%;left:22%;width:70px;height:28px;background:white;border-radius:50%;opacity:.85"></div>
+          <div style="position:absolute;top:8%;left:28%;width:55px;height:32px;background:white;border-radius:50%;opacity:.85"></div>
+          <div style="position:absolute;top:14%;left:35%;width:45px;height:22px;background:white;border-radius:50%;opacity:.85"></div>
+        </div>
+        <div style="position:absolute;top:15%;left:60%;width:80px;height:30px">
+          <div style="position:absolute;inset:0;background:white;border-radius:50%;opacity:.8"></div>
+          <div style="position:absolute;top:-8px;left:15px;width:55px;height:35px;background:white;border-radius:50%;opacity:.8"></div>
+        </div>
+      </div>`;
+    }
+  },
+  {
+    name: '月色湖面',
+    render: () => {
+      const shimmer = Array.from({length:6}, (_,i) =>
+        `<div style="position:absolute;bottom:${18+i*5}%;left:${20+i*8}%;width:${60+i*10}px;height:1.5px;background:rgba(255,255,200,.25);border-radius:2px;animation:sceneWave ${2+i*.3}s ease-in-out ${i*.3}s infinite"></div>`
+      ).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#0d1b2a,#1b263b 45%,#415a77)">
+        <div style="position:absolute;top:10%;left:50%;transform:translateX(-50%);width:55px;height:55px;border-radius:50%;background:radial-gradient(circle,#fffde7,#fff9c4 60%,rgba(255,249,196,.4));box-shadow:0 0 25px rgba(255,249,196,.5)"></div>
+        <div style="position:absolute;bottom:10%;left:50%;transform:translateX(-50%);width:40px;height:55px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,249,196,.25),transparent);filter:blur(4px)"></div>
+        ${shimmer}
+        <div style="position:absolute;bottom:8%;left:30%;font-size:14px;opacity:.6">🪷</div>
+        <div style="position:absolute;bottom:5%;left:58%;font-size:12px;opacity:.5">🪷</div>
+        <div style="position:absolute;bottom:12%;left:72%;font-size:11px;opacity:.4">🪷</div>
+      </div>`;
+    }
+  },
+  {
+    name: '海雾灯塔',
+    render: () => {
+      const fogWisps = Array.from({length:4}, (_,i) =>
+        `<div style="position:absolute;top:${35+i*12}%;left:${-10+i*15}%;width:${120+i*50}px;height:25px;background:rgba(255,255,255,.15);border-radius:50%;filter:blur(8px);animation:sceneDrift ${25+i*8}s linear ${-i*5}s infinite"></div>`
+      ).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#4a6fa5,#6b8cae 50%,#9eb3c2)">
+        ${fogWisps}
+        <svg viewBox="0 0 400 200" style="position:absolute;bottom:0;width:100%;height:65%" preserveAspectRatio="none">
+          <path d="M0 120 Q100 90 200 110 Q300 85 400 105 L400 200 L0 200Z" fill="rgba(255,255,255,0.15)"/>
+          <path d="M0 140 Q80 115 160 132 Q240 108 320 128 Q360 116 400 125 L400 200 L0 200Z" fill="rgba(255,255,255,0.2)"/>
+          <rect x="175" y="40" width="30" height="120" fill="#2c3e50"/>
+          <polygon points="160,40 180,5 220,5 240,40" fill="#e74c3c"/>
+          <rect x="182" y="10" width="16" height="12" fill="#ffd700"/>
+          <path d="M190 16 L150 50 M210 16 L250 50" stroke="rgba(255,215,0,.3)" stroke-width="2"/>
+        </svg>
+      </div>`;
+    }
+  },
+  {
+    name: '萤火虫林',
+    render: () => {
+      const fireflies = Array.from({length:12}, (_,i) =>
+        `<div style="position:absolute;left:${8+i*7}%;top:${15+i%6*10}%;width:6px;height:6px;border-radius:50%;background:radial-gradient(circle,#adff2f,#7fff00);box-shadow:0 0 6px #adff2f,0 0 12px rgba(173,255,47,.5);animation:scenePulse ${1.2+i*.3}s ease-in-out ${i*.25}s infinite"></div>`
+      ).join('');
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#0d2818,#1a3a2a 50%,#2d5a40)">
+        <svg viewBox="0 0 400 160" style="position:absolute;bottom:0;width:100%;height:55%" preserveAspectRatio="none">
+          <rect x="0" y="0" width="35" height="160" fill="#051a0a" opacity="0.9"/>
+          <rect x="30" y="20" width="25" height="140" fill="#0a2410" opacity="0.85"/>
+          <rect x="340" y="10" width="30" height="150" fill="#051a0a" opacity="0.9"/>
+          <rect x="360" y="30" width="40" height="130" fill="#0a2410" opacity="0.85"/>
+          <path d="M0 0 Q20 -40 35 0" fill="#051a0a" opacity="0.8"/>
+          <path d="M340 10 Q360 -30 390 10" fill="#051a0a" opacity="0.8"/>
+        </svg>
+        ${fireflies}
+      </div>`;
+    }
+  },
+  {
+    name: '晨雾山鹿',
+    render: () => {
+      return `<div style="position:absolute;inset:0;background:linear-gradient(180deg,#ffeaa7,#fd79a8 45%,#e17055)">
+        <svg viewBox="0 0 400 200" style="position:absolute;bottom:0;width:100%;height:70%" preserveAspectRatio="none">
+          <path d="M0 80 Q80 20 160 60 Q240 10 320 50 Q360 25 400 40 L400 200 L0 200Z" fill="rgba(200,200,220,.25)"/>
+          <path d="M0 110 Q70 60 140 90 Q220 45 300 80 Q350 58 400 70 L400 200 L0 200Z" fill="rgba(160,160,190,.4)"/>
+          <path d="M0 140 Q60 100 130 125 Q200 85 280 115 Q340 92 400 105 L400 200 L0 200Z" fill="rgba(120,120,160,.55)"/>
+        </svg>
+        <svg viewBox="0 0 80 90" style="position:absolute;bottom:20%;left:50%;transform:translateX(-50%);width:55px;opacity:.8">
+          <ellipse cx="40" cy="62" rx="22" ry="14" fill="#4a2c0a"/>
+          <rect x="35" y="48" width="6" height="20" fill="#3d2008" rx="2"/>
+          <ellipse cx="38" cy="42" rx="10" ry="12" fill="#5a3510"/>
+          <rect x="22" y="60" width="5" height="22" fill="#3d2008" rx="2"/>
+          <rect x="30" y="62" width="5" height="24" fill="#3d2008" rx="2"/>
+          <rect x="45" y="62" width="5" height="24" fill="#3d2008" rx="2"/>
+          <rect x="53" y="60" width="5" height="22" fill="#3d2008" rx="2"/>
+          <circle cx="35" cy="34" r="8" fill="#5a3510"/>
+          <path d="M32 28 Q28 15 25 25 M38 28 Q42 15 45 25" stroke="#4a2c0a" stroke-width="2" fill="none"/>
+          <circle cx="33" cy="33" r="1.5" fill="black"/>
+          <circle cx="37" cy="33" r="1.5" fill="black"/>
+        </svg>
+        <div style="position:absolute;bottom:0;left:0;right:0;height:30%;background:linear-gradient(0deg,rgba(255,255,255,.3),transparent);filter:blur(6px)"></div>
+      </div>`;
+    }
+  }
+];
+
+function renderHeroScene() {
+  const dy = Math.floor((Date.now() - new Date(new Date().getFullYear(),0,0)) / 86400000);
+  const scene = SCENES[(dy - 1 + 30) % 30];
+  const el = document.getElementById('hero-scene');
+  if (el) el.innerHTML = scene.render();
+}
+
+renderHeader();renderDailyRec();renderTasks();updateRing();updateXPBar();renderTip();renderTodayPetCard();renderHeroScene();
 setInterval(renderHeader,60000);
 </script>
 </body>
