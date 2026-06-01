@@ -31,7 +31,7 @@
       .ring-big{font-size:64px}
     }
 
-    .hero{padding:54px 20px 64px;position:relative;overflow:hidden}
+    .hero{padding:54px 0 64px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center}
     .hero-orbs{position:absolute;inset:0;pointer-events:none}
     .orb{position:absolute;border-radius:50%;filter:blur(40px);opacity:.45}
     .orb1{width:180px;height:180px;background:#f43f5e;top:-60px;right:-40px}
@@ -51,7 +51,7 @@
     .hero-text{text-align:center;color:white;position:relative;z-index:1}
     .hero-date{font-size:11px;opacity:.6;letter-spacing:.5px;text-transform:uppercase}
     .hero-greet{font-size:15px;font-weight:600;opacity:.9;margin-top:4px}
-    .xp-row{display:flex;align-items:center;gap:12px;margin-top:16px;position:relative;z-index:1}
+    .xp-row{display:flex;align-items:center;gap:12px;margin-top:16px;position:relative;z-index:1;max-width:400px;margin-left:auto;margin-right:auto}
     .xp-track{flex:1;height:5px;background:rgba(255,255,255,0.15);border-radius:10px;overflow:hidden}
     .xp-prog{height:100%;background:linear-gradient(90deg,#fbbf24,#f43f5e);border-radius:10px;transition:width .8s cubic-bezier(.34,1.56,.64,1)}
     .xp-txt{font-size:11px;color:rgba(255,255,255,.7);font-weight:600;white-space:nowrap}
@@ -361,7 +361,7 @@
   <div class="hero" id="hero-main">
     <div id="hero-scene" style="position:absolute;inset:0;z-index:0;overflow:hidden"></div>
     <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.3) 100%);z-index:0;pointer-events:none"></div>
-    <div style="position:relative;z-index:1;width:100%;max-width:640px;margin:0 auto;padding:0 24px">
+    <div style="position:relative;z-index:1;width:100%;max-width:600px;padding:0 24px;text-align:center">
     <div class="hero-top">
       <div class="hpill" id="h-lv">Lv.1 养生小白 🌱</div>
       <div class="hpill hpill-fire" id="h-st">🔥 0天</div>
@@ -1798,38 +1798,38 @@ function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t
 
 
 
-// 30 bright, cheerful nature landscape scenes
+// 30 beautiful nature landscape scenes — guaranteed nature via source.unsplash.com
 const SCENE_PHOTOS = [
-  {name:'樱花晨曦',   url:'https://images.unsplash.com/photo-1522383225653-ed111181a951?w=1600&h=560&fit=crop&q=85'},
-  {name:'薰衣草田',   url:'https://images.unsplash.com/photo-1499002238440-d264edd596ec?w=1600&h=560&fit=crop&q=85'},
-  {name:'向日葵海',   url:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&h=560&fit=crop&q=85'},
-  {name:'郁金香园',   url:'https://images.unsplash.com/photo-1457530378978-8bac673b8062?w=1600&h=560&fit=crop&q=85'},
-  {name:'翡翠湖泊',   url:'https://images.unsplash.com/photo-1458668383970-8ddd3927deed?w=1600&h=560&fit=crop&q=85'},
-  {name:'金色麦浪',   url:'https://images.unsplash.com/photo-1473116763249-2faaef81ccda?w=1600&h=560&fit=crop&q=85'},
-  {name:'热带海滩',   url:'https://images.unsplash.com/photo-1559494007-9f5847c49d94?w=1600&h=560&fit=crop&q=85'},
-  {name:'云海仙山',   url:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600&h=560&fit=crop&q=85'},
-  {name:'彩虹瀑布',   url:'https://images.unsplash.com/photo-1515709960810-8a8809d35ef5?w=1600&h=560&fit=crop&q=85'},
-  {name:'绿野仙踪',   url:'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&h=560&fit=crop&q=85'},
-  {name:'湖心倒影',   url:'https://images.unsplash.com/photo-1439853949212-36589f8f7658?w=1600&h=560&fit=crop&q=85'},
-  {name:'碧海波涛',   url:'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1600&h=560&fit=crop&q=85'},
-  {name:'春日樱道',   url:'https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=1600&h=560&fit=crop&q=85'},
-  {name:'云顶日出',   url:'https://images.unsplash.com/photo-1495344517372-a70c1f9fca24?w=1600&h=560&fit=crop&q=85'},
-  {name:'金色日落',   url:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&h=560&fit=crop&q=85'},
-  {name:'热带椰林',   url:'https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=1600&h=560&fit=crop&q=85'},
-  {name:'原始森林',   url:'https://images.unsplash.com/photo-1448375240586-882707db888b?w=1600&h=560&fit=crop&q=85'},
-  {name:'雪山圣境',   url:'https://images.unsplash.com/photo-1491555103944-7c647fd857e6?w=1600&h=560&fit=crop&q=85'},
-  {name:'枫叶秋林',   url:'https://images.unsplash.com/photo-1474552226518-e5d3e10ed8b5?w=1600&h=560&fit=crop&q=85'},
-  {name:'晨雾山谷',   url:'https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=1600&h=560&fit=crop&q=85'},
-  {name:'北欧峡湾',   url:'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1600&h=560&fit=crop&q=85'},
-  {name:'沙漠黄昏',   url:'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=1600&h=560&fit=crop&q=85'},
-  {name:'苔原霞光',   url:'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1600&h=560&fit=crop&q=85'},
-  {name:'清晨薄雾',   url:'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1600&h=560&fit=crop&q=85'},
-  {name:'蔚蓝海岸',   url:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&h=560&fit=crop&q=85'},
-  {name:'花海盛放',   url:'https://images.unsplash.com/photo-1490750967868-88df5691cc34?w=1600&h=560&fit=crop&q=85'},
-  {name:'秋日暖阳',   url:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1600&h=560&fit=crop&q=85&brightness=20'},
-  {name:'翠竹幽径',   url:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1600&h=560&fit=crop&q=85'},
-  {name:'雪峰晨光',   url:'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=1600&h=560&fit=crop&q=85'},
-  {name:'碧草如茵',   url:'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1600&h=560&fit=crop&q=85'},
+  {name:'樱花晨曦', url:'https://source.unsplash.com/1600x560/?cherry,blossom,japan,pink&sig=101'},
+  {name:'薰衣草田', url:'https://source.unsplash.com/1600x560/?lavender,field,purple,flower&sig=102'},
+  {name:'向日葵海', url:'https://source.unsplash.com/1600x560/?sunflower,field,yellow,bright&sig=103'},
+  {name:'郁金香园', url:'https://source.unsplash.com/1600x560/?tulip,field,colorful,spring&sig=104'},
+  {name:'翡翠湖泊', url:'https://source.unsplash.com/1600x560/?mountain,lake,reflection,blue&sig=105'},
+  {name:'金色麦浪', url:'https://source.unsplash.com/1600x560/?wheat,field,golden,sunrise&sig=106'},
+  {name:'热带海滩', url:'https://source.unsplash.com/1600x560/?tropical,beach,ocean,turquoise&sig=107'},
+  {name:'云海仙山', url:'https://source.unsplash.com/1600x560/?mountain,clouds,misty,sunrise&sig=108'},
+  {name:'彩虹瀑布', url:'https://source.unsplash.com/1600x560/?waterfall,rainbow,green,nature&sig=109'},
+  {name:'绿野仙踪', url:'https://source.unsplash.com/1600x560/?green,meadow,hills,spring&sig=110'},
+  {name:'湖心倒影', url:'https://source.unsplash.com/1600x560/?lake,reflection,mountains,calm&sig=111'},
+  {name:'碧海波涛', url:'https://source.unsplash.com/1600x560/?ocean,waves,sunset,dramatic&sig=112'},
+  {name:'春日樱道', url:'https://source.unsplash.com/1600x560/?sakura,path,pink,bloom&sig=113'},
+  {name:'云顶日出', url:'https://source.unsplash.com/1600x560/?sunrise,mountain,peak,golden&sig=114'},
+  {name:'蔚蓝海岸', url:'https://source.unsplash.com/1600x560/?coastline,blue,ocean,cliffs&sig=115'},
+  {name:'花海盛放', url:'https://source.unsplash.com/1600x560/?wildflower,meadow,colorful,spring&sig=116'},
+  {name:'原始森林', url:'https://source.unsplash.com/1600x560/?forest,sunlight,green,trees&sig=117'},
+  {name:'雪山圣境', url:'https://source.unsplash.com/1600x560/?snowmountain,landscape,dramatic&sig=118'},
+  {name:'枫叶秋林', url:'https://source.unsplash.com/1600x560/?autumn,forest,colorful,leaves&sig=119'},
+  {name:'晨雾山谷', url:'https://source.unsplash.com/1600x560/?misty,valley,morning,light&sig=120'},
+  {name:'北欧峡湾', url:'https://source.unsplash.com/1600x560/?fjord,norway,dramatic,landscape&sig=121'},
+  {name:'苔原霞光', url:'https://source.unsplash.com/1600x560/?tundra,sunset,golden,nature&sig=122'},
+  {name:'碧草如茵', url:'https://source.unsplash.com/1600x560/?green,rolling,hills,bright&sig=123'},
+  {name:'热带椰林', url:'https://source.unsplash.com/1600x560/?palm,trees,tropical,beach&sig=124'},
+  {name:'极光之夜', url:'https://source.unsplash.com/1600x560/?northern,lights,aurora,stars&sig=125'},
+  {name:'沙漠黄昏', url:'https://source.unsplash.com/1600x560/?desert,sunset,dunes,golden&sig=126'},
+  {name:'玫瑰花园', url:'https://source.unsplash.com/1600x560/?rose,garden,pink,flowers&sig=127'},
+  {name:'雪峰晨光', url:'https://source.unsplash.com/1600x560/?snow,peak,sunrise,alpine&sig=128'},
+  {name:'金色落日', url:'https://source.unsplash.com/1600x560/?sunset,golden,landscape,beautiful&sig=129'},
+  {name:'星空营地', url:'https://source.unsplash.com/1600x560/?milkyway,stars,mountain,night&sig=130'},
 ];
 
 function renderHeroScene() {
