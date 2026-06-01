@@ -203,30 +203,59 @@
     .lu-name{font-size:26px;font-weight:800;background:linear-gradient(135deg,#8b2fc9,#f43f5e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:22px}
     .lu-btn{background:linear-gradient(135deg,#7c3aed,#c026d3);color:white;border:none;border-radius:50px;padding:14px 48px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(139,92,246,.4)}
 
-    /* ─── PET SYSTEM ─── */
-    @keyframes petFloat{
-      0%,100%{transform:translateY(0) rotate(-3deg);}
-      50%{transform:translateY(-12px) rotate(3deg);}
+    /* ─── PET SVG SYSTEM ─── */
+    .pet-svg-wrap { animation: petSvgFloat 3s ease-in-out infinite; display:block; cursor:pointer; user-select:none; }
+    @keyframes petSvgFloat {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
-    @keyframes petHappy{
-      0%{transform:scale(1);}
-      20%{transform:scale(1.4) rotate(-15deg);}
-      40%{transform:scale(1.4) rotate(15deg);}
-      60%{transform:scale(1.2) rotate(-8deg);}
-      80%{transform:scale(1.1) rotate(4deg);}
-      100%{transform:scale(1) rotate(0);}
+    .pet-svg-wrap .eye-lid {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: eyeBlink 5s infinite;
     }
-    @keyframes orbitSparkle{
-      0%{transform:rotate(0deg) translateX(50px) rotate(0deg);}
-      100%{transform:rotate(360deg) translateX(50px) rotate(-360deg);}
+    @keyframes eyeBlink {
+      0%,88%,100% { transform: scaleY(0); opacity: 0; }
+      92% { transform: scaleY(1); opacity: 1; }
+      96% { transform: scaleY(0); opacity: 0; }
     }
-    @keyframes legendGlow{
-      0%,100%{filter:drop-shadow(0 0 8px gold) drop-shadow(0 0 16px rgba(255,200,0,.6));}
-      50%{filter:drop-shadow(0 0 20px gold) drop-shadow(0 0 40px rgba(255,200,0,.8));}
+    .pet-svg-wrap .wiggle-part {
+      transform-box: fill-box;
+      transform-origin: center bottom;
+      animation: earWiggle 4s ease-in-out infinite;
     }
-    @keyframes heartFloat{
-      0%{transform:translateY(0) scale(1);opacity:1;}
-      100%{transform:translateY(-60px) scale(0.5);opacity:0;}
+    @keyframes earWiggle {
+      0%,100% { transform: rotate(0deg); }
+      25% { transform: rotate(-5deg); }
+      75% { transform: rotate(5deg); }
+    }
+    .pet-svg-wrap.pet-happy { animation: petBounce 0.6s ease-out forwards; }
+    @keyframes petBounce {
+      0% { transform: translateY(0) scale(1); }
+      20% { transform: translateY(-20px) scale(1.1, 0.95); }
+      50% { transform: translateY(-28px) scale(0.95, 1.1); }
+      70% { transform: translateY(-8px) scale(1.05, 0.98); }
+      100% { transform: translateY(0) scale(1); }
+    }
+    .pet-orbit-star {
+      position: absolute;
+      top: 50%; left: 50%;
+      animation: orbitAnim 3s linear infinite;
+      font-size: 14px;
+    }
+    .pet-orbit-star:nth-child(2) { animation-delay: -1s; }
+    .pet-orbit-star:nth-child(3) { animation-delay: -2s; }
+    @keyframes orbitAnim {
+      0% { transform: rotate(0deg) translateX(60px) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(60px) rotate(-360deg); }
+    }
+    .pet-legendary .pet-svg-wrap {
+      filter: drop-shadow(0 0 12px gold) drop-shadow(0 0 24px rgba(255,215,0,0.6));
+      animation: petSvgFloat 3s ease-in-out infinite, legendPulse 2s ease-in-out infinite;
+    }
+    @keyframes legendPulse {
+      0%,100% { filter: drop-shadow(0 0 12px gold) drop-shadow(0 0 24px rgba(255,215,0,0.5)); }
+      50% { filter: drop-shadow(0 0 24px gold) drop-shadow(0 0 48px rgba(255,215,0,0.8)); }
     }
     @keyframes speechIn{
       0%{transform:translateY(6px) scale(.9);opacity:0;}
@@ -243,10 +272,8 @@
 
     .pet-card{border-radius:24px;padding:20px 16px 16px;margin-bottom:6px;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.1)}
     .pet-card-inner{display:flex;align-items:center;gap:16px;position:relative;z-index:1}
-    .pet-stage-wrap{position:relative;width:100px;height:100px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .pet-emoji{font-size:80px;line-height:1;display:block;animation:petFloat 3s ease-in-out infinite;cursor:pointer;user-select:none;position:relative;z-index:2}
-    .pet-emoji.pet-happy{animation:petHappy .6s ease-out forwards}
-    .pet-legend .pet-emoji{animation:petFloat 3s ease-in-out infinite,legendGlow 2s ease-in-out infinite}
+    .pet-stage-wrap{position:relative;width:100px;height:116px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    
     .pet-orbit{position:absolute;width:100%;height:100%;top:0;left:0;pointer-events:none}
     .orbit-dot{position:absolute;top:50%;left:50%;font-size:12px;margin-top:-6px;margin-left:-6px}
     .orbit-dot:nth-child(1){animation:orbitSparkle 2.5s linear infinite}
@@ -276,16 +303,15 @@
     .pet-opt{border-radius:18px;padding:14px 8px;text-align:center;cursor:pointer;border:2.5px solid transparent;transition:all .2s;background:#f8f5ff}
     .pet-opt.selected{border-color:#8b2fc9;background:linear-gradient(135deg,#fdf4ff,#ede9fe);box-shadow:0 4px 16px rgba(139,47,201,.2)}
     .pet-opt:active{transform:scale(.96)}
-    .pet-opt-em{font-size:40px;display:block;margin-bottom:5px}
+    .pet-opt-em{font-size:40px;display:block;margin-bottom:5px;width:60px;height:70px;margin:0 auto 5px;overflow:hidden}
+    .pet-opt-em svg{width:60px!important;height:70px!important}
     .pet-opt-name{font-size:12px;font-weight:800;color:#3f3f46}
     .pet-opt-stage{font-size:10px;color:#a1a1aa;margin-top:2px}
 
     /* ─── PET PAGE ─── */
     .pet-page-hero{padding:56px 20px 28px;text-align:center;color:white;position:relative;overflow:hidden}
-    .pet-big-wrap{position:relative;width:160px;height:160px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center}
-    .pet-big-emoji{font-size:110px;line-height:1;display:block;animation:petFloat 3s ease-in-out infinite;cursor:pointer;position:relative;z-index:2}
-    .pet-big-emoji.pet-happy{animation:petHappy .6s ease-out forwards}
-    .pet-legend .pet-big-emoji{animation:petFloat 3s ease-in-out infinite,legendGlow 2s ease-in-out infinite}
+    .pet-big-wrap{position:relative;width:140px;height:163px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center}
+    
     .pet-stage-timeline{padding:0 16px;margin-bottom:8px}
     .pet-stage-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f4f4f5}
     .pet-stage-item:last-child{border-bottom:none}
@@ -650,6 +676,730 @@ const PETS = {
   }
 };
 
+
+// ─── PET SVG ILLUSTRATIONS ───
+function getPetSVG(petId, stage) {
+  const svgs = {
+    egg: {
+      luna: `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" width="120" height="140">
+        <defs>
+          <radialGradient id="egg-luna-g" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#f3e8ff"/>
+            <stop offset="100%" stop-color="#c084fc"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="60" cy="78" rx="32" ry="42" fill="url(#egg-luna-g)" stroke="#d8b4fe" stroke-width="2"/>
+        <ellipse cx="60" cy="55" rx="12" ry="8" fill="rgba(255,255,255,0.4)"/>
+        <text x="52" y="85" font-size="18" text-anchor="middle">🌙</text>
+        <path d="M44 90 Q50 86 56 90" stroke="#c084fc" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M38 70 Q40 65 44 68" stroke="#e9d5ff" stroke-width="1" fill="none"/>
+        <path d="M76 72 Q78 67 82 70" stroke="#e9d5ff" stroke-width="1" fill="none"/>
+      </svg>`,
+      hana: `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" width="120" height="140">
+        <defs>
+          <radialGradient id="egg-hana-g" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#fff0f5"/>
+            <stop offset="100%" stop-color="#f9a8d4"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="60" cy="78" rx="32" ry="42" fill="url(#egg-hana-g)" stroke="#fda4af" stroke-width="2"/>
+        <ellipse cx="60" cy="55" rx="12" ry="8" fill="rgba(255,255,255,0.4)"/>
+        <text x="52" y="85" font-size="18" text-anchor="middle">🌸</text>
+        <path d="M44 90 Q50 86 56 90" stroke="#f472b6" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </svg>`,
+      nova: `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" width="120" height="140">
+        <defs>
+          <radialGradient id="egg-nova-g" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#fff7ed"/>
+            <stop offset="100%" stop-color="#fb923c"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="60" cy="78" rx="32" ry="42" fill="url(#egg-nova-g)" stroke="#fdba74" stroke-width="2"/>
+        <ellipse cx="60" cy="55" rx="12" ry="8" fill="rgba(255,255,255,0.4)"/>
+        <text x="52" y="85" font-size="18" text-anchor="middle">⭐</text>
+        <path d="M44 90 Q50 86 56 90" stroke="#f97316" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </svg>`,
+      mochi: `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" width="120" height="140">
+        <defs>
+          <radialGradient id="egg-mochi-g" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#f0fdf4"/>
+            <stop offset="100%" stop-color="#86efac"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="60" cy="78" rx="32" ry="42" fill="url(#egg-mochi-g)" stroke="#4ade80" stroke-width="2"/>
+        <ellipse cx="60" cy="55" rx="12" ry="8" fill="rgba(255,255,255,0.4)"/>
+        <text x="52" y="85" font-size="18" text-anchor="middle">🌿</text>
+        <path d="M44 90 Q50 86 56 90" stroke="#22c55e" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </svg>`,
+      dra: `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" width="120" height="140">
+        <defs>
+          <radialGradient id="egg-dra-g" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#e0f2fe"/>
+            <stop offset="100%" stop-color="#38bdf8"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="60" cy="78" rx="32" ry="42" fill="url(#egg-dra-g)" stroke="#7dd3fc" stroke-width="2"/>
+        <ellipse cx="60" cy="55" rx="12" ry="8" fill="rgba(255,255,255,0.4)"/>
+        <text x="52" y="85" font-size="18" text-anchor="middle">💧</text>
+        <path d="M44 90 Q50 86 56 90" stroke="#0ea5e9" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M38 72 Q40 68 45 71" stroke="#bae6fd" stroke-width="1" fill="none"/>
+        <path d="M75 72 Q77 68 82 71" stroke="#bae6fd" stroke-width="1" fill="none"/>
+      </svg>`,
+      fae: `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" width="120" height="140">
+        <defs>
+          <radialGradient id="egg-fae-g" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#f0fdfa"/>
+            <stop offset="100%" stop-color="#5eead4"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="60" cy="78" rx="32" ry="42" fill="url(#egg-fae-g)" stroke="#2dd4bf" stroke-width="2"/>
+        <ellipse cx="60" cy="55" rx="12" ry="8" fill="rgba(255,255,255,0.4)"/>
+        <text x="52" y="85" font-size="18" text-anchor="middle">🔮</text>
+        <path d="M44 90 Q50 86 56 90" stroke="#14b8a6" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </svg>`,
+    },
+    luna: {
+      baby: `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" width="120" height="140">
+        <defs>
+          <radialGradient id="luna-b-head" cx="40%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#f5eeff"/>
+            <stop offset="100%" stop-color="#c4a8e8"/>
+          </radialGradient>
+        </defs>
+        <!-- ears -->
+        <ellipse cx="38" cy="34" rx="10" ry="20" fill="#d8bfee" class="wiggle-part"/>
+        <ellipse cx="82" cy="34" rx="10" ry="20" fill="#d8bfee" class="wiggle-part"/>
+        <ellipse cx="38" cy="36" rx="5" ry="13" fill="#f0d0ff" opacity="0.8"/>
+        <ellipse cx="82" cy="36" rx="5" ry="13" fill="#f0d0ff" opacity="0.8"/>
+        <!-- head -->
+        <ellipse cx="60" cy="70" rx="34" ry="32" fill="url(#luna-b-head)"/>
+        <!-- eyes -->
+        <ellipse cx="47" cy="67" rx="9" ry="10" fill="white"/>
+        <ellipse cx="73" cy="67" rx="9" ry="10" fill="white"/>
+        <ellipse cx="48" cy="68" rx="6" ry="7" fill="#9333ea"/>
+        <ellipse cx="74" cy="68" rx="6" ry="7" fill="#9333ea"/>
+        <ellipse cx="49" cy="69" rx="3" ry="3.5" fill="#3b0764"/>
+        <ellipse cx="75" cy="69" rx="3" ry="3.5" fill="#3b0764"/>
+        <circle cx="51" cy="66" r="1.8" fill="white"/>
+        <circle cx="77" cy="66" r="1.8" fill="white"/>
+        <circle cx="47" cy="71" r="1" fill="white" opacity="0.7"/>
+        <circle cx="73" cy="71" r="1" fill="white" opacity="0.7"/>
+        <!-- blink lids -->
+        <ellipse cx="47" cy="67" rx="9" ry="10" fill="#d8bfee" class="eye-lid" opacity="0"/>
+        <ellipse cx="73" cy="67" rx="9" ry="10" fill="#d8bfee" class="eye-lid" opacity="0"/>
+        <!-- blush -->
+        <ellipse cx="36" cy="76" rx="8" ry="5" fill="#f9a8d4" opacity="0.45"/>
+        <ellipse cx="84" cy="76" rx="8" ry="5" fill="#f9a8d4" opacity="0.45"/>
+        <!-- nose -->
+        <ellipse cx="60" cy="78" rx="2.5" ry="1.5" fill="#e879f9" opacity="0.8"/>
+        <!-- mouth -->
+        <path d="M54 82 Q60 87 66 82" stroke="#c026d3" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- body -->
+        <ellipse cx="60" cy="116" rx="22" ry="18" fill="#d8bfee"/>
+        <ellipse cx="60" cy="105" rx="16" ry="14" fill="#e8d4ff"/>
+        <!-- paws -->
+        <ellipse cx="44" cy="125" rx="8" ry="5" fill="#d8bfee"/>
+        <ellipse cx="76" cy="125" rx="8" ry="5" fill="#d8bfee"/>
+      </svg>`,
+      full: `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" width="120" height="140">
+        <defs>
+          <radialGradient id="luna-head-g" cx="38%" cy="32%" r="65%">
+            <stop offset="0%" stop-color="#f5eeff"/>
+            <stop offset="100%" stop-color="#c4a8e8"/>
+          </radialGradient>
+          <radialGradient id="luna-body-g" cx="40%" cy="30%" r="65%">
+            <stop offset="0%" stop-color="#ede0ff"/>
+            <stop offset="100%" stop-color="#b48fd8"/>
+          </radialGradient>
+        </defs>
+        <!-- ears -->
+        <ellipse cx="37" cy="30" rx="11" ry="24" fill="#c4a8e8" class="wiggle-part"/>
+        <ellipse cx="83" cy="30" rx="11" ry="24" fill="#c4a8e8" class="wiggle-part"/>
+        <ellipse cx="37" cy="32" rx="6" ry="16" fill="#f0c8ff" opacity="0.85"/>
+        <ellipse cx="83" cy="32" rx="6" ry="16" fill="#f0c8ff" opacity="0.85"/>
+        <!-- golden moon accessory -->
+        <path d="M88 18 Q94 14 94 22 Q88 26 82 22 Q86 18 88 18Z" fill="#fbbf24" opacity="0.9"/>
+        <!-- head -->
+        <ellipse cx="60" cy="68" rx="34" ry="33" fill="url(#luna-head-g)"/>
+        <!-- head highlight -->
+        <ellipse cx="46" cy="54" rx="14" ry="10" fill="white" opacity="0.18"/>
+        <!-- large anime eyes -->
+        <ellipse cx="46" cy="66" rx="10" ry="11" fill="white"/>
+        <ellipse cx="74" cy="66" rx="10" ry="11" fill="white"/>
+        <ellipse cx="47" cy="67" rx="7" ry="8" fill="#7c3aed"/>
+        <ellipse cx="75" cy="67" rx="7" ry="8" fill="#7c3aed"/>
+        <ellipse cx="48" cy="68" rx="4" ry="4.5" fill="#3b0764"/>
+        <ellipse cx="76" cy="68" rx="4" ry="4.5" fill="#3b0764"/>
+        <!-- highlights -->
+        <circle cx="51" cy="63" r="2.5" fill="white"/>
+        <circle cx="79" cy="63" r="2.5" fill="white"/>
+        <circle cx="46" cy="72" r="1.2" fill="white" opacity="0.75"/>
+        <circle cx="74" cy="72" r="1.2" fill="white" opacity="0.75"/>
+        <!-- blink lids -->
+        <ellipse cx="46" cy="66" rx="10" ry="11" fill="#c4a8e8" class="eye-lid" opacity="0"/>
+        <ellipse cx="74" cy="66" rx="10" ry="11" fill="#c4a8e8" class="eye-lid" opacity="0"/>
+        <!-- blush -->
+        <ellipse cx="34" cy="76" rx="9" ry="5.5" fill="#f0abfc" opacity="0.45"/>
+        <ellipse cx="86" cy="76" rx="9" ry="5.5" fill="#f0abfc" opacity="0.45"/>
+        <!-- nose -->
+        <ellipse cx="60" cy="79" rx="2.5" ry="1.5" fill="#e879f9" opacity="0.8"/>
+        <!-- mouth -->
+        <path d="M53 83 Q60 89 67 83" stroke="#c026d3" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <!-- body -->
+        <ellipse cx="60" cy="118" rx="24" ry="20" fill="url(#luna-body-g)"/>
+        <ellipse cx="60" cy="107" rx="18" ry="16" fill="#e8d4ff"/>
+        <!-- paws -->
+        <ellipse cx="43" cy="128" rx="9" ry="6" fill="#c4a8e8"/>
+        <ellipse cx="77" cy="128" rx="9" ry="6" fill="#c4a8e8"/>
+        <!-- sparkle on body -->
+        <circle cx="54" cy="110" r="1.5" fill="white" opacity="0.6"/>
+        <circle cx="66" cy="113" r="1" fill="white" opacity="0.6"/>
+      </svg>`
+    },
+    hana: {
+      baby: `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" width="120" height="140">
+        <defs>
+          <radialGradient id="hana-b-head" cx="40%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#fff5f8"/>
+            <stop offset="100%" stop-color="#fbc8d8"/>
+          </radialGradient>
+        </defs>
+        <!-- cat ears -->
+        <path d="M36 50 L30 25 L50 44Z" fill="#f9a8d4" class="wiggle-part"/>
+        <path d="M84 50 L90 25 L70 44Z" fill="#f9a8d4" class="wiggle-part"/>
+        <path d="M37 47 L33 30 L47 44Z" fill="#fce7f3"/>
+        <path d="M83 47 L87 30 L73 44Z" fill="#fce7f3"/>
+        <!-- head -->
+        <ellipse cx="60" cy="72" rx="34" ry="32" fill="url(#hana-b-head)"/>
+        <!-- eyes -->
+        <ellipse cx="47" cy="69" rx="9" ry="10" fill="white"/>
+        <ellipse cx="73" cy="69" rx="9" ry="10" fill="white"/>
+        <ellipse cx="48" cy="70" rx="6" ry="7" fill="#ec4899"/>
+        <ellipse cx="74" cy="70" rx="6" ry="7" fill="#ec4899"/>
+        <ellipse cx="49" cy="71" rx="3" ry="3.5" fill="#831843"/>
+        <ellipse cx="75" cy="71" rx="3" ry="3.5" fill="#831843"/>
+        <circle cx="51" cy="67" r="2" fill="white"/>
+        <circle cx="77" cy="67" r="2" fill="white"/>
+        <circle cx="47" cy="73" r="1" fill="white" opacity="0.7"/>
+        <circle cx="73" cy="73" r="1" fill="white" opacity="0.7"/>
+        <!-- blink lids -->
+        <ellipse cx="47" cy="69" rx="9" ry="10" fill="#fbc8d8" class="eye-lid" opacity="0"/>
+        <ellipse cx="73" cy="69" rx="9" ry="10" fill="#fbc8d8" class="eye-lid" opacity="0"/>
+        <!-- blush -->
+        <ellipse cx="35" cy="78" rx="9" ry="5" fill="#f472b6" opacity="0.45"/>
+        <ellipse cx="85" cy="78" rx="9" ry="5" fill="#f472b6" opacity="0.45"/>
+        <!-- whiskers -->
+        <line x1="30" y1="76" x2="48" y2="78" stroke="#e8c4d0" stroke-width="1"/>
+        <line x1="30" y1="80" x2="48" y2="80" stroke="#e8c4d0" stroke-width="1"/>
+        <line x1="30" y1="84" x2="48" y2="82" stroke="#e8c4d0" stroke-width="1"/>
+        <line x1="90" y1="76" x2="72" y2="78" stroke="#e8c4d0" stroke-width="1"/>
+        <line x1="90" y1="80" x2="72" y2="80" stroke="#e8c4d0" stroke-width="1"/>
+        <line x1="90" y1="84" x2="72" y2="82" stroke="#e8c4d0" stroke-width="1"/>
+        <!-- heart nose -->
+        <path d="M58 80 Q60 78 62 80 Q63 82 60 84 Q57 82 58 80Z" fill="#f472b6"/>
+        <!-- mouth -->
+        <path d="M55 85 Q60 90 65 85" stroke="#e879f9" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- body -->
+        <ellipse cx="60" cy="118" rx="22" ry="18" fill="#fbc8d8"/>
+        <ellipse cx="60" cy="107" rx="16" ry="14" fill="#fce7f3"/>
+      </svg>`,
+      full: `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" width="120" height="140">
+        <defs>
+          <radialGradient id="hana-head-g" cx="38%" cy="32%" r="65%">
+            <stop offset="0%" stop-color="#fff5f8"/>
+            <stop offset="100%" stop-color="#fbc8d8"/>
+          </radialGradient>
+          <radialGradient id="hana-body-g" cx="40%" cy="30%" r="65%">
+            <stop offset="0%" stop-color="#ffd6e7"/>
+            <stop offset="100%" stop-color="#f9a8d4"/>
+          </radialGradient>
+        </defs>
+        <!-- cat ears -->
+        <path d="M36 52 L28 22 L52 46Z" fill="#f9a8d4" class="wiggle-part"/>
+        <path d="M84 52 L92 22 L68 46Z" fill="#f9a8d4" class="wiggle-part"/>
+        <path d="M37 49 L32 28 L50 46Z" fill="#fff0f0"/>
+        <path d="M83 49 L88 28 L70 46Z" fill="#fff0f0"/>
+        <!-- flower crown -->
+        <circle cx="75" cy="30" r="5" fill="#fde68a"/>
+        <circle cx="69" cy="25" r="4" fill="#fda4af"/>
+        <circle cx="81" cy="25" r="4" fill="#fda4af"/>
+        <circle cx="75" cy="20" r="4" fill="#fda4af"/>
+        <circle cx="76" cy="30" r="3" fill="#fbbf24"/>
+        <!-- head -->
+        <ellipse cx="60" cy="70" rx="34" ry="33" fill="url(#hana-head-g)"/>
+        <!-- head highlight -->
+        <ellipse cx="46" cy="56" rx="14" ry="10" fill="white" opacity="0.18"/>
+        <!-- eyes -->
+        <ellipse cx="46" cy="68" rx="10" ry="11" fill="white"/>
+        <ellipse cx="74" cy="68" rx="10" ry="11" fill="white"/>
+        <ellipse cx="47" cy="69" rx="7" ry="8" fill="#ec4899"/>
+        <ellipse cx="75" cy="69" rx="7" ry="8" fill="#ec4899"/>
+        <ellipse cx="48" cy="70" rx="4" ry="4.5" fill="#831843"/>
+        <ellipse cx="76" cy="70" rx="4" ry="4.5" fill="#831843"/>
+        <!-- heart highlight left eye -->
+        <path d="M44 65 Q46 63 48 65 Q49 67 46 68.5 Q43 67 44 65Z" fill="white" opacity="0.9"/>
+        <!-- sparkle highlights -->
+        <circle cx="51" cy="65" r="2" fill="white"/>
+        <circle cx="79" cy="65" r="2" fill="white"/>
+        <circle cx="46" cy="74" r="1.2" fill="white" opacity="0.75"/>
+        <circle cx="74" cy="74" r="1.2" fill="white" opacity="0.75"/>
+        <!-- blink lids -->
+        <ellipse cx="46" cy="68" rx="10" ry="11" fill="#fbc8d8" class="eye-lid" opacity="0"/>
+        <ellipse cx="74" cy="68" rx="10" ry="11" fill="#fbc8d8" class="eye-lid" opacity="0"/>
+        <!-- blush -->
+        <ellipse cx="33" cy="78" rx="9" ry="5.5" fill="#f472b6" opacity="0.48"/>
+        <ellipse cx="87" cy="78" rx="9" ry="5.5" fill="#f472b6" opacity="0.48"/>
+        <!-- whiskers -->
+        <line x1="28" y1="75" x2="48" y2="77" stroke="#ddd" stroke-width="1"/>
+        <line x1="28" y1="80" x2="48" y2="80" stroke="#ddd" stroke-width="1"/>
+        <line x1="28" y1="85" x2="48" y2="83" stroke="#ddd" stroke-width="1"/>
+        <line x1="92" y1="75" x2="72" y2="77" stroke="#ddd" stroke-width="1"/>
+        <line x1="92" y1="80" x2="72" y2="80" stroke="#ddd" stroke-width="1"/>
+        <line x1="92" y1="85" x2="72" y2="83" stroke="#ddd" stroke-width="1"/>
+        <!-- heart nose -->
+        <path d="M58 79 Q60 77 62 79 Q63 81 60 83 Q57 81 58 79Z" fill="#f472b6"/>
+        <!-- mouth -->
+        <path d="M53 84 Q60 90 67 84" stroke="#e879f9" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <!-- body -->
+        <ellipse cx="60" cy="118" rx="24" ry="20" fill="url(#hana-body-g)"/>
+        <ellipse cx="60" cy="107" rx="18" ry="16" fill="#fff0f0"/>
+        <!-- tail -->
+        <path d="M84 115 Q96 108 94 120 Q90 128 80 122" fill="#f9a8d4" stroke="#fbc8d8" stroke-width="1"/>
+      </svg>`
+    },
+    nova: {
+      baby: `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" width="120" height="140">
+        <defs>
+          <radialGradient id="nova-b-head" cx="40%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#fff7ed"/>
+            <stop offset="100%" stop-color="#fdba74"/>
+          </radialGradient>
+        </defs>
+        <!-- fox ears -->
+        <path d="M34 52 L26 20 L52 48Z" fill="#fb923c" class="wiggle-part"/>
+        <path d="M86 52 L94 20 L68 48Z" fill="#fb923c" class="wiggle-part"/>
+        <path d="M36 50 L30 26 L50 47Z" fill="#fff7ed"/>
+        <path d="M84 50 L90 26 L70 47Z" fill="#fff7ed"/>
+        <!-- head -->
+        <ellipse cx="60" cy="70" rx="34" ry="32" fill="url(#nova-b-head)"/>
+        <!-- muzzle -->
+        <ellipse cx="60" cy="80" rx="16" ry="10" fill="#fff7ed"/>
+        <!-- eyes -->
+        <ellipse cx="47" cy="67" rx="9" ry="10" fill="white"/>
+        <ellipse cx="73" cy="67" rx="9" ry="10" fill="white"/>
+        <ellipse cx="48" cy="68" rx="6" ry="7" fill="#f59e0b"/>
+        <ellipse cx="74" cy="68" rx="6" ry="7" fill="#f59e0b"/>
+        <ellipse cx="49" cy="69" rx="3" ry="3.5" fill="#451a03"/>
+        <ellipse cx="75" cy="69" rx="3" ry="3.5" fill="#451a03"/>
+        <circle cx="51" cy="65" r="2" fill="white"/>
+        <circle cx="77" cy="65" r="2" fill="white"/>
+        <circle cx="47" cy="72" r="1" fill="white" opacity="0.7"/>
+        <circle cx="73" cy="72" r="1" fill="white" opacity="0.7"/>
+        <!-- blink lids -->
+        <ellipse cx="47" cy="67" rx="9" ry="10" fill="#fdba74" class="eye-lid" opacity="0"/>
+        <ellipse cx="73" cy="67" rx="9" ry="10" fill="#fdba74" class="eye-lid" opacity="0"/>
+        <!-- blush -->
+        <ellipse cx="35" cy="74" rx="8" ry="5" fill="#fb923c" opacity="0.35"/>
+        <ellipse cx="85" cy="74" rx="8" ry="5" fill="#fb923c" opacity="0.35"/>
+        <!-- nose -->
+        <ellipse cx="60" cy="78" rx="4" ry="2.5" fill="#92400e"/>
+        <!-- mouth -->
+        <path d="M54 82 Q60 87 66 82" stroke="#92400e" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- body -->
+        <ellipse cx="60" cy="118" rx="22" ry="18" fill="#fb923c"/>
+        <ellipse cx="60" cy="107" rx="15" ry="13" fill="#fff7ed"/>
+      </svg>`,
+      full: `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" width="120" height="140">
+        <defs>
+          <radialGradient id="nova-head-g" cx="38%" cy="32%" r="65%">
+            <stop offset="0%" stop-color="#fff7ed"/>
+            <stop offset="100%" stop-color="#fdba74"/>
+          </radialGradient>
+          <radialGradient id="nova-body-g" cx="40%" cy="30%" r="65%">
+            <stop offset="0%" stop-color="#fed7aa"/>
+            <stop offset="100%" stop-color="#fb923c"/>
+          </radialGradient>
+        </defs>
+        <!-- fluffy tail -->
+        <path d="M86 108 Q104 92 106 110 Q108 128 90 126 Q80 124 82 114Z" fill="#fb923c"/>
+        <path d="M90 118 Q100 108 101 118 Q100 124 93 122Z" fill="#fff7ed"/>
+        <!-- fox ears -->
+        <path d="M33 52 L24 18 L54 48Z" fill="#fb923c" class="wiggle-part"/>
+        <path d="M87 52 L96 18 L66 48Z" fill="#fb923c" class="wiggle-part"/>
+        <path d="M35 50 L28 24 L52 48Z" fill="#fff7ed"/>
+        <path d="M85 50 L92 24 L68 48Z" fill="#fff7ed"/>
+        <!-- head -->
+        <ellipse cx="60" cy="68" rx="34" ry="33" fill="url(#nova-head-g)"/>
+        <!-- head highlight -->
+        <ellipse cx="46" cy="54" rx="14" ry="10" fill="white" opacity="0.18"/>
+        <!-- forehead star -->
+        <polygon points="60,48 62,54 68,54 63,58 65,64 60,60 55,64 57,58 52,54 58,54" fill="#fbbf24" opacity="0.9" transform="scale(0.6) translate(40,32)"/>
+        <!-- muzzle -->
+        <ellipse cx="60" cy="78" rx="18" ry="12" fill="#fff7ed"/>
+        <!-- eyes -->
+        <ellipse cx="46" cy="65" rx="10" ry="11" fill="white"/>
+        <ellipse cx="74" cy="65" rx="10" ry="11" fill="white"/>
+        <ellipse cx="47" cy="66" rx="7" ry="8" fill="#f59e0b"/>
+        <ellipse cx="75" cy="66" rx="7" ry="8" fill="#f59e0b"/>
+        <ellipse cx="48" cy="67" rx="4" ry="4.5" fill="#451a03"/>
+        <ellipse cx="76" cy="67" rx="4" ry="4.5" fill="#451a03"/>
+        <circle cx="51" cy="62" r="2.5" fill="white"/>
+        <circle cx="79" cy="62" r="2.5" fill="white"/>
+        <circle cx="46" cy="71" r="1.2" fill="white" opacity="0.75"/>
+        <circle cx="74" cy="71" r="1.2" fill="white" opacity="0.75"/>
+        <!-- blink lids -->
+        <ellipse cx="46" cy="65" rx="10" ry="11" fill="#fdba74" class="eye-lid" opacity="0"/>
+        <ellipse cx="74" cy="65" rx="10" ry="11" fill="#fdba74" class="eye-lid" opacity="0"/>
+        <!-- blush -->
+        <ellipse cx="33" cy="74" rx="9" ry="5.5" fill="#fb923c" opacity="0.38"/>
+        <ellipse cx="87" cy="74" rx="9" ry="5.5" fill="#fb923c" opacity="0.38"/>
+        <!-- nose on muzzle -->
+        <ellipse cx="60" cy="77" rx="4.5" ry="3" fill="#92400e"/>
+        <!-- mouth -->
+        <path d="M53 82 Q60 88 67 82" stroke="#92400e" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <!-- body -->
+        <ellipse cx="55" cy="118" rx="24" ry="20" fill="url(#nova-body-g)"/>
+        <ellipse cx="55" cy="107" rx="16" ry="14" fill="#fff7ed"/>
+      </svg>`
+    },
+    mochi: {
+      baby: `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" width="120" height="140">
+        <defs>
+          <radialGradient id="mochi-b-head" cx="40%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#e2e8f0"/>
+          </radialGradient>
+        </defs>
+        <!-- ears -->
+        <circle cx="38" cy="42" r="14" fill="#1f2937"/>
+        <circle cx="82" cy="42" r="14" fill="#1f2937"/>
+        <circle cx="38" cy="42" r="9" fill="white"/>
+        <circle cx="82" cy="42" r="9" fill="white"/>
+        <!-- head -->
+        <ellipse cx="60" cy="72" rx="34" ry="32" fill="url(#mochi-b-head)"/>
+        <!-- eye patches -->
+        <ellipse cx="47" cy="68" rx="12" ry="10" fill="#374151" opacity="0.85" transform="rotate(-8 47 68)"/>
+        <ellipse cx="73" cy="68" rx="12" ry="10" fill="#374151" opacity="0.85" transform="rotate(8 73 68)"/>
+        <!-- eyes -->
+        <ellipse cx="47" cy="68" rx="7" ry="8" fill="white"/>
+        <ellipse cx="73" cy="68" rx="7" ry="8" fill="white"/>
+        <ellipse cx="48" cy="69" rx="5" ry="5.5" fill="#6b3a1f"/>
+        <ellipse cx="74" cy="69" rx="5" ry="5.5" fill="#6b3a1f"/>
+        <ellipse cx="49" cy="70" rx="2.5" ry="3" fill="#111"/>
+        <ellipse cx="75" cy="70" rx="2.5" ry="3" fill="#111"/>
+        <circle cx="51" cy="67" r="1.8" fill="white"/>
+        <circle cx="77" cy="67" r="1.8" fill="white"/>
+        <!-- blink lids -->
+        <ellipse cx="47" cy="68" rx="7" ry="8" fill="#374151" class="eye-lid" opacity="0"/>
+        <ellipse cx="73" cy="68" rx="7" ry="8" fill="#374151" class="eye-lid" opacity="0"/>
+        <!-- blush -->
+        <ellipse cx="35" cy="78" rx="8" ry="5" fill="#fda4af" opacity="0.5"/>
+        <ellipse cx="85" cy="78" rx="8" ry="5" fill="#fda4af" opacity="0.5"/>
+        <!-- nose -->
+        <ellipse cx="60" cy="80" rx="3" ry="2" fill="#374151"/>
+        <!-- mouth -->
+        <path d="M54 84 Q60 90 66 84" stroke="#374151" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- body -->
+        <ellipse cx="60" cy="118" rx="22" ry="18" fill="white"/>
+        <ellipse cx="60" cy="107" rx="16" ry="14" fill="#f8fafc"/>
+        <ellipse cx="44" cy="115" rx="8" ry="10" fill="#1f2937" opacity="0.7"/>
+        <ellipse cx="76" cy="115" rx="8" ry="10" fill="#1f2937" opacity="0.7"/>
+      </svg>`,
+      full: `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" width="120" height="140">
+        <defs>
+          <radialGradient id="mochi-head-g" cx="38%" cy="32%" r="65%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#e2e8f0"/>
+          </radialGradient>
+        </defs>
+        <!-- ears -->
+        <circle cx="37" cy="40" r="16" fill="#1f2937"/>
+        <circle cx="83" cy="40" r="16" fill="#1f2937"/>
+        <circle cx="37" cy="40" r="10" fill="white"/>
+        <circle cx="83" cy="40" r="10" fill="white"/>
+        <!-- green bow -->
+        <path d="M82 26 Q86 22 90 26 Q86 30 82 26Z" fill="#22c55e"/>
+        <path d="M90 26 Q94 22 98 26 Q94 30 90 26Z" fill="#22c55e"/>
+        <circle cx="90" cy="26" r="3" fill="#16a34a"/>
+        <!-- head -->
+        <ellipse cx="60" cy="70" rx="34" ry="33" fill="url(#mochi-head-g)"/>
+        <!-- head highlight -->
+        <ellipse cx="46" cy="56" rx="14" ry="10" fill="white" opacity="0.25"/>
+        <!-- eye patches (panda) -->
+        <ellipse cx="46" cy="67" rx="13" ry="11" fill="#1f2937" opacity="0.8" transform="rotate(-8 46 67)"/>
+        <ellipse cx="74" cy="67" rx="13" ry="11" fill="#1f2937" opacity="0.8" transform="rotate(8 74 67)"/>
+        <!-- eyes inside patches -->
+        <ellipse cx="46" cy="67" rx="8" ry="9" fill="white"/>
+        <ellipse cx="74" cy="67" rx="8" ry="9" fill="white"/>
+        <ellipse cx="47" cy="68" rx="5.5" ry="6.5" fill="#6b3a1f"/>
+        <ellipse cx="75" cy="68" rx="5.5" ry="6.5" fill="#6b3a1f"/>
+        <ellipse cx="48" cy="69" rx="3" ry="3.5" fill="#111"/>
+        <ellipse cx="76" cy="69" rx="3" ry="3.5" fill="#111"/>
+        <circle cx="51" cy="65" r="2.2" fill="white"/>
+        <circle cx="79" cy="65" r="2.2" fill="white"/>
+        <circle cx="46" cy="73" r="1.2" fill="white" opacity="0.7"/>
+        <circle cx="74" cy="73" r="1.2" fill="white" opacity="0.7"/>
+        <!-- blink lids -->
+        <ellipse cx="46" cy="67" rx="8" ry="9" fill="#1f2937" class="eye-lid" opacity="0"/>
+        <ellipse cx="74" cy="67" rx="8" ry="9" fill="#1f2937" class="eye-lid" opacity="0"/>
+        <!-- blush (on white cheek area) -->
+        <ellipse cx="33" cy="78" rx="9" ry="5.5" fill="#fda4af" opacity="0.5"/>
+        <ellipse cx="87" cy="78" rx="9" ry="5.5" fill="#fda4af" opacity="0.5"/>
+        <!-- nose -->
+        <ellipse cx="60" cy="80" rx="3.5" ry="2.2" fill="#374151"/>
+        <!-- mouth -->
+        <path d="M53 84 Q60 91 67 84" stroke="#374151" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <!-- body -->
+        <ellipse cx="60" cy="118" rx="24" ry="20" fill="white"/>
+        <ellipse cx="44" cy="116" rx="10" ry="12" fill="#1f2937" opacity="0.75"/>
+        <ellipse cx="76" cy="116" rx="10" ry="12" fill="#1f2937" opacity="0.75"/>
+        <ellipse cx="60" cy="107" rx="16" ry="14" fill="#f8fafc"/>
+      </svg>`
+    },
+    dra: {
+      baby: `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" width="120" height="140">
+        <defs>
+          <radialGradient id="dra-b-head" cx="40%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#e0f2fe"/>
+            <stop offset="100%" stop-color="#7dd3fc"/>
+          </radialGradient>
+        </defs>
+        <!-- wings -->
+        <ellipse cx="18" cy="88" rx="12" ry="20" fill="#bae6fd" opacity="0.65" transform="rotate(-20 18 88)"/>
+        <ellipse cx="102" cy="88" rx="12" ry="20" fill="#bae6fd" opacity="0.65" transform="rotate(20 102 88)"/>
+        <!-- horns -->
+        <path d="M48 44 Q46 32 50 28 Q52 34 52 44Z" fill="#fef3c7"/>
+        <path d="M72 44 Q74 32 70 28 Q68 34 68 44Z" fill="#fef3c7"/>
+        <!-- head -->
+        <ellipse cx="60" cy="70" rx="34" ry="32" fill="url(#dra-b-head)"/>
+        <!-- scales on top -->
+        <path d="M38 52 Q42 46 46 52 Q42 50 38 52Z" fill="#7dd3fc" opacity="0.5"/>
+        <path d="M52 46 Q56 40 60 46 Q56 44 52 46Z" fill="#7dd3fc" opacity="0.5"/>
+        <path d="M66 46 Q70 40 74 46 Q70 44 66 46Z" fill="#7dd3fc" opacity="0.5"/>
+        <!-- eyes -->
+        <ellipse cx="47" cy="68" rx="9" ry="10" fill="white"/>
+        <ellipse cx="73" cy="68" rx="9" ry="10" fill="white"/>
+        <ellipse cx="48" cy="69" rx="6" ry="7" fill="#0ea5e9"/>
+        <ellipse cx="74" cy="69" rx="6" ry="7" fill="#0ea5e9"/>
+        <ellipse cx="49" cy="70" rx="3" ry="3.5" fill="#0c4a6e"/>
+        <ellipse cx="75" cy="70" rx="3" ry="3.5" fill="#0c4a6e"/>
+        <circle cx="51" cy="66" r="2" fill="white"/>
+        <circle cx="77" cy="66" r="2" fill="white"/>
+        <!-- blink lids -->
+        <ellipse cx="47" cy="68" rx="9" ry="10" fill="#7dd3fc" class="eye-lid" opacity="0"/>
+        <ellipse cx="73" cy="68" rx="9" ry="10" fill="#7dd3fc" class="eye-lid" opacity="0"/>
+        <!-- blush -->
+        <ellipse cx="35" cy="77" rx="8" ry="5" fill="#67e8f9" opacity="0.45"/>
+        <ellipse cx="85" cy="77" rx="8" ry="5" fill="#67e8f9" opacity="0.45"/>
+        <!-- nostrils -->
+        <circle cx="57" cy="80" r="2" fill="#0c4a6e" opacity="0.6"/>
+        <circle cx="63" cy="80" r="2" fill="#0c4a6e" opacity="0.6"/>
+        <!-- mouth -->
+        <path d="M54 84 Q60 89 66 84" stroke="#0284c7" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- body -->
+        <ellipse cx="60" cy="118" rx="22" ry="18" fill="#bae6fd"/>
+        <ellipse cx="60" cy="107" rx="15" ry="13" fill="#e0f2fe"/>
+        <!-- tail -->
+        <path d="M82 120 Q96 114 92 128 Q86 132 80 124Z" fill="#7dd3fc"/>
+      </svg>`,
+      full: `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" width="120" height="140">
+        <defs>
+          <radialGradient id="dra-head-g" cx="38%" cy="32%" r="65%">
+            <stop offset="0%" stop-color="#e0f2fe"/>
+            <stop offset="100%" stop-color="#7dd3fc"/>
+          </radialGradient>
+          <radialGradient id="dra-body-g" cx="40%" cy="30%" r="65%">
+            <stop offset="0%" stop-color="#bae6fd"/>
+            <stop offset="100%" stop-color="#38bdf8"/>
+          </radialGradient>
+        </defs>
+        <!-- wings -->
+        <ellipse cx="14" cy="86" rx="14" ry="26" fill="#bae6fd" opacity="0.6" transform="rotate(-25 14 86)"/>
+        <ellipse cx="106" cy="86" rx="14" ry="26" fill="#bae6fd" opacity="0.6" transform="rotate(25 106 86)"/>
+        <!-- tail -->
+        <path d="M84 118 Q100 110 98 126 Q92 134 82 126Z" fill="#38bdf8"/>
+        <!-- horns -->
+        <path d="M46 46 Q43 30 48 25 Q50 32 52 46Z" fill="#fef3c7" stroke="#fde68a" stroke-width="0.5"/>
+        <path d="M74 46 Q77 30 72 25 Q70 32 68 46Z" fill="#fef3c7" stroke="#fde68a" stroke-width="0.5"/>
+        <!-- spines between horns -->
+        <path d="M54 44 L56 38 L58 44Z" fill="#7dd3fc" opacity="0.8"/>
+        <path d="M59 43 L61 36 L63 43Z" fill="#7dd3fc" opacity="0.8"/>
+        <path d="M64 44 L66 38 L68 44Z" fill="#7dd3fc" opacity="0.8"/>
+        <!-- head -->
+        <ellipse cx="60" cy="68" rx="34" ry="33" fill="url(#dra-head-g)"/>
+        <!-- head highlight -->
+        <ellipse cx="46" cy="54" rx="14" ry="10" fill="white" opacity="0.2"/>
+        <!-- scale pattern on head top -->
+        <path d="M36 54 Q40 48 44 54 Q40 52 36 54Z" fill="#38bdf8" opacity="0.4"/>
+        <path d="M50 48 Q54 42 58 48 Q54 46 50 48Z" fill="#38bdf8" opacity="0.4"/>
+        <path d="M64 48 Q68 42 72 48 Q68 46 64 48Z" fill="#38bdf8" opacity="0.4"/>
+        <path d="M76 54 Q80 48 84 54 Q80 52 76 54Z" fill="#38bdf8" opacity="0.4"/>
+        <!-- eyes -->
+        <ellipse cx="46" cy="67" rx="10" ry="11" fill="white"/>
+        <ellipse cx="74" cy="67" rx="10" ry="11" fill="white"/>
+        <ellipse cx="47" cy="68" rx="7" ry="8" fill="#0ea5e9"/>
+        <ellipse cx="75" cy="68" rx="7" ry="8" fill="#0ea5e9"/>
+        <ellipse cx="48" cy="69" rx="4" ry="4.5" fill="#0c4a6e"/>
+        <ellipse cx="76" cy="69" rx="4" ry="4.5" fill="#0c4a6e"/>
+        <circle cx="51" cy="64" r="2.5" fill="white"/>
+        <circle cx="79" cy="64" r="2.5" fill="white"/>
+        <circle cx="46" cy="73" r="1.2" fill="white" opacity="0.8"/>
+        <circle cx="74" cy="73" r="1.2" fill="white" opacity="0.8"/>
+        <!-- blink lids -->
+        <ellipse cx="46" cy="67" rx="10" ry="11" fill="#7dd3fc" class="eye-lid" opacity="0"/>
+        <ellipse cx="74" cy="67" rx="10" ry="11" fill="#7dd3fc" class="eye-lid" opacity="0"/>
+        <!-- blush -->
+        <ellipse cx="33" cy="76" rx="9" ry="5.5" fill="#67e8f9" opacity="0.45"/>
+        <ellipse cx="87" cy="76" rx="9" ry="5.5" fill="#67e8f9" opacity="0.45"/>
+        <!-- nostrils -->
+        <circle cx="57" cy="79" r="2.2" fill="#0c4a6e" opacity="0.55"/>
+        <circle cx="63" cy="79" r="2.2" fill="#0c4a6e" opacity="0.55"/>
+        <!-- mouth -->
+        <path d="M53 83 Q60 89 67 83" stroke="#0284c7" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <!-- body -->
+        <ellipse cx="60" cy="118" rx="24" ry="20" fill="url(#dra-body-g)"/>
+        <ellipse cx="60" cy="107" rx="17" ry="15" fill="#e0f2fe"/>
+      </svg>`
+    },
+    fae: {
+      baby: `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" width="120" height="140">
+        <defs>
+          <radialGradient id="fae-b-head" cx="40%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#fef9f0"/>
+            <stop offset="100%" stop-color="#fcd9b0"/>
+          </radialGradient>
+        </defs>
+        <!-- wings -->
+        <ellipse cx="16" cy="90" rx="13" ry="22" fill="#99f6e4" opacity="0.55" transform="rotate(-30 16 90)"/>
+        <ellipse cx="104" cy="90" rx="13" ry="22" fill="#99f6e4" opacity="0.55" transform="rotate(30 104 90)"/>
+        <!-- teal hair -->
+        <ellipse cx="60" cy="52" rx="32" ry="22" fill="#5eead4"/>
+        <ellipse cx="28" cy="70" rx="12" ry="24" fill="#5eead4" transform="rotate(10 28 70)"/>
+        <ellipse cx="92" cy="70" rx="12" ry="24" fill="#5eead4" transform="rotate(-10 92 70)"/>
+        <!-- pointed ears -->
+        <path d="M26 66 L18 58 L28 62Z" fill="#fcd9b0"/>
+        <path d="M94 66 L102 58 L92 62Z" fill="#fcd9b0"/>
+        <!-- head -->
+        <ellipse cx="60" cy="72" rx="32" ry="30" fill="url(#fae-b-head)"/>
+        <!-- eyes -->
+        <ellipse cx="47" cy="69" rx="9" ry="10" fill="white"/>
+        <ellipse cx="73" cy="69" rx="9" ry="10" fill="white"/>
+        <ellipse cx="48" cy="70" rx="6" ry="7" fill="#14b8a6"/>
+        <ellipse cx="74" cy="70" rx="6" ry="7" fill="#14b8a6"/>
+        <ellipse cx="49" cy="71" rx="3" ry="3.5" fill="#134e4a"/>
+        <ellipse cx="75" cy="71" rx="3" ry="3.5" fill="#134e4a"/>
+        <circle cx="51" cy="67" r="2" fill="white"/>
+        <circle cx="77" cy="67" r="2" fill="white"/>
+        <!-- blink lids -->
+        <ellipse cx="47" cy="69" rx="9" ry="10" fill="#5eead4" class="eye-lid" opacity="0"/>
+        <ellipse cx="73" cy="69" rx="9" ry="10" fill="#5eead4" class="eye-lid" opacity="0"/>
+        <!-- blush -->
+        <ellipse cx="35" cy="78" rx="8" ry="5" fill="#fdba74" opacity="0.4"/>
+        <ellipse cx="85" cy="78" rx="8" ry="5" fill="#fdba74" opacity="0.4"/>
+        <!-- nose -->
+        <ellipse cx="60" cy="79" rx="2" ry="1.5" fill="#d97706" opacity="0.6"/>
+        <!-- mouth -->
+        <path d="M54 83 Q60 88 66 83" stroke="#0d9488" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- body/dress -->
+        <ellipse cx="60" cy="118" rx="22" ry="18" fill="#99f6e4"/>
+        <ellipse cx="60" cy="107" rx="15" ry="13" fill="#ccfbf1"/>
+        <!-- sparkles -->
+        <text x="18" y="52" font-size="10" opacity="0.7">✦</text>
+        <text x="94" y="56" font-size="8" opacity="0.6">✦</text>
+      </svg>`,
+      full: `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" width="120" height="140">
+        <defs>
+          <radialGradient id="fae-head-g" cx="38%" cy="32%" r="65%">
+            <stop offset="0%" stop-color="#fef9f0"/>
+            <stop offset="100%" stop-color="#fcd9b0"/>
+          </radialGradient>
+          <radialGradient id="fae-wing-l" cx="60%" cy="40%" r="65%">
+            <stop offset="0%" stop-color="#ccfbf1"/>
+            <stop offset="100%" stop-color="#14b8a6" stop-opacity="0.7"/>
+          </radialGradient>
+          <radialGradient id="fae-wing-r" cx="40%" cy="40%" r="65%">
+            <stop offset="0%" stop-color="#ccfbf1"/>
+            <stop offset="100%" stop-color="#14b8a6" stop-opacity="0.7"/>
+          </radialGradient>
+          <radialGradient id="fae-dress-g" cx="50%" cy="20%" r="80%">
+            <stop offset="0%" stop-color="#ccfbf1"/>
+            <stop offset="100%" stop-color="#99f6e4"/>
+          </radialGradient>
+        </defs>
+        <!-- butterfly wings -->
+        <path d="M30 92 Q6 72 8 96 Q10 116 30 108Z" fill="url(#fae-wing-l)" opacity="0.75"/>
+        <path d="M26 108 Q10 116 14 128 Q22 132 32 120Z" fill="url(#fae-wing-l)" opacity="0.6"/>
+        <path d="M90 92 Q114 72 112 96 Q110 116 90 108Z" fill="url(#fae-wing-r)" opacity="0.75"/>
+        <path d="M94 108 Q110 116 106 128 Q98 132 88 120Z" fill="url(#fae-wing-r)" opacity="0.6"/>
+        <!-- teal hair flowing -->
+        <ellipse cx="60" cy="48" rx="34" ry="22" fill="#2dd4bf"/>
+        <ellipse cx="26" cy="68" rx="14" ry="28" fill="#2dd4bf" transform="rotate(12 26 68)"/>
+        <ellipse cx="94" cy="68" rx="14" ry="28" fill="#2dd4bf" transform="rotate(-12 94 68)"/>
+        <!-- hair highlight -->
+        <ellipse cx="48" cy="42" rx="12" ry="8" fill="#5eead4" opacity="0.6"/>
+        <!-- flower in hair -->
+        <circle cx="84" cy="36" r="5" fill="#fda4af"/>
+        <circle cx="79" cy="32" r="4" fill="#fda4af"/>
+        <circle cx="89" cy="32" r="4" fill="#fda4af"/>
+        <circle cx="84" cy="28" r="4" fill="#fda4af"/>
+        <circle cx="84" cy="36" r="3" fill="#fbbf24"/>
+        <!-- pointed ears -->
+        <path d="M26 64 L16 54 L28 60Z" fill="#fcd9b0"/>
+        <path d="M94 64 L104 54 L92 60Z" fill="#fcd9b0"/>
+        <!-- head -->
+        <ellipse cx="60" cy="70" rx="32" ry="31" fill="url(#fae-head-g)"/>
+        <!-- head highlight -->
+        <ellipse cx="46" cy="57" rx="13" ry="9" fill="white" opacity="0.2"/>
+        <!-- eyes -->
+        <ellipse cx="46" cy="68" rx="10" ry="11" fill="white"/>
+        <ellipse cx="74" cy="68" rx="10" ry="11" fill="white"/>
+        <ellipse cx="47" cy="69" rx="7" ry="8" fill="#14b8a6"/>
+        <ellipse cx="75" cy="69" rx="7" ry="8" fill="#14b8a6"/>
+        <ellipse cx="48" cy="70" rx="4" ry="4.5" fill="#134e4a"/>
+        <ellipse cx="76" cy="70" rx="4" ry="4.5" fill="#134e4a"/>
+        <!-- star highlight in eyes -->
+        <path d="M51 64 L52 66 L54 66 L52 67.5 L53 70 L51 68.5 L49 70 L50 67.5 L48 66 L50 66Z" fill="white" opacity="0.9" transform="scale(0.5) translate(52,62)"/>
+        <circle cx="51" cy="65" r="2.2" fill="white"/>
+        <circle cx="79" cy="65" r="2.2" fill="white"/>
+        <circle cx="46" cy="74" r="1.2" fill="white" opacity="0.75"/>
+        <circle cx="74" cy="74" r="1.2" fill="white" opacity="0.75"/>
+        <!-- sparkle dots in eyes -->
+        <circle cx="53" cy="71" r="0.8" fill="white" opacity="0.8"/>
+        <circle cx="81" cy="71" r="0.8" fill="white" opacity="0.8"/>
+        <!-- blink lids -->
+        <ellipse cx="46" cy="68" rx="10" ry="11" fill="#5eead4" class="eye-lid" opacity="0"/>
+        <ellipse cx="74" cy="68" rx="10" ry="11" fill="#5eead4" class="eye-lid" opacity="0"/>
+        <!-- blush -->
+        <ellipse cx="33" cy="77" rx="9" ry="5.5" fill="#fdba74" opacity="0.4"/>
+        <ellipse cx="87" cy="77" rx="9" ry="5.5" fill="#fdba74" opacity="0.4"/>
+        <!-- nose -->
+        <ellipse cx="60" cy="78" rx="2.2" ry="1.5" fill="#d97706" opacity="0.6"/>
+        <!-- mouth -->
+        <path d="M53 82 Q60 88 67 82" stroke="#0d9488" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <!-- body dress -->
+        <ellipse cx="60" cy="118" rx="24" ry="20" fill="url(#fae-dress-g)"/>
+        <ellipse cx="60" cy="107" rx="16" ry="14" fill="#ccfbf1"/>
+        <!-- floating sparkles -->
+        <text x="12" y="46" font-size="11" opacity="0.65">✦</text>
+        <text x="98" y="50" font-size="9" opacity="0.6">✦</text>
+        <text x="8" y="68" font-size="8" opacity="0.5">✦</text>
+        <text x="104" y="70" font-size="10" opacity="0.55">✦</text>
+      </svg>`
+    }
+  };
+
+  // Stage 0 = egg
+  if (stage === 0) {
+    return svgs.egg[petId] || svgs.egg.luna;
+  }
+  // Stages 1-2 = baby
+  if (stage <= 1) {
+    return (svgs[petId] && svgs[petId].baby) || svgs[petId].full;
+  }
+  // Stages 2-5 = full
+  return (svgs[petId] && svgs[petId].full) || svgs[petId].full;
+}
+
 function getPetStageIndex(xp) {
   const stages = [{minXP:0},{minXP:150},{minXP:400},{minXP:900},{minXP:2000}];
   let si = 0;
@@ -689,7 +1439,7 @@ function renderTodayPetCard() {
 
   let orbitHtml = '';
   if (showOrbit) {
-    orbitHtml = '<div class="pet-orbit"><span class="orbit-dot">✨</span><span class="orbit-dot">⭐</span><span class="orbit-dot">💫</span></div>';
+    orbitHtml = '<div class="pet-orbit"><span class="pet-orbit-star">✨</span><span class="pet-orbit-star">⭐</span><span class="pet-orbit-star">💫</span></div>';
   }
 
   const card = document.getElementById('today-pet-card');
@@ -699,7 +1449,7 @@ function renderTodayPetCard() {
       <div class="pet-card-inner">
         <div class="pet-stage-wrap ${isLegend ? 'pet-legend' : ''}">
           ${orbitHtml}
-          <span class="pet-emoji" id="pet-emoji-today" onclick="tapPet(event,'today')" style="color:${pet.theme.text}">${stage.emoji}</span>
+          <svg class="pet-svg-wrap" id="pet-emoji-today" onclick="tapPet(event,'today')" width="100" height="116" viewBox="0 0 120 140" style="display:block">${getPetSVG(petId, si)}</svg>
           <div id="pet-speech-today" style="display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:white;border-radius:16px;padding:10px 14px;font-size:12px;font-weight:600;color:#3f3f46;white-space:normal;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:20;animation:speechIn .25s ease-out;pointer-events:none;max-width:160px;text-align:center;min-width:100px"></div>
         </div>
         <div class="pet-info">
@@ -772,7 +1522,7 @@ function openPetModal() {
     const stage = pet.stages[si];
     const isSel = pet.id === selectedId;
     return `<div class="pet-opt ${isSel ? 'selected' : ''}" onclick="selectPet('${pet.id}')">
-      <span class="pet-opt-em">${stage.emoji}</span>
+      <span class="pet-opt-em" style="display:block;line-height:1;overflow:hidden;transform-origin:top left">${getPetSVG(pet.id, si)}</span>
       <div class="pet-opt-name">${pet.shortName}</div>
       <div class="pet-opt-stage">${stage.title}</div>
     </div>`;
@@ -801,7 +1551,7 @@ function renderPetPage() {
 
   let orbitHtml = '';
   if (showOrbit) {
-    orbitHtml = '<div class="pet-orbit" style="width:160px;height:160px;position:absolute;top:0;left:0"><span class="orbit-dot" style="font-size:16px">✨</span><span class="orbit-dot" style="font-size:16px">⭐</span><span class="orbit-dot" style="font-size:16px">💫</span></div>';
+    orbitHtml = '<div class="pet-orbit" style="width:140px;height:163px;position:absolute;top:0;left:0"><span class="pet-orbit-star" style="font-size:16px">✨</span><span class="pet-orbit-star" style="font-size:16px">⭐</span><span class="pet-orbit-star" style="font-size:16px">💫</span></div>';
   }
 
   const stagesHtml = pet.stages.map((s, i) => {
@@ -828,7 +1578,7 @@ function renderPetPage() {
     <div class="pet-page-hero" style="background:${pet.theme.bg}">
       <div class="pet-big-wrap ${isLegend ? 'pet-legend' : ''}">
         ${orbitHtml}
-        <span class="pet-big-emoji" id="pet-emoji-pet" onclick="tapPet(event,'pet')" style="color:${pet.theme.text}">${stage.emoji}</span>
+        <svg class="pet-svg-wrap" id="pet-emoji-pet" onclick="tapPet(event,'pet')" width="140" height="163" viewBox="0 0 120 140" style="display:block">${getPetSVG(petId, si)}</svg>
         <div id="pet-speech-pet" style="display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:white;border-radius:16px;padding:10px 14px;font-size:12px;font-weight:600;color:#3f3f46;white-space:normal;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:20;pointer-events:none;max-width:160px;text-align:center;min-width:100px"></div>
       </div>
       <div style="color:${pet.theme.text};font-size:22px;font-weight:800;margin-bottom:4px">${pet.name}</div>
