@@ -6,466 +6,319 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="养生计划">
-  <meta name="theme-color" content="#1b5e20">
+  <meta name="theme-color" content="#7c3aed">
   <title>我的养生计划</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
     :root {
-      --green: #4caf50;
-      --green-light: #e8f5e9;
-      --green-dark: #2e7d32;
-      --text: #2c3e50;
-      --text-light: #777;
-      --bg: #f0f4f0;
-      --card: #ffffff;
+      --purple:#7c3aed; --purple2:#a855f7; --purple-light:#f3f0ff;
+      --pink:#ec4899; --green:#10b981; --orange:#f59e0b;
+      --text:#1f2937; --text-light:#6b7280; --bg:#f8f5ff;
     }
-    body {
-      font-family: -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding-bottom: 80px;
-    }
+    body { font-family:-apple-system,'PingFang SC','Hiragino Sans GB',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; padding-bottom:80px; }
 
-    /* ===== HEADER ===== */
-    .header {
-      background: linear-gradient(135deg, #1b5e20, #43a047);
-      color: white;
-      padding: 28px 20px 52px;
-      text-align: center;
-    }
-    .header .date { font-size: 13px; opacity: 0.8; margin-bottom: 4px; }
-    .header h1 { font-size: 22px; font-weight: 700; }
-    .header .greeting { font-size: 14px; opacity: 0.85; margin-top: 6px; }
+    /* HEADER */
+    .header { background:linear-gradient(135deg,#4c1d95,#7c3aed,#a855f7); color:white; padding:44px 20px 54px; position:relative; overflow:hidden; }
+    .header::before { content:''; position:absolute; top:-40px; right:-40px; width:160px; height:160px; background:rgba(255,255,255,0.08); border-radius:50%; }
+    .header-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+    .level-badge { background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:5px 13px; font-size:12px; font-weight:700; }
+    .streak-badge { background:linear-gradient(135deg,#f59e0b,#ef4444); border-radius:20px; padding:5px 12px; font-size:12px; font-weight:700; }
+    .header-title { text-align:center; margin-bottom:14px; }
+    .header-title .date { font-size:12px; opacity:0.75; margin-bottom:2px; }
+    .header-title h1 { font-size:20px; font-weight:800; }
+    .header-title .greeting { font-size:12px; opacity:0.85; margin-top:4px; }
+    .xp-label { display:flex; justify-content:space-between; font-size:11px; opacity:0.8; margin-bottom:5px; }
+    .xp-bar { height:8px; background:rgba(255,255,255,0.2); border-radius:10px; overflow:hidden; }
+    .xp-fill { height:100%; background:linear-gradient(90deg,#fbbf24,#f59e0b); border-radius:10px; transition:width 0.8s cubic-bezier(0.34,1.56,0.64,1); }
 
-    /* ===== PROGRESS CARD ===== */
-    .progress-card {
-      background: white;
-      border-radius: 16px;
-      padding: 18px 20px;
-      margin: -26px 16px 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
-    .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .progress-header span { font-size: 13px; color: var(--text-light); }
-    .progress-header strong { font-size: 18px; color: var(--green-dark); }
-    .progress-bar { height: 10px; background: #eee; border-radius: 10px; overflow: hidden; }
-    .progress-fill { height: 100%; background: linear-gradient(90deg, #43a047, #8bc34a); border-radius: 10px; transition: width 0.6s ease; }
-    .progress-note { font-size: 12px; color: var(--text-light); margin-top: 8px; }
+    /* PROGRESS CARD */
+    .progress-card { background:white; border-radius:20px; padding:18px 20px; margin:-28px 16px 16px; box-shadow:0 8px 24px rgba(124,58,237,0.15); position:relative; z-index:10; }
+    .progress-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+    .progress-header span { font-size:13px; color:var(--text-light); }
+    .progress-count { font-size:22px; font-weight:800; color:var(--purple); }
+    .today-xp { font-size:11px; color:var(--orange); font-weight:700; }
+    .progress-bar { height:12px; background:#f0eaff; border-radius:10px; overflow:hidden; }
+    .progress-fill { height:100%; background:linear-gradient(90deg,#7c3aed,#a855f7,#ec4899); border-radius:10px; transition:width 0.6s cubic-bezier(0.34,1.56,0.64,1); }
+    .progress-note { font-size:12px; color:var(--text-light); margin-top:8px; }
 
-    /* ===== CONTAINER ===== */
-    .container { padding: 0 16px; }
+    .container { padding:0 16px; }
+    .section-label { font-size:11px; font-weight:700; letter-spacing:1px; color:var(--text-light); padding:14px 4px 6px; }
 
-    /* ===== SECTION LABEL ===== */
-    .section-label {
-      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
-      color: var(--text-light); padding: 14px 4px 6px;
-      text-transform: uppercase;
-    }
+    /* TASK CARD */
+    .task-card { background:white; border-radius:16px; padding:14px; margin-bottom:8px; display:flex; align-items:flex-start; gap:10px; box-shadow:0 2px 8px rgba(0,0,0,0.06); cursor:pointer; transition:all 0.25s; border:2px solid transparent; user-select:none; position:relative; overflow:hidden; }
+    .task-card:active { transform:scale(0.97); }
+    .task-card.done { background:linear-gradient(135deg,#f3f0ff,#fce7f3); border-color:#c4b5fd; }
+    .time-badge { background:var(--purple-light); color:var(--purple); font-size:11px; font-weight:700; padding:3px 8px; border-radius:20px; white-space:nowrap; flex-shrink:0; margin-top:2px; }
+    .task-icon { font-size:22px; flex-shrink:0; }
+    .task-content { flex:1; min-width:0; }
+    .task-title { font-size:14px; font-weight:700; transition:all 0.2s; }
+    .task-card.done .task-title { color:#a78bfa; text-decoration:line-through; }
+    .task-desc { font-size:12px; color:var(--text-light); margin-top:3px; line-height:1.55; }
+    .task-card.done .task-desc { color:#c4b5fd; }
+    .task-xp { font-size:10px; font-weight:700; color:var(--orange); background:#fef3c7; padding:1px 6px; border-radius:10px; margin-top:4px; display:inline-block; }
+    .task-check { width:28px; height:28px; border-radius:50%; border:2.5px solid #e5e7eb; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px; transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1); margin-top:2px; }
+    .task-card.done .task-check { background:linear-gradient(135deg,#7c3aed,#ec4899); border-color:transparent; color:white; transform:scale(1.1); }
+    @keyframes checkBounce { 0%{transform:scale(0.5)} 70%{transform:scale(1.35)} 100%{transform:scale(1.1)} }
+    .task-card.just-done .task-check { animation:checkBounce 0.4s cubic-bezier(0.34,1.56,0.64,1); }
 
-    /* ===== TASK CARD ===== */
-    .task-card {
-      background: white;
-      border-radius: 12px;
-      padding: 13px 14px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-      cursor: pointer;
-      transition: all 0.2s;
-      border: 1.5px solid transparent;
-      user-select: none;
-    }
-    .task-card:active { transform: scale(0.98); }
-    .task-card.done { background: #f9fdf9; border-color: #c8e6c9; }
+    /* REC CARD */
+    .rec-card { background:white; border-radius:16px; overflow:hidden; box-shadow:0 2px 12px rgba(124,58,237,0.1); margin-bottom:8px; }
+    .rec-header { background:linear-gradient(90deg,#4c1d95,#7c3aed); color:white; padding:10px 14px; display:flex; justify-content:space-between; align-items:center; }
+    .rec-header span { font-size:13px; font-weight:700; }
+    .rec-day { font-size:11px; opacity:0.8; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:20px; }
+    .rec-body { padding:12px 14px; }
+    .rec-row { display:flex; gap:10px; padding:7px 0; border-bottom:1px solid #f9f5ff; align-items:flex-start; }
+    .rec-row:last-child { border-bottom:none; }
+    .rec-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
+    .rec-label { font-size:11px; font-weight:700; color:var(--purple); background:var(--purple-light); padding:2px 7px; border-radius:20px; flex-shrink:0; white-space:nowrap; margin-top:1px; }
+    .rec-text { font-size:13px; color:var(--text); line-height:1.5; }
 
-    .time-badge {
-      background: var(--green-light); color: var(--green-dark);
-      font-size: 11px; font-weight: 700;
-      padding: 3px 8px; border-radius: 20px;
-      white-space: nowrap; flex-shrink: 0; margin-top: 2px;
-    }
-    .task-icon { font-size: 20px; flex-shrink: 0; }
-    .task-content { flex: 1; min-width: 0; }
-    .task-title {
-      font-size: 14px; font-weight: 600;
-      transition: color 0.2s, text-decoration 0.2s;
-    }
-    .task-card.done .task-title { color: #bbb; text-decoration: line-through; }
-    .task-desc { font-size: 12px; color: var(--text-light); margin-top: 3px; line-height: 1.55; }
-    .task-card.done .task-desc { color: #ccc; }
+    /* TIP */
+    .tip-box { background:linear-gradient(135deg,#fdf4ff,#fce7f3); border:1px solid #f0abfc; border-radius:16px; padding:14px 16px; margin:4px 0 8px; }
+    .tip-box h3 { font-size:13px; color:#9333ea; margin-bottom:6px; }
+    .tip-box p { font-size:13px; color:#6b21a8; line-height:1.65; }
 
-    .task-check {
-      width: 24px; height: 24px; border-radius: 50%;
-      border: 2px solid #ddd; display: flex;
-      align-items: center; justify-content: center;
-      flex-shrink: 0; font-size: 13px; font-weight: 700;
-      transition: all 0.2s; margin-top: 2px;
-    }
-    .task-card.done .task-check { background: var(--green); border-color: var(--green); color: white; }
+    /* MEAL PAGE */
+    .meal-card { background:white; border-radius:14px; padding:14px 16px; margin-bottom:8px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+    .meal-card h4 { font-size:13px; color:var(--text-light); margin-bottom:8px; }
+    .meal-row { display:flex; align-items:baseline; gap:8px; padding:5px 0; border-bottom:1px solid #f9f5ff; }
+    .meal-row:last-child { border-bottom:none; }
+    .meal-time { font-size:11px; font-weight:700; color:var(--purple); background:var(--purple-light); padding:2px 7px; border-radius:20px; white-space:nowrap; }
+    .meal-text { font-size:13px; color:var(--text); line-height:1.5; }
+    .meal-note { font-size:11px; color:#999; }
 
-    /* ===== DAILY REC CARD ===== */
-    .rec-card {
-      background: white;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      margin-bottom: 8px;
-    }
-    .rec-header {
-      background: linear-gradient(90deg, #1b5e20, #43a047);
-      color: white;
-      padding: 10px 14px;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .rec-header span { font-size: 13px; font-weight: 700; }
-    .rec-day { font-size: 11px; opacity: 0.8; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 20px; }
-    .rec-body { padding: 12px 14px; }
-    .rec-row {
-      display: flex; gap: 10px; padding: 7px 0;
-      border-bottom: 1px solid #f5f5f5; align-items: flex-start;
-    }
-    .rec-row:last-child { border-bottom: none; }
-    .rec-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-    .rec-label { font-size: 11px; font-weight: 700; color: var(--green-dark); background: var(--green-light); padding: 2px 7px; border-radius: 20px; flex-shrink: 0; white-space: nowrap; margin-top: 1px; }
-    .rec-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+    /* STATS PAGE */
+    .level-card { background:linear-gradient(135deg,#4c1d95,#7c3aed,#a855f7); border-radius:20px; padding:22px; color:white; margin-bottom:12px; position:relative; overflow:hidden; }
+    .level-card::before { content:''; position:absolute; top:-30px; right:-30px; width:120px; height:120px; background:rgba(255,255,255,0.1); border-radius:50%; }
+    .level-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+    .level-icon-big { font-size:44px; }
+    .level-info { text-align:right; }
+    .level-name { font-size:20px; font-weight:800; }
+    .level-num { font-size:13px; opacity:0.8; }
+    .level-xp-label { font-size:12px; opacity:0.8; margin-bottom:6px; }
+    .level-xp-bar { height:10px; background:rgba(255,255,255,0.2); border-radius:10px; overflow:hidden; }
+    .level-xp-fill { height:100%; background:linear-gradient(90deg,#fbbf24,#f59e0b); border-radius:10px; transition:width 0.8s ease; }
+    .level-xp-text { font-size:11px; opacity:0.75; margin-top:5px; text-align:right; }
+    .stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
+    .stat-box { background:white; border-radius:14px; padding:16px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+    .stat-number { font-size:26px; font-weight:800; color:var(--purple); }
+    .stat-label { font-size:12px; color:var(--text-light); margin-top:3px; }
+    .badges-section { background:white; border-radius:14px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,0.05); margin-bottom:12px; }
+    .badges-section h3 { font-size:14px; font-weight:700; margin-bottom:14px; color:var(--purple); }
+    .badges-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+    .badge-item { text-align:center; padding:12px 6px; border-radius:12px; background:var(--purple-light); }
+    .badge-item.locked { background:#f3f4f6; opacity:0.45; }
+    .badge-icon { font-size:26px; margin-bottom:4px; }
+    .badge-name { font-size:10px; font-weight:700; color:var(--purple); line-height:1.3; }
+    .badge-item.locked .badge-name { color:#9ca3af; }
+    .badge-desc { font-size:9px; color:var(--text-light); margin-top:2px; line-height:1.3; }
+    .week-section { background:white; border-radius:14px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,0.05); margin-bottom:12px; }
+    .week-section h3 { font-size:14px; font-weight:600; margin-bottom:12px; }
 
-    /* ===== TIP BOX ===== */
-    .tip-box {
-      background: linear-gradient(135deg, #fff8e1, #fffde7);
-      border: 1px solid #ffe082;
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin: 4px 0 8px;
-    }
-    .tip-box h3 { font-size: 13px; color: #e65100; margin-bottom: 6px; }
-    .tip-box p { font-size: 13px; color: #5d4037; line-height: 1.65; }
+    /* SETTINGS */
+    .settings-card { background:white; border-radius:14px; padding:16px; margin-bottom:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+    .settings-card h3 { font-size:14px; font-weight:700; margin-bottom:12px; color:var(--purple); }
+    .topic-box { width:100%; border:2px solid #ede9fe; border-radius:10px; padding:10px 12px; font-size:14px; color:var(--purple); background:var(--purple-light); margin-top:6px; font-family:monospace; }
+    .btn-purple { background:linear-gradient(135deg,var(--purple),#a855f7); color:white; border:none; border-radius:10px; padding:12px 16px; font-size:14px; font-weight:700; cursor:pointer; width:100%; margin-top:8px; font-family:inherit; }
+    .btn-ghost { background:#f5f5f5; color:#888; border:none; border-radius:10px; padding:10px 16px; font-size:13px; cursor:pointer; width:100%; margin-top:6px; font-family:inherit; }
+    .btn-danger { color:#ef4444; }
+    .step-row { display:flex; gap:12px; padding:9px 0; border-bottom:1px solid #f9f5ff; }
+    .step-row:last-child { border-bottom:none; }
+    .step-num { width:22px; height:22px; border-radius:50%; background:var(--purple); color:white; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0; margin-top:1px; }
+    .step-text { font-size:13px; line-height:1.6; color:var(--text); }
+    .step-text strong { color:var(--purple); }
+    .notif-row { display:flex; gap:10px; padding:7px 0; border-bottom:1px solid #f9f5ff; align-items:flex-start; }
+    .notif-row:last-child { border-bottom:none; }
 
-    /* ===== MEAL PLAN ===== */
-    .meal-card {
-      background: white;
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-bottom: 8px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    }
-    .meal-card h4 { font-size: 13px; color: var(--text-light); margin-bottom: 8px; }
-    .meal-row { display: flex; align-items: baseline; gap: 8px; padding: 5px 0; border-bottom: 1px solid #f5f5f5; }
-    .meal-row:last-child { border-bottom: none; }
-    .meal-time { font-size: 11px; font-weight: 700; color: var(--green-dark); background: var(--green-light); padding: 2px 7px; border-radius: 20px; white-space: nowrap; }
-    .meal-text { font-size: 13px; color: var(--text); line-height: 1.5; }
-    .meal-note { font-size: 11px; color: #999; }
+    /* NAV */
+    .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:white; border-top:1px solid #f0eaff; display:flex; z-index:100; box-shadow:0 -4px 20px rgba(124,58,237,0.08); }
+    .nav-btn { flex:1; display:flex; flex-direction:column; align-items:center; padding:8px 0 10px; font-size:10px; color:#aaa; cursor:pointer; border:none; background:none; gap:3px; font-family:inherit; transition:color 0.2s; }
+    .nav-btn.active { color:var(--purple); }
+    .nav-icon { font-size:20px; }
+    .page { display:none; }
+    .page.active { display:block; }
 
-    /* ===== STATS PAGE ===== */
-    .streak-card {
-      background: linear-gradient(135deg, #f57c00, #ffa726);
-      border-radius: 14px; padding: 22px; text-align: center;
-      color: white; margin-bottom: 12px;
-    }
-    .streak-num { font-size: 52px; font-weight: 800; line-height: 1; }
-    .streak-label { font-size: 14px; opacity: 0.9; margin-top: 4px; }
+    /* TOAST */
+    .toast { position:fixed; bottom:88px; left:50%; transform:translateX(-50%); background:rgba(76,29,149,0.92); color:white; padding:10px 22px; border-radius:24px; font-size:13px; font-weight:600; opacity:0; transition:opacity 0.3s; pointer-events:none; white-space:nowrap; z-index:999; }
+    .toast.show { opacity:1; }
 
-    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-    .stat-box {
-      background: white; border-radius: 12px; padding: 16px;
-      text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    }
-    .stat-number { font-size: 26px; font-weight: 700; color: var(--green-dark); }
-    .stat-label { font-size: 12px; color: var(--text-light); margin-top: 3px; }
+    /* PARTICLES */
+    .particle { position:fixed; pointer-events:none; z-index:9999; font-size:18px; animation:particleFly 0.9s ease-out forwards; }
+    @keyframes particleFly { 0%{transform:translateY(0) scale(1) rotate(0deg);opacity:1} 100%{transform:translateY(-90px) scale(0.3) rotate(30deg);opacity:0} }
+    .xp-float { position:fixed; pointer-events:none; z-index:9999; font-size:15px; font-weight:800; color:#f59e0b; text-shadow:0 1px 4px rgba(0,0,0,0.3); animation:xpFloat 1s ease-out forwards; }
+    @keyframes xpFloat { 0%{transform:translateY(0) scale(1);opacity:1} 60%{transform:translateY(-50px) scale(1.2);opacity:1} 100%{transform:translateY(-90px) scale(0.8);opacity:0} }
 
-    .week-section {
-      background: white; border-radius: 12px; padding: 16px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 12px;
-    }
-    .week-section h3 { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
-
-    /* ===== SETTINGS PAGE ===== */
-    .settings-card {
-      background: white; border-radius: 12px; padding: 16px;
-      margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    }
-    .settings-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
-    .topic-box {
-      width: 100%; border: 1.5px solid #c8e6c9;
-      border-radius: 8px; padding: 10px 12px;
-      font-size: 14px; font-family: 'Courier New', monospace;
-      color: var(--green-dark); background: var(--green-light);
-      margin-top: 6px;
-    }
-    .btn-green {
-      background: var(--green); color: white;
-      border: none; border-radius: 8px;
-      padding: 11px 16px; font-size: 14px;
-      cursor: pointer; width: 100%; margin-top: 8px;
-      font-family: inherit;
-    }
-    .btn-ghost {
-      background: #f5f5f5; color: #888;
-      border: none; border-radius: 8px;
-      padding: 10px 16px; font-size: 13px;
-      cursor: pointer; width: 100%; margin-top: 6px;
-      font-family: inherit;
-    }
-    .btn-danger { color: #e53935; }
-
-    .step-row { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1px solid #f5f5f5; }
-    .step-row:last-child { border-bottom: none; }
-    .step-num {
-      width: 22px; height: 22px; border-radius: 50%;
-      background: var(--green); color: white;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px;
-    }
-    .step-text { font-size: 13px; line-height: 1.6; color: var(--text); }
-    .step-text strong { color: var(--green-dark); }
-
-    .notif-row {
-      display: flex; gap: 10px; padding: 7px 0;
-      border-bottom: 1px solid #f5f5f5; align-items: flex-start;
-    }
-    .notif-row:last-child { border-bottom: none; }
-
-    /* ===== BOTTOM NAV ===== */
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      background: white; border-top: 1px solid #eee;
-      display: flex; z-index: 100;
-    }
-    .nav-btn {
-      flex: 1; display: flex; flex-direction: column;
-      align-items: center; padding: 8px 0 10px;
-      font-size: 10px; color: #aaa;
-      cursor: pointer; border: none; background: none;
-      gap: 3px; font-family: inherit;
-    }
-    .nav-btn.active { color: var(--green); }
-    .nav-icon { font-size: 20px; }
-
-    /* ===== PAGES ===== */
-    .page { display: none; }
-    .page.active { display: block; }
-
-    /* ===== TOAST ===== */
-    .toast {
-      position: fixed; bottom: 88px; left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.75); color: white;
-      padding: 9px 20px; border-radius: 20px;
-      font-size: 13px; opacity: 0;
-      transition: opacity 0.3s; pointer-events: none;
-      white-space: nowrap; z-index: 999;
-    }
-    .toast.show { opacity: 1; }
-
-    /* ===== CELEBRATION ===== */
-    @keyframes pop { 0%{transform:scale(0.5);opacity:0} 70%{transform:scale(1.2)} 100%{transform:scale(1);opacity:1} }
-    .celebration { animation: pop 0.4s ease; }
+    /* LEVEL UP */
+    .levelup-overlay { position:fixed; inset:0; background:rgba(76,29,149,0.82); display:none; align-items:center; justify-content:center; z-index:9998; backdrop-filter:blur(8px); }
+    .levelup-overlay.show { display:flex; }
+    .levelup-card { background:white; border-radius:24px; padding:36px 40px; text-align:center; box-shadow:0 20px 60px rgba(124,58,237,0.4); animation:lvlPop 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+    @keyframes lvlPop { 0%{transform:scale(0.4);opacity:0} 100%{transform:scale(1);opacity:1} }
+    .levelup-icon { font-size:64px; margin-bottom:10px; }
+    .levelup-sub { font-size:14px; color:var(--text-light); margin-bottom:6px; }
+    .levelup-name { font-size:28px; font-weight:800; color:var(--purple); margin-bottom:18px; }
+    .levelup-btn { background:linear-gradient(135deg,var(--purple),#a855f7); color:white; border:none; border-radius:50px; padding:13px 44px; font-size:15px; font-weight:700; cursor:pointer; font-family:inherit; }
   </style>
 </head>
 <body>
 
-<!-- ========== PAGE: TODAY ========== -->
+<div class="levelup-overlay" id="levelup-overlay" onclick="closeLevelUp()">
+  <div class="levelup-card" onclick="event.stopPropagation()">
+    <div class="levelup-icon" id="levelup-icon">👑</div>
+    <div class="levelup-sub">恭喜升级！</div>
+    <div class="levelup-name" id="levelup-name">养生达人</div>
+    <button class="levelup-btn" onclick="closeLevelUp()">继续加油 ✨</button>
+  </div>
+</div>
+
+<!-- TODAY -->
 <div id="page-today" class="page active">
   <div class="header">
-    <div class="date" id="date-display">加载中...</div>
-    <h1>🌱 我的养生计划</h1>
-    <div class="greeting" id="greeting-text"></div>
+    <div class="header-top">
+      <div class="level-badge" id="header-level">Lv.1 养生小白 🌱</div>
+      <div class="streak-badge" id="header-streak">🔥 0天</div>
+    </div>
+    <div class="header-title">
+      <div class="date" id="date-display">加载中...</div>
+      <h1>✨ 我的养生计划</h1>
+      <div class="greeting" id="greeting-text"></div>
+    </div>
+    <div>
+      <div class="xp-label"><span id="xp-level-label">经验值</span><span id="xp-text">0 / 150 XP</span></div>
+      <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+    </div>
   </div>
-
   <div class="progress-card">
     <div class="progress-header">
-      <span>今日完成进度</span>
-      <strong id="progress-text">0/12</strong>
+      <span>今日进度</span>
+      <div style="text-align:right">
+        <div class="progress-count" id="progress-text">0/12</div>
+        <div class="today-xp" id="today-xp">+0 XP今日</div>
+      </div>
     </div>
-    <div class="progress-bar">
-      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
-    </div>
-    <div class="progress-note" id="progress-note">今天还没开始，加油！</div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <div class="progress-note" id="progress-note">今天还没开始，起来打卡吧 💪</div>
   </div>
-
   <div class="container">
     <div class="section-label">✨ 今日推荐</div>
     <div id="daily-rec"></div>
   </div>
-
   <div class="container" id="task-list"></div>
-
-  <div class="container">
-    <div class="tip-box" id="daily-tip"></div>
-  </div>
+  <div class="container"><div class="tip-box" id="daily-tip"></div></div>
 </div>
 
-<!-- ========== PAGE: MEAL ========== -->
+<!-- MEAL -->
 <div id="page-meal" class="page">
   <div class="header">
-    <div class="date">养生套餐</div>
-    <h1>🥗 每日饮食方案</h1>
-    <div class="greeting">深圳龙华 · 外卖版 · 可以吃辣！</div>
+    <div class="header-title" style="padding-top:0">
+      <div class="date">养生套餐</div>
+      <h1>🥗 每日饮食方案</h1>
+      <div class="greeting">深圳龙华 · 外卖版 · 可以吃辣！</div>
+    </div>
   </div>
-  <div class="container" style="padding-top: 20px;">
-
-    <div class="section-label">🌅 早餐方案（出门路上买）</div>
+  <div class="container" style="padding-top:20px">
+    <div class="section-label">🌅 早餐方案</div>
     <div class="meal-card">
       <h4>便利店选法（7-11 / 全家 / 美宜佳）</h4>
-      <div class="meal-row"><span class="meal-time">首选</span><span class="meal-text">茶叶蛋 1个 + 全麦三明治 <span class="meal-note">（蛋白质+碳水，撑到午饭）</span></span></div>
+      <div class="meal-row"><span class="meal-time">首选</span><span class="meal-text">茶叶蛋1个 + 全麦三明治 <span class="meal-note">（蛋白质+碳水，撑到午饭）</span></span></div>
       <div class="meal-row"><span class="meal-time">次选</span><span class="meal-text">牛奶/豆浆 + 面包/饭团</span></div>
       <div class="meal-row"><span class="meal-time">加分项</span><span class="meal-text">顺手买根香蕉 <span class="meal-note">（维生素B6，对皮肤好）</span></span></div>
       <div class="meal-row"><span class="meal-time">避开</span><span class="meal-text">油条、炸鸡腿包、甜面包 <span class="meal-note">（高油高糖，皮肤变差）</span></span></div>
     </div>
     <div class="meal-card">
-      <h4>深圳早餐外卖选法（美团/饿了么）</h4>
-      <div class="meal-row"><span class="meal-time">推荐</span><span class="meal-text">肠粉套餐 <span class="meal-note">（龙华多，清淡、蛋白质够）</span></span></div>
-      <div class="meal-row"><span class="meal-time">推荐</span><span class="meal-text">皮蛋瘦肉粥 + 小菜 <span class="meal-note">（护胃，皮肤友好）</span></span></div>
-      <div class="meal-row"><span class="meal-time">推荐</span><span class="meal-text">云吞面/汤粉 <span class="meal-note">（广式清淡，配菜点蔬菜）</span></span></div>
-      <div class="meal-row"><span class="meal-time">备注</span><span class="meal-text">下单时备注 <strong>少油少盐</strong>，很多店都能做</span></div>
+      <h4>深圳早餐外卖选法</h4>
+      <div class="meal-row"><span class="meal-time">推荐</span><span class="meal-text">肠粉套餐 <span class="meal-note">（龙华多，清淡蛋白质够）</span></span></div>
+      <div class="meal-row"><span class="meal-time">推荐</span><span class="meal-text">皮蛋瘦肉粥 + 小菜 <span class="meal-note">（护胃皮肤友好）</span></span></div>
+      <div class="meal-row"><span class="meal-time">备注</span><span class="meal-text">下单备注 <strong>少油少盐</strong></span></div>
     </div>
-
-    <div class="section-label">☀️ 午餐外卖选法</div>
+    <div class="section-label">☀️ 午餐外卖</div>
     <div class="meal-card">
-      <h4>外卖点单原则</h4>
-      <div class="meal-row"><span class="meal-time">必须有</span><span class="meal-text">蔬菜 2种以上（炒菜、凉拌、汤菜均算）</span></div>
-      <div class="meal-row"><span class="meal-time">蛋白质</span><span class="meal-text">鸡肉、鱼、豆腐、鸡蛋任选一</span></div>
-      <div class="meal-row"><span class="meal-time">主食</span><span class="meal-text">米饭适量，不用刻意减</span></div>
-      <div class="meal-row"><span class="meal-time">备注技巧</span><span class="meal-text">写"少辣少油多放蔬菜" <span class="meal-note">（大部分商家能做）</span></span></div>
-    </div>
-    <div class="meal-card">
-      <h4>深圳龙华推荐外卖类型</h4>
-      <div class="meal-row"><span class="meal-time">优先选</span><span class="meal-text">粤菜盖浇饭 <span class="meal-note">（清淡、蔬菜多、油少）</span></span></div>
-      <div class="meal-row"><span class="meal-time">优先选</span><span class="meal-text">轻食沙拉 <span class="meal-note">（深圳多，加鸡胸肉款最好）</span></span></div>
-      <div class="meal-row"><span class="meal-time">优先选</span><span class="meal-text">砂锅粥套餐 <span class="meal-note">（广东特色，清淡护肤）</span></span></div>
-      <div class="meal-row"><span class="meal-time">少点</span><span class="meal-text">麻辣烫、炸鸡、奶茶套餐 <span class="meal-note">（高油高糖，皮肤变差）</span></span></div>
+      <div class="meal-row"><span class="meal-time">必须有</span><span class="meal-text">蔬菜2种以上</span></div>
+      <div class="meal-row"><span class="meal-time">优先选</span><span class="meal-text">粤菜盖浇饭 / 轻食沙拉 / 砂锅粥套餐</span></div>
+      <div class="meal-row"><span class="meal-time">少点</span><span class="meal-text">麻辣烫、炸鸡、奶茶套餐</span></div>
     </div>
     <div class="tip-box">
       <h3>💡 四川人在深圳怎么吃辣又护肤</h3>
-      <p>辣不用戒！但换个吃法：点麻辣香锅时多选蔬菜、豆腐、菌菇，少选油豆皮和午餐肉。辣椒油少加。一周吃2-3次辣是完全没问题的，天天猛辣才伤皮肤。</p>
+      <p>辣不用戒！点麻辣香锅多选蔬菜、豆腐、菌菇，少选油豆皮。一周2-3次辣完全没问题，天天猛辣才伤皮肤。</p>
     </div>
-
-    <div class="section-label">🌆 晚餐外卖选法</div>
+    <div class="section-label">🌆 晚餐外卖</div>
     <div class="meal-card">
-      <h4>晚餐原则：比午饭清淡一点</h4>
-      <div class="meal-row"><span class="meal-time">首选</span><span class="meal-text">粥 + 小菜 <span class="meal-note">（广东粥类外卖多，清淡护胃）</span></span></div>
-      <div class="meal-row"><span class="meal-time">首选</span><span class="meal-text">蒸菜套餐 / 清汤面 <span class="meal-note">（低油，皮肤友好）</span></span></div>
-      <div class="meal-row"><span class="meal-time">可以</span><span class="meal-text">炒菜+米饭，但选蔬菜为主的</span></div>
-      <div class="meal-row"><span class="meal-time">宵夜</span><span class="meal-text">尽量不吃，实在饿：一杯纯牛奶或无糖酸奶</span></div>
+      <div class="meal-row"><span class="meal-time">首选</span><span class="meal-text">粥 + 小菜 / 蒸菜套餐 / 清汤面</span></div>
+      <div class="meal-row"><span class="meal-time">宵夜</span><span class="meal-text">尽量不吃，实在饿喝一杯纯牛奶</span></div>
     </div>
-
     <div class="section-label">✨ 护肤饮食重点</div>
     <div class="meal-card">
       <div class="meal-row"><span class="meal-time">多吃</span><span class="meal-text">西红柿、胡萝卜、蓝莓、深绿蔬菜、三文鱼</span></div>
-      <div class="meal-row"><span class="meal-time">少吃</span><span class="meal-text">油炸食品、甜饮料、高糖零食、精白面包</span></div>
-      <div class="meal-row"><span class="meal-time">必须做</span><span class="meal-text">每天喝水 4L 以上 💧 皮肤暗沉多数是缺水</span></div>
-      <div class="meal-row"><span class="meal-time">绿茶</span><span class="meal-text">下午一杯淡绿茶，抗氧化，对皮肤特别好</span></div>
+      <div class="meal-row"><span class="meal-time">少吃</span><span class="meal-text">油炸食品、甜饮料、高糖零食</span></div>
+      <div class="meal-row"><span class="meal-time">必须做</span><span class="meal-text">每天喝水4L以上 💧 皮肤暗沉多数是缺水</span></div>
     </div>
-
-    <div style="height: 20px;"></div>
+    <div style="height:20px"></div>
   </div>
 </div>
 
-<!-- ========== PAGE: STATS ========== -->
+<!-- STATS -->
 <div id="page-stats" class="page">
   <div class="header">
-    <div class="date">坚持记录</div>
-    <h1>📊 我的坚持</h1>
+    <div class="header-title" style="padding-top:0">
+      <div class="date">成就与统计</div>
+      <h1>🏆 我的成就</h1>
+    </div>
   </div>
-  <div class="container" style="padding-top: 20px;">
-    <div class="streak-card">
-      <div class="streak-num" id="streak-num">0</div>
-      <div class="streak-label">🔥 连续坚持天数</div>
+  <div class="container" style="padding-top:20px">
+    <div class="level-card">
+      <div class="level-top">
+        <div class="level-icon-big" id="stats-level-icon">🌱</div>
+        <div class="level-info">
+          <div class="level-name" id="stats-level-name">养生小白</div>
+          <div class="level-num" id="stats-level-num">Lv.1</div>
+        </div>
+      </div>
+      <div class="level-xp-label" id="stats-xp-label">距离下一级还需 150 XP</div>
+      <div class="level-xp-bar"><div class="level-xp-fill" id="stats-xp-fill" style="width:0%"></div></div>
+      <div class="level-xp-text" id="stats-xp-text">0 / 150 XP</div>
     </div>
     <div class="stat-grid">
-      <div class="stat-box">
-        <div class="stat-number" id="total-days">0</div>
-        <div class="stat-label">累计打卡天数</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-number" id="total-tasks">0</div>
-        <div class="stat-label">累计完成任务</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-number" id="avg-rate">0%</div>
-        <div class="stat-label">平均完成率</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-number" id="best-streak">0</div>
-        <div class="stat-label">最长连续天数</div>
-      </div>
+      <div class="stat-box"><div class="stat-number" id="streak-num">0</div><div class="stat-label">🔥 连续打卡</div></div>
+      <div class="stat-box"><div class="stat-number" id="total-xp-display">0</div><div class="stat-label">⭐ 累计XP</div></div>
+      <div class="stat-box"><div class="stat-number" id="total-tasks">0</div><div class="stat-label">✅ 完成任务</div></div>
+      <div class="stat-box"><div class="stat-number" id="perfect-days">0</div><div class="stat-label">💎 完美天数</div></div>
+    </div>
+    <div class="badges-section">
+      <h3>🎖️ 成就徽章</h3>
+      <div class="badges-grid" id="badges-grid"></div>
     </div>
     <div class="week-section">
       <h3>📅 最近7天完成率</h3>
-      <div id="week-chart" style="display:flex; gap:6px; margin-top:4px;"></div>
+      <div id="week-chart" style="display:flex;gap:6px;margin-top:4px"></div>
     </div>
   </div>
 </div>
 
-<!-- ========== PAGE: SETTINGS ========== -->
+<!-- SETTINGS -->
 <div id="page-settings" class="page">
   <div class="header">
-    <div class="date">配置推送</div>
-    <h1>⚙️ 设置</h1>
+    <div class="header-title" style="padding-top:0">
+      <div class="date">配置推送</div>
+      <h1>⚙️ 设置</h1>
+    </div>
   </div>
-  <div class="container" style="padding-top: 20px;">
-
+  <div class="container" style="padding-top:20px">
     <div class="settings-card">
-      <h3>📲 Bark 推送配置（国内 iPhone 专用）</h3>
-      <p style="font-size:13px; color:#888; line-height:1.6; margin-bottom: 10px;">
-        Bark 走苹果通知通道，国内完全可用，不需要 VPN。
-      </p>
-      <label style="font-size:12px; color:#888;">Bark Key（从 Bark App 复制）：</label>
+      <h3>📲 Bark 推送配置</h3>
+      <p style="font-size:13px;color:#888;line-height:1.6;margin-bottom:10px">Bark 走苹果通知通道，国内完全可用，不需要VPN。</p>
+      <label style="font-size:12px;color:#888">Bark Key（从Bark App复制）：</label>
       <input type="text" class="topic-box" id="topic-input" placeholder="粘贴你的 Bark Key..." />
-      <button class="btn-green" onclick="saveTopic()">💾 保存 Key</button>
+      <button class="btn-purple" onclick="saveTopic()">💾 保存 Key</button>
     </div>
-
     <div class="settings-card">
-      <h3>📱 Bark 设置步骤（只需做一次）</h3>
-      <div class="step-row">
-        <div class="step-num">1</div>
-        <div class="step-text">iPhone App Store 搜索 <strong>Bark</strong> 安装（国内可搜到，免费）</div>
-      </div>
-      <div class="step-row">
-        <div class="step-num">2</div>
-        <div class="step-text">打开 Bark App，首页会显示一串 URL，<strong>复制最后那段英文字符</strong>，那就是你的 Key</div>
-      </div>
-      <div class="step-row">
-        <div class="step-num">3</div>
-        <div class="step-text">把 Key 填到上方输入框，同时填到电脑上 <strong>notifier.py</strong> 第一行的 BARK_KEY</div>
-      </div>
-      <div class="step-row">
-        <div class="step-num">4</div>
-        <div class="step-text">在电脑上运行 <strong>notifier.py</strong> 脚本，就会每天按时推送提醒到手机</div>
-      </div>
-      <div class="step-row">
-        <div class="step-num">5</div>
-        <div class="step-text">可选：运行 <strong>setup.sh</strong> 设置开机自启动，不用每次手动开</div>
-      </div>
+      <h3>📱 添加到主屏幕</h3>
+      <div class="step-row"><div class="step-num">1</div><div class="step-text">用 <strong>Safari</strong> 打开此页面</div></div>
+      <div class="step-row"><div class="step-num">2</div><div class="step-text">底部点击分享按钮 → 「<strong>添加到主屏幕</strong>」</div></div>
+      <div class="step-row"><div class="step-num">3</div><div class="step-text">以后直接从桌面打开，打卡记录自动保存 ✅</div></div>
     </div>
-
     <div class="settings-card">
-      <h3>📲 把这个页面添加到手机主屏幕</h3>
-      <div class="step-row">
-        <div class="step-num">1</div>
-        <div class="step-text">微信把 <strong>wellness_plan.html</strong> 文件发给自己，保存到手机</div>
-      </div>
-      <div class="step-row">
-        <div class="step-num">2</div>
-        <div class="step-text">用 <strong>Safari</strong> 打开文件（不要用微信内置浏览器）</div>
-      </div>
-      <div class="step-row">
-        <div class="step-num">3</div>
-        <div class="step-text">底部点击 <strong>分享按钮</strong> → 找到「<strong>添加到主屏幕</strong>」→ 确认</div>
-      </div>
-      <div class="step-row">
-        <div class="step-num">4</div>
-        <div class="step-text">以后直接从桌面打开，打卡记录会自动保存在手机上 ✅</div>
-      </div>
-    </div>
-
-    <div class="settings-card">
-      <h3>🔔 每日推送时间表（12条）</h3>
+      <h3>🔔 推送时间表</h3>
       <div id="notif-schedule"></div>
     </div>
-
     <div class="settings-card">
       <h3>🔄 数据管理</h3>
       <button class="btn-ghost" onclick="resetToday()">🔁 重置今日打卡记录</button>
@@ -474,390 +327,345 @@
   </div>
 </div>
 
-<!-- ========== BOTTOM NAV ========== -->
 <div class="bottom-nav">
-  <button class="nav-btn active" id="nav-today" onclick="showPage('today')">
-    <span class="nav-icon">📋</span>今日计划
-  </button>
-  <button class="nav-btn" id="nav-meal" onclick="showPage('meal')">
-    <span class="nav-icon">🥗</span>饮食方案
-  </button>
-  <button class="nav-btn" id="nav-stats" onclick="showPage('stats')">
-    <span class="nav-icon">📊</span>打卡统计
-  </button>
-  <button class="nav-btn" id="nav-settings" onclick="showPage('settings')">
-    <span class="nav-icon">⚙️</span>设置
-  </button>
+  <button class="nav-btn active" id="nav-today" onclick="showPage('today')"><span class="nav-icon">📋</span>今日计划</button>
+  <button class="nav-btn" id="nav-meal" onclick="showPage('meal')"><span class="nav-icon">🥗</span>饮食方案</button>
+  <button class="nav-btn" id="nav-stats" onclick="showPage('stats')"><span class="nav-icon">🏆</span>我的成就</button>
+  <button class="nav-btn" id="nav-settings" onclick="showPage('settings')"><span class="nav-icon">⚙️</span>设置</button>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
-// ===== 数据定义 =====
 const TASKS = [
-  { id:'t01', time:'07:30', section:'🌅 早晨', icon:'☀️', title:'起床喝温水', desc:'先别看手机！床头那杯水喝掉，600ml，喝完再刷。空腹喝温水能启动肠胃、排毒、控油，比任何护肤品都便宜。今天也是皮肤变好的一天💧' },
-  { id:'t02', time:'07:45', section:'🌅 早晨', icon:'🥐', title:'出门买早餐', desc:'不吃早餐→血糖崩→午饭暴食→下午犯困→皮肤变差，这个链条你经历过多少次了？楼下便利店：茶叶蛋1个+三明治，5分钟搞定，今天的代谢从这里开始。' },
-  { id:'t03', time:'08:30', section:'🚇 上班路上', icon:'🚶', title:'通勤走路段', desc:'现在就准备下车，走路去公司。15分钟步行=今天的运动量完成✅ 不用健身房，不用额外时间。走路时挺胸收腹，练姿势的同时顺便燃脂，一举两得。' },
-  { id:'t04', time:'10:30', section:'💼 工作时间', icon:'💧', title:'喝水 + 眼睛放松', desc:'已经坐了2小时了。站起来，走到茶水间，接600ml水喝掉。顺手做个肩颈绕圈，左右各5次。久坐会让血液循环变差，直接影响脸色——起来动一下，比涂口红还提气色。' },
-  { id:'t05', time:'12:00', section:'💼 工作时间', icon:'🥗', title:'午餐外卖', desc:'外卖备注写上：少油少辣，多加蔬菜。选择顺序：蒸菜>炒菜>油炸。深色蔬菜（菠菜/西兰花/胡萝卜）含抗氧化成分，直接护肤。今天蔬菜达标了，皮肤会悄悄记账的🌿' },
-  { id:'t06', time:'12:30', section:'💼 工作时间', icon:'🚶', title:'饭后散步10分钟', desc:'吃完饭立刻坐着=血糖飙升+消化变慢+下午犯困。出去走10分钟，哪怕就在楼道里转，也能让血糖稳住、消化提速。走完回来，下午精力比同事强一截。' },
-  { id:'t07', time:'14:30', section:'💼 工作时间', icon:'🍵', title:'下午补水', desc:'现在感觉有点困？不是因为累，是因为缺水。喝400ml水或无糖绿茶（绿茶里的EGCG是护肤成分，比很多精华便宜100倍）。奶茶今天先放放，给皮肤一个机会🍃' },
-  { id:'t08', time:'16:30', section:'💼 工作时间', icon:'🧍', title:'起身活动2分钟', desc:'对着屏幕盯了一下午，现在做：双手交叉放脑后，头缓缓向后仰，停5秒。然后左耳贴左肩、右耳贴右肩，各停5秒。就这几个动作，预防颈椎病，顺便让下班后不那么疲惫。' },
-  { id:'t09', time:'18:30', section:'🚇 下班路上', icon:'🏃', title:'通勤多走一段', desc:'提前一站下车，走路回家。今天上班路走过了，现在这段是加成——两段加起来30分钟，正好达到每日运动量。走路时深呼吸，把白天的压力呼出去，到家时整个人会轻松很多。' },
-  { id:'t10', time:'19:30', section:'🌆 晚间', icon:'🍜', title:'晚餐外卖', desc:'今天辣的吃够了吗？晚上试试：砂锅粥+小菜，或者蒸菜套餐，或者清汤面。清淡的晚饭让肠胃休息，睡眠质量提升，明天早上起来脸不浮肿。你会发现皮肤状态和前一天晚饭直接挂钩🌾' },
-  { id:'t11', time:'21:00', section:'🌆 晚间', icon:'✨', title:'护肤程序', desc:'第1步：温水洗脸（35度，别用热水，热水破坏皮肤屏障）→ 第2步：爽肤水轻拍到吸收 → 第3步：保湿乳锁水。总共5分钟。坚持30天会有人问你用了什么产品✨' },
-  { id:'t12', time:'22:30', section:'🌙 入睡', icon:'🌙', title:'准备入睡', desc:'皮肤在23:00-02:00修复最活跃，这是真的。今天喝水了、走路了、护肤了——已经比昨天的自己好了一点点。放下手机，给自己10分钟缓冲，晚安🌙' },
+  {id:'t01',time:'07:30',section:'🌅 早晨',icon:'☀️',title:'起床喝温水',desc:'先别看手机！床头那杯水喝掉，600ml，喝完再刷。空腹喝温水能启动肠胃、排毒、控油，比任何护肤品都便宜。今天也是皮肤变好的一天💧'},
+  {id:'t02',time:'07:45',section:'🌅 早晨',icon:'🥐',title:'出门买早餐',desc:'不吃早餐→血糖崩→午饭暴食→下午犯困→皮肤变差，这个链条你经历过多少次了？楼下便利店：茶叶蛋1个+三明治，5分钟搞定，今天的代谢从这里开始。'},
+  {id:'t03',time:'08:30',section:'🚇 上班路上',icon:'🚶',title:'通勤走路段',desc:'现在就准备下车，走路去公司。15分钟步行=今天的运动量完成✅ 不用健身房，不用额外时间。走路时挺胸收腹，练姿势的同时顺便燃脂，一举两得。'},
+  {id:'t04',time:'10:30',section:'💼 工作时间',icon:'💧',title:'喝水 + 眼睛放松',desc:'已经坐了2小时了。站起来，走到茶水间，接600ml水喝掉。顺手做个肩颈绕圈，左右各5次。久坐会让血液循环变差，直接影响脸色——起来动一下，比涂口红还提气色。'},
+  {id:'t05',time:'12:00',section:'💼 工作时间',icon:'🥗',title:'午餐外卖',desc:'外卖备注写上：少油少辣，多加蔬菜。选择顺序：蒸菜>炒菜>油炸。深色蔬菜（菠菜/西兰花/胡萝卜）含抗氧化成分，直接护肤。今天蔬菜达标了，皮肤会悄悄记账的🌿'},
+  {id:'t06',time:'12:30',section:'💼 工作时间',icon:'🚶',title:'饭后散步10分钟',desc:'吃完饭立刻坐着=血糖飙升+消化变慢+下午犯困。出去走10分钟，哪怕就在楼道里转，也能让血糖稳住、消化提速。走完回来，下午精力比同事强一截。'},
+  {id:'t07',time:'14:30',section:'💼 工作时间',icon:'🍵',title:'下午补水',desc:'现在感觉有点困？不是因为累，是因为缺水。喝400ml水或无糖绿茶（绿茶里的EGCG是护肤成分，比很多精华便宜100倍）。奶茶今天先放放，给皮肤一个机会🍃'},
+  {id:'t08',time:'16:30',section:'💼 工作时间',icon:'🧍',title:'起身活动2分钟',desc:'对着屏幕盯了一下午，现在做：双手交叉放脑后，头缓缓向后仰，停5秒。然后左耳贴左肩、右耳贴右肩，各停5秒。就这几个动作，预防颈椎病，顺便让下班后不那么疲惫。'},
+  {id:'t09',time:'18:30',section:'🚇 下班路上',icon:'🏃',title:'通勤多走一段',desc:'提前一站下车，走路回家。今天上班路走过了，现在这段是加成——两段加起来30分钟，正好达到每日运动量。走路时深呼吸，把白天的压力呼出去，到家时整个人会轻松很多。'},
+  {id:'t10',time:'19:30',section:'🌆 晚间',icon:'🍜',title:'晚餐外卖',desc:'今天辣的吃够了吗？晚上试试：砂锅粥+小菜，或者蒸菜套餐，或者清汤面。清淡的晚饭让肠胃休息，睡眠质量提升，明天早上起来脸不浮肿。你会发现皮肤状态和前一天晚饭直接挂钩🌾'},
+  {id:'t11',time:'21:00',section:'🌆 晚间',icon:'✨',title:'护肤程序',desc:'第1步：温水洗脸（35度，别用热水，热水破坏皮肤屏障）→ 第2步：爽肤水轻拍到吸收 → 第3步：保湿乳锁水。总共5分钟。坚持30天会有人问你用了什么产品✨'},
+  {id:'t12',time:'22:30',section:'🌙 入睡',icon:'🌙',title:'准备入睡',desc:'皮肤在23:00-02:00修复最活跃，这是真的。今天喝水了、走路了、护肤了——已经比昨天的自己好了一点点。放下手机，给自己10分钟缓冲，晚安🌙'},
 ];
 
 const TIPS = [
-  { title:'💧 每日补水目标', content:'今天喝够4L水了吗？皮肤暗沉、干燥很多时候是缺水导致的。保温杯放桌上，每小时喝一口，比你想象的容易。' },
-  { title:'🥗 护肤从饮食开始', content:'多吃：西红柿（茄红素防晒抗氧化）、胡萝卜（维生素A）、深绿叶菜、蓝莓。少吃：油炸食品、甜饮料、高糖零食。' },
-  { title:'😴 睡眠 = 护肤', content:'皮肤在22:00-02:00修复最活跃。23:00前入睡，抵得上你涂所有护肤品。熬夜一晚，第二天肤色差1-2个等级。' },
-  { title:'🌶️ 四川人怎么护肤吃辣', content:'辣不用戒！搭配蔬菜吃就行：火锅多点豆腐、木耳、菌菇。凉拌菜（拌黄瓜、拌木耳）是绝佳搭配。少喝辣汤，多吃菜。' },
-  { title:'🚇 通勤就是你的运动', content:'上班路上提前一站下车走15分钟 + 下班路上再走15分钟 = 每天30分钟步行，完全不需要额外抽时间运动。坚持一个月，体重、皮肤、睡眠都会改变。' },
-  { title:'🌅 早餐的重要性', content:'不吃早餐 → 血糖大幅波动 → 午餐容易暴食 → 精力下午崩塌。楼下便利店茶叶蛋+三明治，30秒搞定，让全天能量更稳定。' },
+  {title:'💧 每日补水目标',content:'今天喝够4L水了吗？皮肤暗沉、干燥很多时候是缺水导致的。保温杯放桌上，每小时喝一口，比你想象的容易。'},
+  {title:'🥗 护肤从饮食开始',content:'多吃：西红柿（茄红素防晒抗氧化）、胡萝卜（维生素A）、深绿叶菜、蓝莓。少吃：油炸食品、甜饮料、高糖零食。'},
+  {title:'😴 睡眠 = 护肤',content:'皮肤在22:00-02:00修复最活跃。23:00前入睡，抵得上你涂所有护肤品。熬夜一晚，第二天肤色差1-2个等级。'},
+  {title:'🌶️ 四川人怎么护肤吃辣',content:'辣不用戒！搭配蔬菜吃就行：火锅多点豆腐、木耳、菌菇。凉拌菜（拌黄瓜、拌木耳）是绝佳搭配。少喝辣汤，多吃菜。'},
+  {title:'🚇 通勤就是你的运动',content:'上班路提前一站下车走15分钟 + 下班路再走15分钟 = 每天30分钟步行，不需要额外抽时间运动。坚持一个月，体重、皮肤、睡眠都会改变。'},
+  {title:'🌅 早餐的重要性',content:'不吃早餐 → 血糖大幅波动 → 午餐容易暴食 → 精力下午崩塌。楼下便利店茶叶蛋+三明治，30秒搞定，让全天能量更稳定。'},
 ];
 
 const NOTIFS = [
-  { time:'07:30', title:'☀️ 早安！', msg:'起床喝一杯温水600ml，放床头就够了' },
-  { time:'07:45', title:'🥐 出门买早餐', msg:'便利店茶叶蛋+三明治，别空腹出门' },
-  { time:'08:30', title:'🚇 通勤运动时间', msg:'提前一站下车！走路去公司，今天的运动完成了' },
-  { time:'10:30', title:'💧 喝水啦', msg:'站起来走走，眼睛看远处放松30秒' },
-  { time:'12:00', title:'🥗 午餐外卖', msg:'选有蔬菜的，备注少辣少油，皮肤感谢你' },
-  { time:'12:30', title:'🚶 饭后散步', msg:'楼下溜达10分钟，助消化，不犯困' },
-  { time:'14:30', title:'🍵 下午补水', msg:'喝水或无糖绿茶，抗氧化护肤，别喝奶茶' },
-  { time:'16:30', title:'🧍 站起来！', msg:'肩颈拉伸2分钟，预防久坐酸痛' },
-  { time:'18:30', title:'🏃 下班运动时间', msg:'提前一站下！走路回家，第二段运动完成！' },
-  { time:'19:30', title:'🍜 晚餐外卖', msg:'粥+小菜或蒸菜，清淡一点，今天蔬菜够了吗？' },
-  { time:'21:00', title:'✨ 护肤时间', msg:'洗脸→爽肤水→保湿，3步5分钟，坚持就有效' },
-  { time:'22:30', title:'🌙 准备入睡', msg:'放下手机，23点前睡觉是最好的护肤' },
+  {time:'07:30',title:'☀️ 早安，起床啦～',msg:'先别看手机！床头那杯水喝掉600ml'},
+  {time:'07:45',title:'🥐 出门前吃点东西',msg:'便利店茶叶蛋+三明治，5分钟搞定'},
+  {time:'08:30',title:'🚶 提前一站下车！',msg:'走路去公司，今天运动量完成✅'},
+  {time:'10:30',title:'💧 离开座位30秒',msg:'接600ml水，肩颈绕圈左右各5次'},
+  {time:'12:00',title:'🥗 午饭时间，吃聪明点',msg:'外卖备注：少油少辣，多加蔬菜🌿'},
+  {time:'12:30',title:'🚶 饭后不要坐着',msg:'出去走10分钟，血糖稳住不犯困'},
+  {time:'14:30',title:'🍵 下午补水时间',msg:'喝400ml水或无糖绿茶，别喝奶茶🍃'},
+  {time:'16:30',title:'🧍 肩颈快要断了吧',msg:'头后仰停5秒，左右各5秒'},
+  {time:'18:30',title:'🏃 下班了！再走一段',msg:'提前一站下车，30分钟运动量完成！'},
+  {time:'19:30',title:'🍜 晚饭吃轻一点',msg:'砂锅粥+小菜，明天脸不浮肿🌾'},
+  {time:'21:00',title:'✨ 护肤3步，做了吗',msg:'洗脸→爽肤水→保湿乳，5分钟✨'},
+  {time:'22:30',title:'🌙 该放下手机了',msg:'23点前睡，皮肤自动修复，晚安🌙'},
 ];
 
-// ===== 30天每日推荐数据 =====
 const DAILY_REC = [
-  { breakfast:'便利店：茶叶蛋2个 + 全麦三明治', lunch:'粤菜外卖：菜心牛肉 + 杂粮饭', dinner:'皮蛋瘦肉粥 + 凉拌黄瓜', tip:'补水目标：保温杯放桌上，每完成一件事就喝一口，不知不觉4L就够了', exercise:'上下班各提前一站下车，今天认真走，别刷手机' },
-  { breakfast:'外卖：广式肠粉加蛋 + 热豆浆', lunch:'轻食沙拉（鸡胸肉款，龙华多门店）', dinner:'清汤牛腩米线 + 烫青菜', tip:'洗脸水温别太热！35-38度最好，热水洗脸会破坏皮肤屏障，加重出油', exercise:'下班路绕一条街走，比直接回家多5分钟也好' },
-  { breakfast:'便利店：全家饭团（金枪鱼）+ 纯牛奶250ml', lunch:'砂锅粥套餐（鱼片或虾，配小菜）', dinner:'蒸菜套餐（蒸鱼/蒸蛋/蒸豆腐，选一种）', tip:'今晚22:30放下手机试试。早睡1小时，明天皮肤状态对比一下', exercise:'走路时有意识挺胸收腹，练姿势的同时顺便锻炼核心' },
-  { breakfast:'外卖：云吞面（清汤）', lunch:'番茄鸡蛋盖浇饭 + 紫菜蛋花汤', dinner:'白灼虾 + 蒜蓉炒菜心 + 米饭（清淡粤菜）', tip:'午饭多点一份番茄！茄红素是天然抗氧化剂，常吃皮肤更有光泽', exercise:'上班路上试试爬楼梯而不是坐电梯' },
-  { breakfast:'便利店：热玉米棒 + 牛奶（7-11有）', lunch:'麻辣香锅（今天可以辣！选菌菇、豆腐、莴笋为主）', dinner:'银耳莲子粥 + 凉拌木耳', tip:'护肤小挑战：睡前摸摸手机屏幕再摸摸脸，感受一下为什么要多洗脸', exercise:'下班路听播客或有声书，会不自觉多走很多路' },
-  { breakfast:'外卖：皮蛋瘦肉粥', lunch:'卤肉饭 + 烫青菜 + 味噌汤', dinner:'清蒸鱼 + 蒜蓉炒菜心 + 米饭', tip:'运动后记得补水！走路出汗会加速皮肤水分流失，走完立刻喝一杯', exercise:'今天走路保持每分钟100步以上，心肺效果更好' },
-  { breakfast:'便利店：鸡蛋三明治 + 100%橙汁', lunch:'越南米纸卷沙拉（龙华有越南餐厅）', dinner:'广式煲仔饭（菜心猪肉款）', tip:'坚持一周了！检查一下：喝水习惯有没有建立？皮肤有没有好一点点？', exercise:'走路时做肩颈运动：边走边交替抬肩绕圈，舒展颈部' },
-  { breakfast:'外卖：艇仔粥（海鲜款，营养丰富）', lunch:'日式定食（三文鱼/鸡肉+味噌汤+沙拉）', dinner:'番茄牛腩汤 + 蒸米饭', tip:'涂保湿霜前先喷一点爽肤水或矿泉水雾，锁水效果翻倍', exercise:'今天上班路试试不同路线，新鲜感让走路不无聊' },
-  { breakfast:'便利店：全麦面包2片 + 纯牛奶', lunch:'猪骨汤河粉 + 烫时蔬', dinner:'轻食沙拉（今天蔬菜为主，肠胃休息）', tip:'买保湿产品找含"透明质酸"/"玻尿酸"的，平价也有效，不用买贵', exercise:'下班走路时做腹式呼吸：吸气4秒，呼气6秒' },
-  { breakfast:'外卖：猪肉肠粉 + 淡豆浆（无糖）', lunch:'紫菜包饭套餐（韩式，配汤）', dinner:'皮蛋瘦肉粥 + 盐焗鸡翅', tip:'防晒提醒：出门前涂防晒SPF30以上！这是性价比最高的护肤动作', exercise:'今天走路全程不看手机，观察路上的风景和人' },
-  { breakfast:'便利店：即食燕麦（热水冲）+ 香蕉', lunch:'泰式椰汁咖喱鸡饭（今天换口味）', dinner:'清汤面 + 卤蛋 + 青菜', tip:'睡前深呼吸法：吸气5秒，屏住2秒，呼出7秒，做3次，帮助快速入睡', exercise:'上班路每走10步有意识收一下腹部，顺便练核心' },
-  { breakfast:'外卖：虾饺 + 白米粥', lunch:'麻辣烫（选豆腐蔬菜多，少肉，备注少辣少油）', dinner:'冬瓜排骨汤 + 炒时蔬 + 米饭', tip:'今天午饭后吃一小把蓝莓或草莓，花青素抗氧化，对皮肤好', exercise:'下班走路时做肩部运动：双肩向后绕圈，边走边松解' },
-  { breakfast:'便利店：全家三角饭团 + 热豆浆', lunch:'粤式蒸饭（蒸蛋豆腐或蒸排骨）+ 青菜', dinner:'砂锅老火靓汤（龙华有很多外卖）', tip:'今日挑战：晚饭后不点宵夜！饿了喝一杯无糖酸奶', exercise:'今天走路注意脚踝：每10步用脚尖走5步，练小腿' },
-  { breakfast:'外卖：叉烧包 + 白粥（早茶款）', lunch:'牛肉炒河粉（今天补充铁元素，护肤有帮助）', dinner:'番茄蛋花汤 + 清炒豆苗 + 米饭', tip:'两周了！坚持两周的人皮肤会开始有变化，主要来自喝水和睡眠改善', exercise:'今天全天步数目标：8000步，打开健康App看看' },
-  { breakfast:'便利店：茶叶蛋 + 全麦面包 + 牛奶', lunch:'鸡肉菜心盖浇饭', dinner:'粥底火锅或皮蛋瘦肉粥（清淡版）', tip:'今晚换个干净枕套！枕套上的细菌是痘痘的隐形帮凶', exercise:'上下班路今天各多走一站，挑战一下！' },
-  { breakfast:'外卖：虾仁炒蛋肠粉', lunch:'鸡胸轻食健身餐（藜麦+蔬菜+鸡肉）', dinner:'清蒸鲈鱼 + 炒时蔬（今天补优质蛋白）', tip:'涂保湿霜时顺带轻轻按摩眼周，促进循环，慢慢减少细纹', exercise:'下班路保持快走，心率到110-120次/分钟效果最好' },
-  { breakfast:'便利店：全家饭团 + 纯牛奶', lunch:'越南河粉（清汤牛肉片，清淡好选择）', dinner:'杂粮粥 + 凉拌海带 + 卤豆干', tip:'今天少吃一样加工食品（薯片/速食面/甜饼干），皮肤会说谢谢', exercise:'上班路做颈部运动：低头5秒、仰头5秒、左右各5秒，走路也能做' },
-  { breakfast:'外卖：皮蛋粥 + 腐乳', lunch:'湘菜小炒（今天可以吃辣！小炒肉+蒸菜）', dinner:'冬瓜虾仁汤 + 蒸蛋 + 米饭', tip:'皮肤出油多大概率是缺水。多喝水而不是反复洗脸，越洗越油', exercise:'下班路绑定一首最爱的歌，走完这首才到家，多走10分钟' },
-  { breakfast:'便利店：茶叶蛋 + 牛奶 + 香蕉', lunch:'日式便当（三文鱼/鸡肉+沙拉）', dinner:'番茄牛肉汤面（汤底清爽，蔬菜多）', tip:'在手机设一个下午2:30的提醒"喝水"，今天看看会不会忘记', exercise:'走路时有意识挺直背部，肩膀向后打开，姿态好身体也好' },
-  { breakfast:'外卖：干贝虾仁粥（今天营养升级版）', lunch:'武汉热干面（龙华有，换口味）', dinner:'蒸鱼 + 清炒芥兰 + 米饭', tip:'20天！如果坚持了走路通勤，这20天大概额外走了120公里', exercise:'今天走路专注呼吸：吸气3步、呼气3步，走一段冥想式散步' },
-  { breakfast:'便利店：全麦饼干 + 奶酪 + 牛奶', lunch:'粤菜炒饭（海鲜炒饭，少油款）', dinner:'猪肚鸡汤（暖胃，龙华有煲汤外卖）', tip:'下午3点前喝完今天的水，避免傍晚喝太多影响夜间睡眠质量', exercise:'走路时双臂弯曲90度自然摆动，增加上身的运动量' },
-  { breakfast:'外卖：潮汕砂锅粥（鱼片，清淡营养）', lunch:'牛肉炒河粉（补铁）', dinner:'莲藕排骨汤 + 青菜豆腐', tip:'睡前5次深呼吸，让身体放松。压力大是皮肤变差最被忽视的原因', exercise:'上下班路上今天走够6000步，打开健康App验收' },
-  { breakfast:'便利店：茶叶蛋 + 全麦三明治（回到经典）', lunch:'健康轻食（无酱沙拉或减脂餐）', dinner:'鲜虾云吞汤 + 烫青菜', tip:'买护肤品时，成分表第一位是"水"就是正常的，不要被过度宣传骗', exercise:'下班路上每走100步找个地方做一次深蹲，练下肢力量' },
-  { breakfast:'外卖：蛋炒饭（今天早餐换口味）', lunch:'麻辣香锅（今天可以辣！多选蔬菜豆腐）', dinner:'清蒸冬瓜 + 番茄蛋花汤 + 米饭', tip:'午饭吃完不要立刻坐下，先站10分钟，对消化和饭后血糖都有帮助', exercise:'走路时脚跟先着地，再慢慢过渡到脚尖，保护膝盖' },
-  { breakfast:'便利店：全家饭团 + 热豆浆（无糖）', lunch:'粿条汤（客家风味，龙华有，清淡）', dinner:'芋头排骨粥（暖胃，今天换换）', tip:'今晚护肤后，看看镜子，做一次自我鼓励——坚持了25天很了不起', exercise:'走路时用肚脐引导方向，感受核心肌群发力' },
-  { breakfast:'外卖：马来西亚椰浆饭或云吞汤', lunch:'日式乌冬面（清汤款，加蔬菜）', dinner:'蚝油生菜 + 清蒸虾 + 米饭（今天高蛋白）', tip:'今晚睡前不刷短视频，改成听轻音乐，帮助更快入睡，睡眠质量更好', exercise:'到公司后做30秒踮脚尖运动，活化小腿，促进血液循环' },
-  { breakfast:'便利店：茶叶蛋 + 牛奶 + 坚果一小包', lunch:'泰式炒河粉（今天泰国风味）', dinner:'清淡炒菜 + 白粥（今天简单吃，让肠胃休息）', tip:'今日护肤：睡前厚涂唇膏，明天唇色明显改善', exercise:'今天下班路放慢脚步，享受走路的过程，不赶路' },
-  { breakfast:'外卖：虾仁蛋炒饭（今天稍重口，没关系）', lunch:'台式卤肉饭 + 味增汤 + 烫青菜', dinner:'西红柿炖牛腩 + 杂粮米饭（今天维生素C+铁同补）', tip:'快一个月了！哪些习惯建立了？哪些还需要加强？做个小复盘', exercise:'今天全天目标1万步，回家前步数不够就在楼下多走一圈' },
-  { breakfast:'便利店：全麦面包 + 花生酱 + 牛奶', lunch:'海南鸡饭（清淡，鸡肉蛋白质高，龙华有）', dinner:'排骨藕汤 + 清炒豌豆尖', tip:'今天给自己买一个好用的保湿产品或一份喜欢的健康餐，奖励自己坚持', exercise:'和往常一样认真走完通勤路，这已经是你的习惯了' },
-  { breakfast:'外卖：粤式早茶（叉烧包+虾饺+皮蛋粥，今天犒劳）', lunch:'随便吃自己最想吃的，今天没有限制！', dinner:'皮蛋瘦肉粥（回到第1天，感受一下30天的变化）', tip:'30天完成！皮肤、睡眠、精力都应该有改善了。循环继续，保持就是胜利💪', exercise:'今天走路时回想一下这30天，你已经多走了约180公里' },
+  {breakfast:'便利店：茶叶蛋2个 + 全麦三明治',lunch:'粤菜外卖：菜心牛肉 + 杂粮饭',dinner:'皮蛋瘦肉粥 + 凉拌黄瓜',tip:'补水目标：保温杯放桌上，每完成一件事就喝一口，不知不觉4L就够了',exercise:'上下班各提前一站下车，今天认真走，别刷手机'},
+  {breakfast:'外卖：广式肠粉加蛋 + 热豆浆',lunch:'轻食沙拉（鸡胸肉款，龙华多门店）',dinner:'清汤牛腩米线 + 烫青菜',tip:'洗脸水温别太热！35-38度最好，热水洗脸会破坏皮肤屏障，加重出油',exercise:'下班路绕一条街走，比直接回家多5分钟也好'},
+  {breakfast:'便利店：全家饭团（金枪鱼）+ 纯牛奶250ml',lunch:'砂锅粥套餐（鱼片或虾，配小菜）',dinner:'蒸菜套餐（蒸鱼/蒸蛋/蒸豆腐，选一种）',tip:'今晚22:30放下手机试试。早睡1小时，明天皮肤状态对比一下',exercise:'走路时有意识挺胸收腹，练姿势的同时顺便锻炼核心'},
+  {breakfast:'外卖：云吞面（清汤）',lunch:'番茄鸡蛋盖浇饭 + 紫菜蛋花汤',dinner:'白灼虾 + 蒜蓉炒菜心 + 米饭',tip:'午饭多点一份番茄！茄红素是天然抗氧化剂，常吃皮肤更有光泽',exercise:'上班路上试试爬楼梯而不是坐电梯'},
+  {breakfast:'便利店：热玉米棒 + 牛奶',lunch:'麻辣香锅（今天可以辣！选菌菇豆腐莴笋为主）',dinner:'银耳莲子粥 + 凉拌木耳',tip:'护肤小挑战：睡前摸摸手机屏幕再摸摸脸，感受一下为什么要多洗脸',exercise:'下班路听播客或有声书，会不自觉多走很多路'},
+  {breakfast:'外卖：皮蛋瘦肉粥',lunch:'卤肉饭 + 烫青菜 + 味噌汤',dinner:'清蒸鱼 + 蒜蓉炒菜心 + 米饭',tip:'运动后记得补水！走路出汗会加速皮肤水分流失，走完立刻喝一杯',exercise:'今天走路保持每分钟100步以上，心肺效果更好'},
+  {breakfast:'便利店：鸡蛋三明治 + 100%橙汁',lunch:'越南米纸卷沙拉（龙华有越南餐厅）',dinner:'广式煲仔饭（菜心猪肉款）',tip:'坚持一周了！检查一下：喝水习惯有没有建立？皮肤有没有好一点点？',exercise:'走路时做肩颈运动：边走边交替抬肩绕圈，舒展颈部'},
+  {breakfast:'外卖：艇仔粥（海鲜款，营养丰富）',lunch:'日式定食（三文鱼/鸡肉+味噌汤+沙拉）',dinner:'番茄牛腩汤 + 蒸米饭',tip:'涂保湿霜前先喷一点爽肤水或矿泉水雾，锁水效果翻倍',exercise:'今天上班路试试不同路线，新鲜感让走路不无聊'},
+  {breakfast:'便利店：全麦面包2片 + 纯牛奶',lunch:'猪骨汤河粉 + 烫时蔬',dinner:'轻食沙拉（今天蔬菜为主，肠胃休息）',tip:'买保湿产品找含"透明质酸"/"玻尿酸"的，平价也有效，不用买贵',exercise:'下班走路时做腹式呼吸：吸气4秒，呼气6秒'},
+  {breakfast:'外卖：猪肉肠粉 + 淡豆浆（无糖）',lunch:'紫菜包饭套餐（韩式，配汤）',dinner:'皮蛋瘦肉粥 + 盐焗鸡翅',tip:'防晒提醒：出门前涂防晒SPF30以上！这是性价比最高的护肤动作',exercise:'今天走路全程不看手机，观察路上的风景和人'},
+  {breakfast:'便利店：即食燕麦（热水冲）+ 香蕉',lunch:'泰式椰汁咖喱鸡饭（今天换口味）',dinner:'清汤面 + 卤蛋 + 青菜',tip:'睡前深呼吸法：吸气5秒，屏住2秒，呼出7秒，做3次，帮助快速入睡',exercise:'上班路每走10步有意识收一下腹部，顺便练核心'},
+  {breakfast:'外卖：虾饺 + 白米粥',lunch:'麻辣烫（选豆腐蔬菜多，少肉，备注少辣少油）',dinner:'冬瓜排骨汤 + 炒时蔬 + 米饭',tip:'今天午饭后吃一小把蓝莓或草莓，花青素抗氧化，对皮肤好',exercise:'下班走路时做肩部运动：双肩向后绕圈，边走边松解'},
+  {breakfast:'便利店：全家三角饭团 + 热豆浆',lunch:'粤式蒸饭（蒸蛋豆腐或蒸排骨）+ 青菜',dinner:'砂锅老火靓汤（龙华有很多外卖）',tip:'今日挑战：晚饭后不点宵夜！饿了喝一杯无糖酸奶',exercise:'今天走路注意脚踝：每10步用脚尖走5步，练小腿'},
+  {breakfast:'外卖：叉烧包 + 白粥（早茶款）',lunch:'牛肉炒河粉（今天补充铁元素，护肤有帮助）',dinner:'番茄蛋花汤 + 清炒豆苗 + 米饭',tip:'两周了！坚持两周的人皮肤会开始有变化，主要来自喝水和睡眠改善',exercise:'今天全天步数目标：8000步，打开健康App看看'},
+  {breakfast:'便利店：茶叶蛋 + 全麦面包 + 牛奶',lunch:'鸡肉菜心盖浇饭',dinner:'粥底火锅或皮蛋瘦肉粥（清淡版）',tip:'今晚换个干净枕套！枕套上的细菌是痘痘的隐形帮凶',exercise:'上下班路今天各多走一站，挑战一下！'},
+  {breakfast:'外卖：虾仁炒蛋肠粉',lunch:'鸡胸轻食健身餐（藜麦+蔬菜+鸡肉）',dinner:'清蒸鲈鱼 + 炒时蔬（今天补优质蛋白）',tip:'涂保湿霜时顺带轻轻按摩眼周，促进循环，慢慢减少细纹',exercise:'下班路保持快走，心率到110-120次/分钟效果最好'},
+  {breakfast:'便利店：全家饭团 + 纯牛奶',lunch:'越南河粉（清汤牛肉片，清淡好选择）',dinner:'杂粮粥 + 凉拌海带 + 卤豆干',tip:'今天少吃一样加工食品（薯片/速食面/甜饼干），皮肤会说谢谢',exercise:'上班路做颈部运动：低头5秒、仰头5秒、左右各5秒，走路也能做'},
+  {breakfast:'外卖：皮蛋粥 + 腐乳',lunch:'湘菜小炒（今天可以吃辣！小炒肉+蒸菜）',dinner:'冬瓜虾仁汤 + 蒸蛋 + 米饭',tip:'皮肤出油多大概率是缺水。多喝水而不是反复洗脸，越洗越油',exercise:'下班路绑定一首最爱的歌，走完这首才到家，多走10分钟'},
+  {breakfast:'便利店：茶叶蛋 + 牛奶 + 香蕉',lunch:'日式便当（三文鱼/鸡肉+沙拉）',dinner:'番茄牛肉汤面（汤底清爽，蔬菜多）',tip:'在手机设一个下午2:30的提醒"喝水"，今天看看会不会忘记',exercise:'走路时有意识挺直背部，肩膀向后打开，姿态好身体也好'},
+  {breakfast:'外卖：干贝虾仁粥（今天营养升级版）',lunch:'武汉热干面（龙华有，换口味）',dinner:'蒸鱼 + 清炒芥兰 + 米饭',tip:'20天！如果坚持了走路通勤，这20天大概额外走了120公里',exercise:'今天走路专注呼吸：吸气3步、呼气3步，走一段冥想式散步'},
+  {breakfast:'便利店：全麦饼干 + 奶酪 + 牛奶',lunch:'粤菜炒饭（海鲜炒饭，少油款）',dinner:'猪肚鸡汤（暖胃，龙华有煲汤外卖）',tip:'下午3点前喝完今天的水，避免傍晚喝太多影响夜间睡眠质量',exercise:'走路时双臂弯曲90度自然摆动，增加上身的运动量'},
+  {breakfast:'外卖：潮汕砂锅粥（鱼片，清淡营养）',lunch:'牛肉炒河粉（补铁）',dinner:'莲藕排骨汤 + 青菜豆腐',tip:'睡前5次深呼吸，让身体放松。压力大是皮肤变差最被忽视的原因',exercise:'上下班路上今天走够6000步，打开健康App验收'},
+  {breakfast:'便利店：茶叶蛋 + 全麦三明治（回到经典）',lunch:'健康轻食（无酱沙拉或减脂餐）',dinner:'鲜虾云吞汤 + 烫青菜',tip:'买护肤品时，成分表第一位是"水"就是正常的，不要被过度宣传骗',exercise:'下班路上每走100步找个地方做一次深蹲，练下肢力量'},
+  {breakfast:'外卖：蛋炒饭（今天早餐换口味）',lunch:'麻辣香锅（今天可以辣！多选蔬菜豆腐）',dinner:'清蒸冬瓜 + 番茄蛋花汤 + 米饭',tip:'午饭吃完不要立刻坐下，先站10分钟，对消化和饭后血糖都有帮助',exercise:'走路时脚跟先着地，再慢慢过渡到脚尖，保护膝盖'},
+  {breakfast:'便利店：全家饭团 + 热豆浆（无糖）',lunch:'粿条汤（客家风味，龙华有，清淡）',dinner:'芋头排骨粥（暖胃，今天换换）',tip:'今晚护肤后，看看镜子，做一次自我鼓励——坚持了25天很了不起',exercise:'走路时用肚脐引导方向，感受核心肌群发力'},
+  {breakfast:'外卖：马来西亚椰浆饭或云吞汤',lunch:'日式乌冬面（清汤款，加蔬菜）',dinner:'蚝油生菜 + 清蒸虾 + 米饭（今天高蛋白）',tip:'今晚睡前不刷短视频，改成听轻音乐，帮助更快入睡',exercise:'到公司后做30秒踮脚尖运动，活化小腿，促进血液循环'},
+  {breakfast:'便利店：茶叶蛋 + 牛奶 + 坚果一小包',lunch:'泰式炒河粉（今天泰国风味）',dinner:'清淡炒菜 + 白粥（今天简单吃，让肠胃休息）',tip:'今日护肤：睡前厚涂唇膏，明天唇色明显改善',exercise:'今天下班路放慢脚步，享受走路的过程，不赶路'},
+  {breakfast:'外卖：虾仁蛋炒饭',lunch:'台式卤肉饭 + 味增汤 + 烫青菜',dinner:'西红柿炖牛腩 + 杂粮米饭（维生素C+铁同补）',tip:'快一个月了！哪些习惯建立了？哪些还需要加强？做个小复盘',exercise:'今天全天目标1万步，回家前步数不够就在楼下多走一圈'},
+  {breakfast:'便利店：全麦面包 + 花生酱 + 牛奶',lunch:'海南鸡饭（清淡，鸡肉蛋白质高，龙华有）',dinner:'排骨藕汤 + 清炒豌豆尖',tip:'今天给自己买一个好用的保湿产品或一份喜欢的健康餐，奖励自己坚持',exercise:'和往常一样认真走完通勤路，这已经是你的习惯了'},
+  {breakfast:'外卖：粤式早茶（叉烧包+虾饺+皮蛋粥，今天犒劳）',lunch:'随便吃自己最想吃的，今天没有限制！',dinner:'皮蛋瘦肉粥（回到第1天，感受一下30天的变化）',tip:'30天完成！皮肤、睡眠、精力都应该有改善了。循环继续，保持就是胜利💪',exercise:'今天走路时回想一下这30天，你已经多走了约180公里'},
 ];
 
-// ===== 渲染：今日推荐 =====
-function renderDailyRec() {
-  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
-  const idx = (dayOfYear - 1 + 30) % 30;
-  const rec = DAILY_REC[idx];
-  const dayNum = idx + 1;
+// ===== 游戏系统 =====
+const LEVELS = [
+  {xp:0,   name:'养生小白', icon:'🌱'},
+  {xp:150, name:'养生学徒', icon:'🌿'},
+  {xp:400, name:'养生少女', icon:'✨'},
+  {xp:800, name:'养生达人', icon:'💎'},
+  {xp:1500,name:'养生仙女', icon:'👑'},
+  {xp:3000,name:'养生大师', icon:'🏆'},
+];
+const BADGES = [
+  {id:'first',   icon:'🌟',name:'第一步',  desc:'完成第一次打卡',    check:s=>s.totalTasks>=1},
+  {id:'streak3', icon:'🔥',name:'三天热身',desc:'连续打卡3天',       check:s=>s.maxStreak>=3},
+  {id:'streak7', icon:'💥',name:'一周战士',desc:'连续打卡7天',       check:s=>s.maxStreak>=7},
+  {id:'perfect1',icon:'⭐',name:'完美一天',desc:'单日完成全部12项',  check:s=>s.perfectDays>=1},
+  {id:'tasks50', icon:'💪',name:'五十连击',desc:'累计完成50个任务',  check:s=>s.totalTasks>=50},
+  {id:'tasks100',icon:'🎯',name:'百步穿杨',desc:'累计完成100个任务', check:s=>s.totalTasks>=100},
+  {id:'streak14',icon:'👑',name:'两周王者',desc:'连续打卡14天',      check:s=>s.maxStreak>=14},
+  {id:'perfect3',icon:'💎',name:'三次完美',desc:'三次单日全部完成',  check:s=>s.perfectDays>=3},
+  {id:'streak30',icon:'🏆',name:'月度传说',desc:'连续打卡30天',      check:s=>s.maxStreak>=30},
+];
+const XP_TASK=10, XP_BONUS=50;
 
-  document.getElementById('daily-rec').innerHTML = `
-    <div class="rec-card">
-      <div class="rec-header">
-        <span>🌟 今日推荐</span>
-        <span class="rec-day">第 ${dayNum} / 30 天</span>
-      </div>
-      <div class="rec-body">
-        <div class="rec-row">
-          <span class="rec-icon">🥐</span>
-          <span class="rec-label">早餐</span>
-          <span class="rec-text">${rec.breakfast}</span>
-        </div>
-        <div class="rec-row">
-          <span class="rec-icon">🥗</span>
-          <span class="rec-label">午餐</span>
-          <span class="rec-text">${rec.lunch}</span>
-        </div>
-        <div class="rec-row">
-          <span class="rec-icon">🍜</span>
-          <span class="rec-label">晚餐</span>
-          <span class="rec-text">${rec.dinner}</span>
-        </div>
-        <div class="rec-row">
-          <span class="rec-icon">🌿</span>
-          <span class="rec-label">养生</span>
-          <span class="rec-text">${rec.tip}</span>
-        </div>
-        <div class="rec-row">
-          <span class="rec-icon">💪</span>
-          <span class="rec-label">运动</span>
-          <span class="rec-text">${rec.exercise}</span>
-        </div>
-      </div>
-    </div>
-  `;
+function computeStats(){
+  const h=JSON.parse(localStorage.getItem('history')||'{}');
+  const keys=Object.keys(h).sort();
+  const totalTasks=keys.reduce((s,k)=>s+(h[k].done||0),0);
+  const totalXP=keys.reduce((s,k)=>{
+    const d=h[k].done||0,t=h[k].total||12;
+    return s+d*XP_TASK+(d>=t?XP_BONUS:0);
+  },0);
+  const perfectDays=keys.filter(k=>(h[k].done||0)>=(h[k].total||12)).length;
+  let streak=0;
+  for(let i=0;;i++){const d=new Date();d.setDate(d.getDate()-i);const k=d.toISOString().split('T')[0];if(h[k]&&h[k].done>0)streak++;else break;}
+  let maxStreak=0,cur=0;
+  keys.forEach(k=>{if(h[k]&&h[k].done>0){cur++;maxStreak=Math.max(maxStreak,cur);}else cur=0;});
+  return{totalTasks,totalXP,perfectDays,streak,maxStreak};
 }
 
-// ===== 状态管理 =====
-const DEFAULT_BARK_KEY = '';
-
-function getDateKey() {
-  return new Date().toISOString().split('T')[0];
+function getLevelInfo(xp){
+  let li=0;
+  for(let i=LEVELS.length-1;i>=0;i--){if(xp>=LEVELS[i].xp){li=i;break;}}
+  const lv=LEVELS[li],nx=LEVELS[li+1];
+  const inLv=xp-lv.xp, need=nx?nx.xp-lv.xp:1;
+  const pct=nx?Math.min(100,Math.round(inLv/need*100)):100;
+  return{li,lv,nx,inLv,need,pct};
 }
 
-function getBarkKey() {
-  return localStorage.getItem('bark_key') || DEFAULT_BARK_KEY;
+function getDateKey(){return new Date().toISOString().split('T')[0];}
+function getDayState(){const r=localStorage.getItem('day_'+getDateKey());return r?JSON.parse(r):{};}
+function saveDayState(state){
+  const k=getDateKey();
+  localStorage.setItem('day_'+k,JSON.stringify(state));
+  const done=Object.values(state).filter(Boolean).length;
+  const h=JSON.parse(localStorage.getItem('history')||'{}');
+  h[k]={done,total:TASKS.length};
+  localStorage.setItem('history',JSON.stringify(h));
 }
 
-function getDayState() {
-  const raw = localStorage.getItem('day_' + getDateKey());
-  return raw ? JSON.parse(raw) : {};
-}
-
-function saveDayState(state) {
-  const key = getDateKey();
-  localStorage.setItem('day_' + key, JSON.stringify(state));
-  // Update streak tracker
-  const done = Object.values(state).filter(Boolean).length;
-  const history = JSON.parse(localStorage.getItem('history') || '{}');
-  history[key] = { done, total: TASKS.length };
-  localStorage.setItem('history', JSON.stringify(history));
-}
-
-function toggleTask(id) {
-  const state = getDayState();
-  state[id] = !state[id];
+let prevXP=0;
+function toggleTask(id,event){
+  const state=getDayState();
+  const wasUnchecked=!state[id];
+  state[id]=!state[id];
   saveDayState(state);
-  renderTasks();
-  updateProgress();
-  if (state[id]) {
-    showToast('✅ 打卡成功！继续加油');
-    checkAllDone();
-  }
-}
-
-function checkAllDone() {
-  const state = getDayState();
-  const done = Object.values(state).filter(Boolean).length;
-  if (done === TASKS.length) {
-    setTimeout(() => showToast('🎉 今天全部完成！你太棒了！'), 400);
-  }
-}
-
-// ===== 渲染：任务列表 =====
-function renderTasks() {
-  const state = getDayState();
-  const container = document.getElementById('task-list');
-  let html = '';
-  let currentSection = '';
-
-  TASKS.forEach(task => {
-    if (task.section !== currentSection) {
-      currentSection = task.section;
-      html += `<div class="section-label">${currentSection}</div>`;
+  const stats=computeStats();
+  if(wasUnchecked){
+    spawnParticles(event);
+    spawnXPFloat(event,'+'+XP_TASK+' XP');
+    const oldLv=getLevelInfo(prevXP).li, newLv=getLevelInfo(stats.totalXP).li;
+    if(newLv>oldLv) setTimeout(()=>showLevelUp(LEVELS[newLv]),600);
+    const done=Object.values(state).filter(Boolean).length;
+    if(done===TASKS.length){
+      setTimeout(()=>{spawnConfetti();showToast('🎉 完美！+'+XP_BONUS+' 额外XP！');},400);
+    } else {
+      showToast('✅ +'+XP_TASK+' XP');
     }
-    const done = !!state[task.id];
-    html += `
-      <div class="task-card ${done ? 'done' : ''}" onclick="toggleTask('${task.id}')">
-        <div class="time-badge">${task.time}</div>
-        <div class="task-icon">${task.icon}</div>
-        <div class="task-content">
-          <div class="task-title">${task.title}</div>
-          <div class="task-desc">${task.desc}</div>
-        </div>
-        <div class="task-check">${done ? '✓' : ''}</div>
-      </div>
-    `;
+  }
+  prevXP=stats.totalXP;
+  renderTasks(); updateProgress(); updateHeaderXP();
+}
+
+function spawnParticles(e){
+  const x=e?e.clientX:window.innerWidth/2, y=e?e.clientY:window.innerHeight/2;
+  ['⭐','✨','💫','🌟','💥','🎊'].forEach((em,i)=>{
+    const p=document.createElement('div'); p.className='particle'; p.textContent=em;
+    p.style.cssText=`left:${x+(Math.random()-.5)*70}px;top:${y-10}px;animation-delay:${i*.05}s`;
+    document.body.appendChild(p); setTimeout(()=>p.remove(),1000);
   });
-
-  container.innerHTML = html;
+}
+function spawnXPFloat(e,txt){
+  const x=e?e.clientX:window.innerWidth/2, y=e?e.clientY:window.innerHeight/2;
+  const el=document.createElement('div'); el.className='xp-float'; el.textContent=txt;
+  el.style.cssText=`left:${x-20}px;top:${y-30}px`;
+  document.body.appendChild(el); setTimeout(()=>el.remove(),1100);
+}
+function spawnConfetti(){
+  const em=['🎉','🎊','⭐','🌟','💫','✨','🎈','💎','👑'];
+  for(let i=0;i<18;i++) setTimeout(()=>{
+    const p=document.createElement('div'); p.className='particle';
+    p.textContent=em[Math.floor(Math.random()*em.length)];
+    p.style.cssText=`left:${Math.random()*window.innerWidth}px;top:${Math.random()*window.innerHeight*.7}px;font-size:${14+Math.random()*16}px`;
+    document.body.appendChild(p); setTimeout(()=>p.remove(),1000);
+  },i*60);
 }
 
-// ===== 渲染：进度条 =====
-function updateProgress() {
-  const state = getDayState();
-  const done = Object.values(state).filter(Boolean).length;
-  const total = TASKS.length;
-  const pct = Math.round(done / total * 100);
+function showLevelUp(lv){
+  document.getElementById('levelup-icon').textContent=lv.icon;
+  document.getElementById('levelup-name').textContent=lv.name;
+  document.getElementById('levelup-overlay').classList.add('show');
+  spawnConfetti();
+}
+function closeLevelUp(){document.getElementById('levelup-overlay').classList.remove('show');}
 
-  document.getElementById('progress-text').textContent = `${done}/${total}`;
-  document.getElementById('progress-fill').style.width = pct + '%';
-
-  const notes = [
-    '今天还没开始，起来打卡吧 💪',
-    '好的开始！保持节奏 🌱',
-    '已完成 ' + done + ' 项，不错！',
-    '过半了！今天状态很好 ✨',
-    '快完成了，最后几步加油 🎯',
-    '🎉 完美！今天全部完成，太厉害了！'
-  ];
-  const idx = done === 0 ? 0 : done <= 2 ? 1 : done <= 5 ? 2 : done <= 8 ? 3 : done < total ? 4 : 5;
-  document.getElementById('progress-note').textContent = notes[idx];
+function updateHeaderXP(){
+  const s=computeStats();
+  const{li,lv,nx,inLv,need,pct}=getLevelInfo(s.totalXP);
+  document.getElementById('header-level').textContent=`Lv.${li+1} ${lv.name} ${lv.icon}`;
+  document.getElementById('header-streak').textContent=`🔥 ${s.streak}天`;
+  document.getElementById('xp-fill').style.width=pct+'%';
+  document.getElementById('xp-text').textContent=nx?`${inLv} / ${need} XP`:`${s.totalXP} XP`;
+  prevXP=s.totalXP;
 }
 
-// ===== 渲染：顶部时间问候 =====
-function renderHeader() {
-  const now = new Date();
-  const days = ['日', '一', '二', '三', '四', '五', '六'];
-  document.getElementById('date-display').textContent =
-    `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日  周${days[now.getDay()]}`;
-
-  const h = now.getHours();
-  const greetings = {
-    early: '还没睡？记得早点休息，睡眠是护肤基础 🌙',
-    morning: '早安！今天也要好好照顾自己 ☀️',
-    lunch: '上午好！午饭记得多夹蔬菜 🥗',
-    afternoon: '下午好！记得多喝水，别忘了站起来活动 💧',
-    evening: '下班了！今晚要运动20分钟和护肤哦 🏃',
-    night: '晚上好！记得23点前睡觉，这是最好的护肤 🌙'
-  };
-  const key = h < 6 ? 'early' : h < 10 ? 'morning' : h < 14 ? 'lunch' : h < 18 ? 'afternoon' : h < 21 ? 'evening' : 'night';
-  document.getElementById('greeting-text').textContent = greetings[key];
-}
-
-// ===== 渲染：每日提示 =====
-function renderTip() {
-  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
-  const tip = TIPS[dayOfYear % TIPS.length];
-  document.getElementById('daily-tip').innerHTML = `<h3>${tip.title}</h3><p>${tip.content}</p>`;
-}
-
-// ===== 渲染：统计页 =====
-function renderStats() {
-  const history = JSON.parse(localStorage.getItem('history') || '{}');
-  const keys = Object.keys(history).sort();
-  const today = getDateKey();
-
-  const totalDays = keys.filter(k => history[k].done > 0).length;
-  const totalTasks = keys.reduce((s, k) => s + history[k].done, 0);
-  const avgRate = totalDays
-    ? Math.round(keys.filter(k => history[k].done > 0).reduce((s, k) => s + history[k].done / history[k].total, 0) / totalDays * 100)
-    : 0;
-
-  // Streak from today backwards
-  let streak = 0;
-  for (let i = 0; ; i++) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const k = d.toISOString().split('T')[0];
-    if (history[k] && history[k].done > 0) streak++;
-    else break;
-  }
-
-  // Best streak
-  let best = 0, cur = 0;
-  keys.forEach(k => { if (history[k].done > 0) { cur++; best = Math.max(best, cur); } else cur = 0; });
-
-  document.getElementById('streak-num').textContent = streak;
-  document.getElementById('total-days').textContent = totalDays;
-  document.getElementById('total-tasks').textContent = totalTasks;
-  document.getElementById('avg-rate').textContent = avgRate + '%';
-  document.getElementById('best-streak').textContent = best;
-
-  // Week bars
-  const container = document.getElementById('week-chart');
-  const dayNames = ['日','一','二','三','四','五','六'];
-  let html = '';
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const k = d.toISOString().split('T')[0];
-    const data = history[k];
-    const pct = data ? Math.round(data.done / data.total * 100) : 0;
-    const isToday = k === today;
-    const color = isToday ? '#43a047' : '#a5d6a7';
-    html += `
-      <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
-        <div style="font-size:10px; color:${pct > 0 ? '#2e7d32' : '#bbb'}; font-weight:600;">${pct > 0 ? pct + '%' : '—'}</div>
-        <div style="width:100%; height:56px; background:#f0f4f0; border-radius:6px; overflow:hidden; display:flex; flex-direction:column; justify-content:flex-end;">
-          <div style="height:${pct}%; background:${color}; transition:height 0.6s;"></div>
-        </div>
-        <div style="font-size:11px; color:${isToday ? '#43a047' : '#aaa'}; font-weight:${isToday ? '700' : '400'};">周${dayNames[d.getDay()]}</div>
+function renderDailyRec(){
+  const dy=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/86400000);
+  const idx=(dy-1+30)%30, rec=DAILY_REC[idx], dn=idx+1;
+  document.getElementById('daily-rec').innerHTML=`
+    <div class="rec-card">
+      <div class="rec-header"><span>🌟 今日推荐</span><span class="rec-day">第${dn}/30天</span></div>
+      <div class="rec-body">
+        <div class="rec-row"><span class="rec-icon">🥐</span><span class="rec-label">早餐</span><span class="rec-text">${rec.breakfast}</span></div>
+        <div class="rec-row"><span class="rec-icon">🥗</span><span class="rec-label">午餐</span><span class="rec-text">${rec.lunch}</span></div>
+        <div class="rec-row"><span class="rec-icon">🍜</span><span class="rec-label">晚餐</span><span class="rec-text">${rec.dinner}</span></div>
+        <div class="rec-row"><span class="rec-icon">🌿</span><span class="rec-label">养生</span><span class="rec-text">${rec.tip}</span></div>
+        <div class="rec-row"><span class="rec-icon">💪</span><span class="rec-label">运动</span><span class="rec-text">${rec.exercise}</span></div>
       </div>
-    `;
-  }
-  container.innerHTML = html;
+    </div>`;
 }
 
-// ===== 渲染：推送时间表 =====
-function renderNotifSchedule() {
-  document.getElementById('topic-input').value = getBarkKey();
-  const c = document.getElementById('notif-schedule');
-  c.innerHTML = NOTIFS.map(n => `
+function renderTasks(){
+  const state=getDayState(), c=document.getElementById('task-list');
+  let html='', cs='';
+  TASKS.forEach(t=>{
+    if(t.section!==cs){cs=t.section;html+=`<div class="section-label">${cs}</div>`;}
+    const done=!!state[t.id];
+    html+=`<div class="task-card ${done?'done':''}" onclick="toggleTask('${t.id}',event)">
+      <div class="time-badge">${t.time}</div>
+      <div class="task-icon">${t.icon}</div>
+      <div class="task-content">
+        <div class="task-title">${t.title}</div>
+        <div class="task-desc">${t.desc}</div>
+        <div class="task-xp">${done?'✅ 已获得 +10 XP':'⭐ 完成得 +10 XP'}</div>
+      </div>
+      <div class="task-check">${done?'✓':''}</div>
+    </div>`;
+  });
+  c.innerHTML=html;
+}
+
+function updateProgress(){
+  const state=getDayState();
+  const done=Object.values(state).filter(Boolean).length, total=TASKS.length;
+  const pct=Math.round(done/total*100);
+  const xp=done*XP_TASK+(done>=total?XP_BONUS:0);
+  document.getElementById('progress-text').textContent=`${done}/${total}`;
+  document.getElementById('progress-fill').style.width=pct+'%';
+  document.getElementById('today-xp').textContent=`+${xp} XP今日`;
+  const notes=['今天还没开始，起来打卡吧 💪','好的开始！继续 🌱','已完成'+done+'项，不错！','过半了！状态很好 ✨','快完成了，冲！🎯','🎉 完美！今天全部完成！'];
+  const ni=done===0?0:done<=2?1:done<=5?2:done<=8?3:done<total?4:5;
+  document.getElementById('progress-note').textContent=notes[ni];
+}
+
+function renderHeader(){
+  const now=new Date(), days=['日','一','二','三','四','五','六'];
+  document.getElementById('date-display').textContent=`${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 周${days[now.getDay()]}`;
+  const h=now.getHours();
+  const g={early:'还没睡？记得早点休息 🌙',morning:'早安！今天也是变美的一天 ☀️',lunch:'上午好！午饭记得多夹蔬菜 🥗',afternoon:'下午好！记得多喝水 💧',evening:'下班了！护肤和运动别忘 🏃',night:'晚上好！记得23点前睡觉 🌙'};
+  const k=h<6?'early':h<10?'morning':h<14?'lunch':h<18?'afternoon':h<21?'evening':'night';
+  document.getElementById('greeting-text').textContent=g[k];
+}
+
+function renderTip(){
+  const dy=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/86400000);
+  const tip=TIPS[dy%TIPS.length];
+  document.getElementById('daily-tip').innerHTML=`<h3>${tip.title}</h3><p>${tip.content}</p>`;
+}
+
+function renderStats(){
+  const s=computeStats();
+  const{li,lv,nx,inLv,need,pct}=getLevelInfo(s.totalXP);
+  document.getElementById('stats-level-icon').textContent=lv.icon;
+  document.getElementById('stats-level-name').textContent=lv.name;
+  document.getElementById('stats-level-num').textContent=`Lv.${li+1}`;
+  document.getElementById('stats-xp-label').textContent=nx?`距离「${nx.name}」还需${need-inLv} XP`:'已达最高等级 🏆';
+  document.getElementById('stats-xp-fill').style.width=pct+'%';
+  document.getElementById('stats-xp-text').textContent=nx?`${inLv} / ${need} XP`:`${s.totalXP} XP 满级！`;
+  document.getElementById('streak-num').textContent=s.streak;
+  document.getElementById('total-xp-display').textContent=s.totalXP;
+  document.getElementById('total-tasks').textContent=s.totalTasks;
+  document.getElementById('perfect-days').textContent=s.perfectDays;
+  document.getElementById('badges-grid').innerHTML=BADGES.map(b=>{
+    const u=b.check(s);
+    return`<div class="badge-item ${u?'':'locked'}"><div class="badge-icon">${u?b.icon:'🔒'}</div><div class="badge-name">${b.name}</div><div class="badge-desc">${b.desc}</div></div>`;
+  }).join('');
+  const h=JSON.parse(localStorage.getItem('history')||'{}'),today=getDateKey(),dn=['日','一','二','三','四','五','六'];
+  let wh='';
+  for(let i=6;i>=0;i--){
+    const d=new Date();d.setDate(d.getDate()-i);
+    const k=d.toISOString().split('T')[0],data=h[k],p2=data?Math.round(data.done/data.total*100):0,it=k===today;
+    wh+=`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+      <div style="font-size:10px;color:${p2>0?'#7c3aed':'#bbb'};font-weight:600">${p2>0?p2+'%':'—'}</div>
+      <div style="width:100%;height:56px;background:#f3f0ff;border-radius:6px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end">
+        <div style="height:${p2}%;background:linear-gradient(0deg,#7c3aed,#a855f7);transition:height 0.6s"></div>
+      </div>
+      <div style="font-size:11px;color:${it?'#7c3aed':'#aaa'};font-weight:${it?'700':'400'}">周${dn[d.getDay()]}</div>
+    </div>`;
+  }
+  document.getElementById('week-chart').innerHTML=wh;
+}
+
+function renderNotifSchedule(){
+  document.getElementById('topic-input').value=localStorage.getItem('bark_key')||'';
+  document.getElementById('notif-schedule').innerHTML=NOTIFS.map(n=>`
     <div class="notif-row">
-      <span style="font-size:11px; font-weight:700; color:#2e7d32; background:#e8f5e9; padding:2px 8px; border-radius:20px; white-space:nowrap; margin-top:2px;">${n.time}</span>
-      <div>
-        <div style="font-size:13px; font-weight:600;">${n.title}</div>
-        <div style="font-size:12px; color:#999; margin-top:1px;">${n.msg}</div>
-      </div>
-    </div>
-  `).join('');
-
-  document.getElementById('topic-input').value = getTopic();
+      <span style="font-size:11px;font-weight:700;color:#7c3aed;background:#f3f0ff;padding:2px 8px;border-radius:20px;white-space:nowrap;margin-top:2px">${n.time}</span>
+      <div><div style="font-size:13px;font-weight:600">${n.title}</div><div style="font-size:12px;color:#999;margin-top:1px">${n.msg}</div></div>
+    </div>`).join('');
 }
 
-// ===== 页面切换 =====
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  document.getElementById('nav-' + name).classList.add('active');
-  if (name === 'stats') renderStats();
-  if (name === 'settings') renderNotifSchedule();
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.getElementById('nav-'+name).classList.add('active');
+  if(name==='stats') renderStats();
+  if(name==='settings') renderNotifSchedule();
 }
 
-// ===== 设置 =====
-function saveTopic() {
-  const val = document.getElementById('topic-input').value.trim();
-  if (val) {
-    localStorage.setItem('bark_key', val);
-    showToast('✅ Bark Key 已保存');
+function saveTopic(){
+  const v=document.getElementById('topic-input').value.trim();
+  if(v){localStorage.setItem('bark_key',v);showToast('✅ Bark Key 已保存');}
+}
+function resetToday(){
+  if(confirm('重置今日打卡记录？')){localStorage.removeItem('day_'+getDateKey());renderTasks();updateProgress();showToast('已重置今日打卡');}
+}
+function clearAll(){
+  if(confirm('清除所有历史数据？此操作无法撤销。')){
+    Object.keys(localStorage).forEach(k=>{if(k.startsWith('day_')||k==='history')localStorage.removeItem(k);});
+    renderTasks();updateProgress();updateHeaderXP();showToast('已清除所有数据');
   }
 }
-
-// ===== 数据管理 =====
-function resetToday() {
-  if (confirm('重置今日打卡记录？')) {
-    localStorage.removeItem('day_' + getDateKey());
-    renderTasks(); updateProgress();
-    showToast('已重置今日打卡');
-  }
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
 }
 
-function clearAll() {
-  if (confirm('清除所有历史数据？此操作无法撤销。')) {
-    Object.keys(localStorage).forEach(k => { if (k.startsWith('day_') || k === 'history') localStorage.removeItem(k); });
-    renderTasks(); updateProgress();
-    showToast('已清除所有数据');
-  }
-}
-
-// ===== Toast =====
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
-}
-
-// ===== 初始化 =====
-renderHeader();
-renderDailyRec();
-renderTasks();
-updateProgress();
-renderTip();
-setInterval(renderHeader, 60000);
+renderHeader();renderDailyRec();renderTasks();updateProgress();updateHeaderXP();renderTip();
+setInterval(renderHeader,60000);
 </script>
 </body>
 </html>
