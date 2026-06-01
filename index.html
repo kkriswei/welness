@@ -10,8 +10,9 @@
   <title>我的养生计划</title>
   <style>
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    :root{--pu:#8b5cf6;--pk:#ec4899;--go:#f59e0b;--gr:#22c55e;--text:#1e1b4b;--text2:#6b7280;--bg:#faf5ff}
-    body{font-family:-apple-system,'PingFang SC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:96px}
+    :root{--pu:#8b5cf6;--pk:#ec4899;--go:#f59e0b;--gr:#22c55e;--text:#1e1b4b;--text2:#6b7280;--bg:#e8e0f5}
+    html{background:var(--bg)}
+    body{font-family:-apple-system,'PingFang SC',sans-serif;background:#faf5ff;color:var(--text);min-height:100vh;padding-bottom:96px;max-width:430px;margin:0 auto;box-shadow:0 0 40px rgba(139,92,246,0.12)}
 
     /* ANIMATED HERO */
     .hero{background:linear-gradient(135deg,#fda4af,#c084fc,#818cf8,#fb7185);background-size:300% 300%;animation:grad 8s ease infinite;padding:52px 20px 76px;position:relative;overflow:hidden}
@@ -140,7 +141,7 @@
     .n-row:last-child{border-bottom:none}
 
     /* FLOATING NAV */
-    .nav-outer{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:100;width:calc(100% - 32px);max-width:400px}
+    .nav-outer{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:100;width:calc(min(100%,430px) - 32px);max-width:398px}
     .bottom-nav{background:rgba(20,5,50,0.88);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:50px;display:flex;padding:6px;gap:2px;box-shadow:0 8px 32px rgba(124,58,237,0.35)}
     .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 6px;font-size:9px;color:rgba(255,255,255,0.38);cursor:pointer;border:none;background:none;gap:3px;font-family:inherit;border-radius:40px;transition:all 0.25s;white-space:nowrap}
     .nav-btn.active{color:white;background:rgba(255,255,255,0.14)}
