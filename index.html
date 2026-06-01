@@ -360,7 +360,7 @@
   <div class="hero" id="hero-main">
     <div id="hero-scene" style="position:absolute;inset:0;z-index:0;overflow:hidden"></div>
     <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.4) 100%);z-index:0;pointer-events:none"></div>
-    <div style="position:relative;z-index:1">
+    <div style="position:relative;z-index:1;max-width:860px;margin:0 auto;padding:0 4px">
     <div class="hero-top">
       <div class="hpill" id="h-lv">Lv.1 养生小白 🌱</div>
       <div class="hpill hpill-fire" id="h-st">🔥 0天</div>
@@ -2329,8 +2329,10 @@ const SCENES = [
 ];
 
 function renderHeroScene() {
-  const dy = Math.floor((Date.now() - new Date(new Date().getFullYear(),0,0)) / 86400000);
-  const scene = SCENES[(dy - 1 + 30) % 30];
+  const now = new Date();
+  // Use day-of-month + month so it cycles visibly and changes each day
+  const seed = now.getDate() + now.getMonth() * 31 + 14; // offset so today shows 樱花晨曦
+  const scene = SCENES[seed % 30];
   const el = document.getElementById('hero-scene');
   if (el) el.innerHTML = scene.render();
 }
