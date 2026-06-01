@@ -1449,7 +1449,9 @@ function renderTodayPetCard() {
       <div class="pet-card-inner">
         <div class="pet-stage-wrap ${isLegend ? 'pet-legend' : ''}">
           ${orbitHtml}
-          <svg class="pet-svg-wrap" id="pet-emoji-today" onclick="tapPet(event,'today')" width="100" height="116" viewBox="0 0 120 140" style="display:block">${getPetSVG(petId, si)}</svg>
+          <div style="width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,0.92);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,0.12);position:relative;z-index:1">
+          <svg class="pet-svg-wrap" id="pet-emoji-today" onclick="tapPet(event,'today')" width="96" height="110" viewBox="0 0 120 140" style="display:block">${getPetSVG(petId, si)}</svg>
+          </div>
           <div id="pet-speech-today" style="display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:white;border-radius:16px;padding:10px 14px;font-size:12px;font-weight:600;color:#3f3f46;white-space:normal;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:20;animation:speechIn .25s ease-out;pointer-events:none;max-width:160px;text-align:center;min-width:100px"></div>
         </div>
         <div class="pet-info">
@@ -1578,7 +1580,9 @@ function renderPetPage() {
     <div class="pet-page-hero" style="background:${pet.theme.bg}">
       <div class="pet-big-wrap ${isLegend ? 'pet-legend' : ''}">
         ${orbitHtml}
+        <div style="width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.92);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 28px rgba(0,0,0,0.14);position:relative;z-index:1;margin:0 auto 8px">
         <svg class="pet-svg-wrap" id="pet-emoji-pet" onclick="tapPet(event,'pet')" width="140" height="163" viewBox="0 0 120 140" style="display:block">${getPetSVG(petId, si)}</svg>
+        </div>
         <div id="pet-speech-pet" style="display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:white;border-radius:16px;padding:10px 14px;font-size:12px;font-weight:600;color:#3f3f46;white-space:normal;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:20;pointer-events:none;max-width:160px;text-align:center;min-width:100px"></div>
       </div>
       <div style="color:${pet.theme.text};font-size:22px;font-weight:800;margin-bottom:4px">${pet.name}</div>
