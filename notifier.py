@@ -3,8 +3,10 @@
 养生计划推送脚本（Bark 版，国内 iPhone 可用）
 每天按时发送养生提醒到女朋友手机
 
+所有提醒时间按【北京时间】发送，与运行电脑所在时区无关。
+
 使用方法：
-  1. 安装依赖：pip3 install schedule requests
+  1. 安装依赖：pip3 install requests
   2. 填写下方 BARK_KEY（从 Bark App 里复制）
   3. 运行：    python3 notifier.py
   4. 自启动：  bash setup.sh
@@ -15,17 +17,22 @@ Bark 获取方式：
   例：https://api.day.app/AbCdEf123456/ → KEY 是 AbCdEf123456
 """
 
-import schedule
 import time
 import requests
 import logging
 import sys
+import subprocess
+import datetime
+from zoneinfo import ZoneInfo
 
 # ===== 配置（只需改这里）=====
 BARK_KEY = "bsiHn9WBb64ki6ymjMgZXm"   # Bark Key
 # ==============================
 
 BARK_SERVER = "https://api.day.app"
+
+# 女朋友所在时区 —— 所有提醒时间按这个时区发送
+BEIJING = ZoneInfo("Asia/Shanghai")
 
 logging.basicConfig(
     level=logging.INFO,
@@ -83,15 +90,70 @@ def send_bark(title: str, body: str, sound: str = "birdsong") -> bool:
     return False
 
 
-def setup_schedule():
-    """注册所有每日推送任务"""
-    for t, title, msg, priority, tags in NOTIFICATIONS:
-        def make_job(title=title, msg=msg):
-            def job():
-                send_bark(title, msg)
-            return job
-        schedule.every().day.at(t).do(make_job())
-        log.info(f"  📅 {t}  {title}")
+# ===== 定时唤醒（让 Mac 在每个提醒前自动醒来）=====
+# 提前多少秒唤醒（留出系统唤醒+脚本反应时间）
+WAKE_LEAD_SECONDS = 120
+
+
+def _notif_times():
+    """返回所有提醒时间，按 (时, 分) 排序"""
+    times = []
+    for t, *_ in NOTIFICATIONS:
+        h, m = map(int, t.split(":"))
+        times.append((h, m))
+    return sorted(set(times))
+
+
+def next_wake_datetime(now_bj: datetime.datetime) -> datetime.datetime:
+    """计算下一次应唤醒的时间（北京时区 aware）= 下一条提醒(北京时间) - WAKE_LEAD_SECONDS"""
+    times = _notif_times()
+    for h, m in times:
+        notif = now_bj.replace(hour=h, minute=m, second=0, microsecond=0)
+        wake = notif - datetime.timedelta(seconds=WAKE_LEAD_SECONDS)
+        if wake > now_bj:
+            return wake
+    # 今天（北京）都过了 → 取明天第一条
+    h, m = times[0]
+    notif = (now_bj + datetime.timedelta(days=1)).replace(
+        hour=h, minute=m, second=0, microsecond=0
+    )
+    return notif - datetime.timedelta(seconds=WAKE_LEAD_SECONDS)
+
+
+def _pmset(*args) -> bool:
+    """非交互调用 pmset（需要 sudoers 免密白名单）"""
+    try:
+        r = subprocess.run(
+            ["sudo", "-n", "pmset", *args],
+            capture_output=True, text=True, timeout=10,
+        )
+        if r.returncode != 0:
+            log.warning(f"⚠️  pmset {' '.join(args)} 失败: {r.stderr.strip()}")
+            return False
+        return True
+    except Exception as e:
+        log.warning(f"⚠️  pmset 调用异常: {e}")
+        return False
+
+
+_current_wake = None  # 已预约的唤醒时间戳字符串
+
+
+def sync_wake_schedule():
+    """确保系统已预约下一次唤醒；目标变化时才更新
+    唤醒时刻按北京时间算，再换算成 Mac 本地时间给 pmset（系统唤醒只认本地时钟）"""
+    global _current_wake
+    target_bj = next_wake_datetime(datetime.datetime.now(BEIJING))
+    target_local = target_bj.astimezone()  # 转成 Mac 本地时区
+    stamp = target_local.strftime("%m/%d/%y %H:%M:%S")
+    if stamp == _current_wake:
+        return
+    # 取消旧的，预约新的
+    if _current_wake:
+        _pmset("schedule", "cancel", "wake", _current_wake)
+    if _pmset("schedule", "wake", stamp):
+        _current_wake = stamp
+        log.info(f"⏰ 已预约下一次唤醒: {stamp}")
 
 
 def main():
@@ -99,10 +161,16 @@ def main():
     log.info("🌱  养生计划推送服务启动")
     log.info(f"📲  Bark Key  : {BARK_KEY[:6]}***")
     log.info(f"🖥   Bark 服务器: {BARK_SERVER}")
+    log.info(f"🕐  提醒时区  : 北京时间 (Asia/Shanghai)")
+    log.info(f"🕐  当前北京时间: {datetime.datetime.now(BEIJING):%Y-%m-%d %H:%M}")
     log.info("=" * 50)
-    log.info("已注册每日推送计划：")
+    log.info("已注册每日推送计划（北京时间）：")
+    for t, title, *_ in NOTIFICATIONS:
+        log.info(f"  📅 {t}  {title}")
 
-    setup_schedule()
+    # 清掉历史遗留的唤醒预约，重新建立
+    _pmset("schedule", "cancelall")
+    sync_wake_schedule()
 
     log.info("=" * 50)
     log.info("✅  服务运行中，按 Ctrl+C 停止")
@@ -110,12 +178,28 @@ def main():
     # 启动时发送一条确认推送
     send_bark(
         "🌱 养生计划已启动",
-        f"推送服务运行中！共 {len(NOTIFICATIONS)} 条每日提醒已安排好，加油💪",
+        f"推送服务运行中！共 {len(NOTIFICATIONS)} 条每日提醒（北京时间）已安排好，加油💪",
     )
+
+    # 记录今天已发送的 (时,分)，跨天自动重置
+    sent_today = set()
+    last_date = datetime.datetime.now(BEIJING).date()
 
     try:
         while True:
-            schedule.run_pending()
+            now_bj = datetime.datetime.now(BEIJING)
+            if now_bj.date() != last_date:
+                sent_today.clear()
+                last_date = now_bj.date()
+
+            for t, title, msg, *_ in NOTIFICATIONS:
+                h, m = map(int, t.split(":"))
+                # 命中当前分钟、且今天还没发过 → 发送
+                if now_bj.hour == h and now_bj.minute == m and t not in sent_today:
+                    send_bark(title, msg)
+                    sent_today.add(t)
+
+            sync_wake_schedule()  # 滚动维护下一次唤醒预约
             time.sleep(30)
     except KeyboardInterrupt:
         log.info("\n👋  服务已停止")
