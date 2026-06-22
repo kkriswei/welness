@@ -92,7 +92,10 @@ def send_bark(title: str, body: str, sound: str = "birdsong") -> bool:
 
 # ===== 定时唤醒（让 Mac 在每个提醒前自动醒来）=====
 # 提前多少秒唤醒（留出系统唤醒+脚本反应时间）
-WAKE_LEAD_SECONDS = 120
+WAKE_LEAD_SECONDS = 90
+# 补发窗口（分钟）：提醒到点后，只要在这个窗口内 Mac 醒来就补发，
+# 解决"定时唤醒比预约时间晚醒几十分钟、错过精确分钟"的问题
+CATCH_UP_GRACE_MIN = 60
 
 
 def _notif_times():
@@ -120,19 +123,22 @@ def next_wake_datetime(now_bj: datetime.datetime) -> datetime.datetime:
     return notif - datetime.timedelta(seconds=WAKE_LEAD_SECONDS)
 
 
-def _pmset(*args) -> bool:
-    """非交互调用 pmset（需要 sudoers 免密白名单）"""
+def _pmset(*args, quiet: bool = False) -> bool:
+    """非交互调用 pmset（需要 sudoers 免密白名单）
+    quiet=True 时不打印失败告警（用于取消已过期预约，失败属正常）"""
     try:
         r = subprocess.run(
             ["sudo", "-n", "pmset", *args],
             capture_output=True, text=True, timeout=10,
         )
         if r.returncode != 0:
-            log.warning(f"⚠️  pmset {' '.join(args)} 失败: {r.stderr.strip()}")
+            if not quiet:
+                log.warning(f"⚠️  pmset {' '.join(args)} 失败: {r.stderr.strip()}")
             return False
         return True
     except Exception as e:
-        log.warning(f"⚠️  pmset 调用异常: {e}")
+        if not quiet:
+            log.warning(f"⚠️  pmset 调用异常: {e}")
         return False
 
 
@@ -148,12 +154,24 @@ def sync_wake_schedule():
     stamp = target_local.strftime("%m/%d/%y %H:%M:%S")
     if stamp == _current_wake:
         return
-    # 取消旧的，预约新的
+    # 取消旧的（已触发的预约取消会报错，属正常，静默）
     if _current_wake:
-        _pmset("schedule", "cancel", "wake", _current_wake)
+        _pmset("schedule", "cancel", "wake", _current_wake, quiet=True)
     if _pmset("schedule", "wake", stamp):
         _current_wake = stamp
         log.info(f"⏰ 已预约下一次唤醒: {stamp}")
+
+
+def due_notifications(now_bj, sent):
+    """返回此刻该补发的提醒：已过点、仍在补发窗口内、今天没发过"""
+    grace = datetime.timedelta(minutes=CATCH_UP_GRACE_MIN)
+    out = []
+    for t, title, msg, *_ in NOTIFICATIONS:
+        h, m = map(int, t.split(":"))
+        notif = now_bj.replace(hour=h, minute=m, second=0, microsecond=0)
+        if t not in sent and notif <= now_bj <= notif + grace:
+            out.append((t, title, msg))
+    return out
 
 
 def main():
@@ -181,9 +199,18 @@ def main():
         f"推送服务运行中！共 {len(NOTIFICATIONS)} 条每日提醒（北京时间）已安排好，加油💪",
     )
 
-    # 记录今天已发送的 (时,分)，跨天自动重置
+    # 记录今天已发送的时间点，跨天自动重置
     sent_today = set()
     last_date = datetime.datetime.now(BEIJING).date()
+
+    # 启动时：把"早已过点、超出补发窗口"的提醒标记为已发，避免启动瞬间补发一大堆旧提醒
+    grace = datetime.timedelta(minutes=CATCH_UP_GRACE_MIN)
+    now0 = datetime.datetime.now(BEIJING)
+    for t, *_ in NOTIFICATIONS:
+        h, m = map(int, t.split(":"))
+        notif = now0.replace(hour=h, minute=m, second=0, microsecond=0)
+        if now0 > notif + grace:
+            sent_today.add(t)
 
     try:
         while True:
@@ -192,11 +219,10 @@ def main():
                 sent_today.clear()
                 last_date = now_bj.date()
 
-            for t, title, msg, *_ in NOTIFICATIONS:
-                h, m = map(int, t.split(":"))
-                # 命中当前分钟、且今天还没发过 → 发送
-                if now_bj.hour == h and now_bj.minute == m and t not in sent_today:
-                    send_bark(title, msg)
+            # 补发机制：发出所有"已到点、还在窗口内、今天没发过"的提醒
+            # 发送成功才标记，失败则下一轮重试（应对临时断网）
+            for t, title, msg in due_notifications(now_bj, sent_today):
+                if send_bark(title, msg):
                     sent_today.add(t)
 
             sync_wake_schedule()  # 滚动维护下一次唤醒预约

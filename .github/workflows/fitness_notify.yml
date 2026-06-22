@@ -1,0 +1,105 @@
+name: 减肥计划每日推送 (ntfy)
+
+on:
+  schedule:
+    # cron 全部为 UTC。美东有夏令时(EDT=UTC-4 夏 / EST=UTC-5 冬)，
+    # 所以每条提醒都列出两套 UTC 时间(夏/冬各一)；脚本内用真实美东时间判断，
+    # 只有当前美东时间真正命中某条提醒时才发送，另一套会自动 no-op。
+    # —— EDT (UTC-4) ——
+    - cron: '0 11 * * *'   # 07:00 ET
+    - cron: '30 11 * * *'  # 07:30 ET
+    - cron: '30 13 * * *'  # 09:30 ET
+    - cron: '30 14 * * *'  # 10:30 ET
+    - cron: '0 16 * * *'   # 12:00 ET
+    - cron: '0 17 * * *'   # 13:00 ET
+    - cron: '0 19 * * *'   # 15:00 ET
+    - cron: '30 20 * * *'  # 16:30 ET
+    - cron: '30 21 * * *'  # 17:30 ET
+    - cron: '0 23 * * *'   # 19:00 ET
+    - cron: '0 1 * * *'    # 21:00 ET
+    - cron: '30 2 * * *'   # 22:30 ET
+    # —— EST (UTC-5) ——
+    - cron: '0 12 * * *'   # 07:00 ET
+    - cron: '30 12 * * *'  # 07:30 ET
+    - cron: '30 14 * * *'  # 09:30 ET
+    - cron: '30 15 * * *'  # 10:30 ET
+    - cron: '0 17 * * *'   # 12:00 ET
+    - cron: '0 18 * * *'   # 13:00 ET
+    - cron: '0 20 * * *'   # 15:00 ET
+    - cron: '30 21 * * *'  # 16:30 ET
+    - cron: '30 22 * * *'  # 17:30 ET
+    - cron: '0 0 * * *'    # 19:00 ET
+    - cron: '0 2 * * *'    # 21:00 ET
+    - cron: '30 3 * * *'   # 22:30 ET
+  workflow_dispatch:        # 允许手动触发(用来测试)
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 发送 ntfy 推送
+        env:
+          NTFY_TOPIC:  ${{ secrets.NTFY_TOPIC }}
+          NTFY_SERVER: ${{ secrets.NTFY_SERVER }}   # 可选；不填默认 https://ntfy.sh
+        run: |
+          python3 - << 'EOF'
+          import os, requests
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+
+          ET = ZoneInfo("America/New_York")
+          now = datetime.now(ET)
+
+          # (美东时间, 标题, 消息, 优先级)
+          NOTIFICATIONS = {
+              "07:00": ("⚖️ 晨起称重", "起床、上厕所后、空腹、不穿衣，固定条件称一下，记下数字。看的是【一周趋势】不是单日——水盐波动很正常，别被某天 +0.5kg 吓到。", 3),
+              "07:30": ("🍳 高蛋白早餐", "早餐先吃蛋白质：2个鸡蛋 / 一杯无糖希腊酸奶 / 一份豆制品。蛋白质扛饿、稳血糖，能压住上午想吃零食的冲动，比不吃早餐更不容易暴食。", 4),
+              "09:30": ("💧 补水 500ml", "起来接一大杯水喝掉。很多时候的'饿'其实是渴。喝够水代谢更顺，也能减少不必要的进食。", 3),
+              "10:30": ("🧍 久坐起身", "已经坐很久了。起来走 2 分钟、做几个深蹲或拉伸。NEAT（日常活动消耗）是减脂里被低估的一块，零散动起来积少成多。", 3),
+              "12:00": ("🥗 午餐这样配", "盘子一半蔬菜、四分之一蛋白质、四分之一主食。顺序：先菜和肉，再吃主食。同样的东西换个吃法，血糖更稳、更扛饿、更少囤脂。", 4),
+              "13:00": ("🚶 饭后走一走", "吃完别马上坐下。出去走 10-15 分钟，帮助餐后血糖回落，下午不犯困，顺手又消耗一点。", 3),
+              "15:00": ("🍫 下午零食陷阱", "嘴馋了？先喝杯水等 10 分钟，多半是无聊不是饿。真饿就吃一小把坚果或一个水果，别碰饼干奶茶——一杯奶茶≈半小时跑步。", 3),
+              "16:30": ("💧 再补一次水", "下午再喝 400-500ml。保持补水，避免把口渴误当饥饿，也让晚饭前不至于太饿而点多。", 3),
+              "17:30": ("🏃 今天的训练", "动起来：力量 30 分钟，或有氧/快走 8000 步。力量保肌肉、垫高基础代谢；有氧多烧点热量。哪怕只做 15 分钟，也远胜于零。", 4),
+              "19:00": ("🍽️ 晚餐七分饱", "清淡、七分饱，睡前 3 小时吃完。蛋白质 + 大量蔬菜 + 少量主食。晚上少囤、睡得稳，第二天称重也更友好。", 4),
+              "21:00": ("📝 今日复盘打卡", "花 1 分钟记一下：今天吃得如何、动了没、水喝够没？记录本身就是减脂利器——看得见才控得住。允许不完美，明天继续。", 3),
+              "22:30": ("🌙 早点睡", "睡不够会升高饥饿素、降低代谢，第二天特别想吃高糖高油。现在放下手机，睡够 7 小时，是最轻松的'减肥动作'。晚安。", 3),
+          }
+
+          topic = os.environ.get("NTFY_TOPIC", "")
+          server = os.environ.get("NTFY_SERVER") or "https://ntfy.sh"
+          if not topic:
+              print("错误：NTFY_TOPIC 未配置（在仓库 Settings → Secrets → Actions 添加）")
+              raise SystemExit(1)
+
+          def push(title, body, priority=3):
+              r = requests.post(server, json={
+                  "topic": topic, "title": title, "message": body, "priority": priority,
+              }, timeout=15)
+              r.raise_for_status()
+              return r.status_code
+
+          # 手动触发 → 发测试
+          if os.environ.get("GITHUB_EVENT_NAME") == "workflow_dispatch":
+              code = push("🔥 推送测试", "收到这条说明 ntfy 通知正常！每天 12 条减肥提醒已就位，按美东时间到达～", 4)
+              print(f"测试推送成功 HTTP {code}")
+              raise SystemExit(0)
+
+          # 定时触发 → 匹配当前美东时间(±4 分钟容差)
+          cur = now.hour * 60 + now.minute
+          hit = None
+          for t, payload in NOTIFICATIONS.items():
+              h, m = map(int, t.split(":"))
+              if abs(cur - (h * 60 + m)) <= 4:
+                  hit = payload
+                  break
+
+          et_str = now.strftime("%Y-%m-%d %H:%M %Z")
+          if not hit:
+              print(f"当前美东时间 {et_str} 无推送任务(可能是夏/冬令时的另一套 cron，正常)")
+              raise SystemExit(0)
+
+          title, body, prio = hit
+          code = push(title, body, prio)
+          print(f"[{et_str}] 推送成功：{title}  HTTP {code}")
+          EOF
